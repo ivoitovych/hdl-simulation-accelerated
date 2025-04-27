@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     git make autoconf g++ flex bison libfl-dev ccache \
     libgoogle-perftools-dev numactl perl python3 python3-pip \
-    zlib1g zlib1g-dev \
+    zlib1g zlib1g-dev help2man \
     vim nano less file curl wget \
     build-essential gdb valgrind
 
