@@ -1,162 +1,107 @@
-# Verilator Setup and Examples
+# HDL Simulation Accelerated
 
-This repository contains a basic setup for building and using Verilator on WSL Ubuntu 24.04.
-
-## What is Verilator?
-
-Verilator is an open-source Verilog/SystemVerilog simulator and synthesis tool. It converts Verilog and SystemVerilog code into C++ or SystemC code, which is then compiled into an executable for fast simulation.
-
-## Building Verilator from Source
-
-### Prerequisites
-
-Install the necessary dependencies:
-
-```bash
-sudo apt update
-sudo apt install git make autoconf g++ flex bison libfl-dev ccache \
-     libgoogle-perftools-dev numactl perl python3 python3-pip \
-     zlib1g zlib1g-dev -y
-```
-
-Note: The `libgz-dev` package may not be available in some Ubuntu versions and can be safely omitted.
-
-#### For Dockerfile Environments
-
-If you're setting up in a Dockerfile, you'll want to avoid interactive prompts for timezone/region selection. Add this to your Dockerfile before the apt commands:
-
-```dockerfile
-# Prevent interactive prompts during package installation
-ENV DEBIAN_FRONTEND=noninteractive
-```
-
-### Build Steps
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/verilator/verilator.git
-   cd verilator
-   ```
-
-2. Configure and build:
-   ```bash
-   autoconf
-   ./configure
-   make -j $(nproc)
-   ```
-
-3. Run Verilator directly from the build folder:
-   ```bash
-   ./bin/verilator --version
-   ```
-
-This approach keeps Verilator contained within its build directory without installing it system-wide.
-
-Alternatively, if you prefer a system-wide installation:
-   ```bash
-   sudo make install
-   verilator --version
-   ```
-
-## Basic Example: Counter
-
-This example shows a simple 8-bit counter implementation and simulation.
-
-### Counter Verilog Module (`counter.v`)
-
-```verilog
-module counter (
-    input clk,
-    input reset,
-    output reg [7:0] count
-);
-    always @(posedge clk or posedge reset) begin
-        if (reset)
-            count <= 8'h0;
-        else
-            count <= count + 1;
-    end
-endmodule
-```
-
-### C++ Testbench (`sim_main.cpp`)
-
-```cpp
-#include "Vcounter.h"
-#include "verilated.h"
-#include <iostream>
-
-int main(int argc, char** argv) {
-    // Initialize Verilator
-    Verilated::commandArgs(argc, argv);
-    
-    // Create an instance of our module
-    Vcounter* counter = new Vcounter;
-    
-    // Initialize inputs
-    counter->clk = 0;
-    counter->reset = 1;
-    counter->eval();
-    
-    // Release reset
-    counter->reset = 0;
-    
-    // Run for 20 clock cycles
-    for (int i = 0; i < 20; i++) {
-        // Toggle clock
-        counter->clk = !counter->clk;
-        counter->eval();
-        
-        // Print when clock rises
-        if (counter->clk) {
-            std::cout << "Count: " << (int)counter->count << std::endl;
-        }
-    }
-    
-    // Clean up
-    delete counter;
-    return 0;
-}
-```
-
-### Compile and Run
-
-When running from the build directory:
-```bash
-./bin/verilator -Wall --trace -cc counter.v --exe sim_main.cpp
-make -j -C obj_dir -f Vcounter.mk Vcounter
-./obj_dir/Vcounter
-```
-
-If you did a system-wide installation:
-```bash
-verilator -Wall --trace -cc counter.v --exe sim_main.cpp
-make -j -C obj_dir -f Vcounter.mk Vcounter
-./obj_dir/Vcounter
-```
+This repository contains a Docker-based setup for hardware description language (HDL) simulation using Verilator, with a focus on creating a clean, isolated environment for digital design work.
 
 ## Project Structure
 
 ```
 .
-├── verilator/           # Verilator source code
-│   └── bin/verilator    # Executable built from source
-├── counter.v            # Example Verilog module
-├── sim_main.cpp         # Example C++ testbench
-└── obj_dir/             # Generated files (created during compilation)
-    └── Vcounter         # Compiled simulation executable
+├── Dockerfile              # Docker configuration for the simulation environment
+├── .gitignore              # Git ignore file to exclude build artifacts
+├── README.md               # This file
+├── simple/                 # Example counter circuit
+│   ├── counter.v           # Verilog module for an 8-bit counter
+│   ├── sim_main.cpp        # C++ testbench for the counter
+│   └── obj_dir/            # Verilator output (generated, not tracked in git)
 ```
 
-## Next Steps
+## Quick Start
 
-- Add more complex Verilog modules
-- Create a Makefile for easier compilation
-- Add waveform visualization with GTKWave
-- Explore advanced Verilator features
+### Building the Docker Container
 
-## Resources
+```bash
+# Build the Docker image with Verilator
+docker build -t verilator-dev .
+```
 
-- [Official Verilator Documentation](https://verilator.org/guide/latest/)
-- [Verilator GitHub Repository](https://github.com/verilator/verilator)
+### Running the Container
 
+To run the container with an interactive shell:
+
+```bash
+docker run -it -v $(pwd):/workdir/project verilator-dev /bin/bash
+```
+
+This mounts your current directory to `/workdir/project` inside the container.
+
+### Building and Running the Example
+
+From inside the container:
+
+```bash
+cd /workdir/project/simple
+verilator -Wall --trace -cc counter.v --exe sim_main.cpp
+make -j $(nproc) -C obj_dir -f Vcounter.mk Vcounter
+./obj_dir/Vcounter
+```
+
+Expected output:
+```
+Count: 0
+Count: 1
+Count: 2
+...
+Count: 9
+```
+
+## Environment Details
+
+The Docker container includes:
+
+- Ubuntu 24.04
+- Verilator (latest from GitHub)
+- GNU Make, GCC, G++
+- Development tools (vim, nano, gdb, valgrind)
+- All necessary dependencies for HDL development
+
+## Using Verilator
+
+### Basic Verilator Commands
+
+1. **Compile Verilog to C++**:
+   ```bash
+   verilator -Wall --trace -cc your_design.v --exe your_testbench.cpp
+   ```
+
+2. **Build the simulation executable**:
+   ```bash
+   make -j $(nproc) -C obj_dir -f Vyour_design.mk Vyour_design
+   ```
+
+3. **Run the simulation**:
+   ```bash
+   ./obj_dir/Vyour_design
+   ```
+
+### Verilator Flags
+
+- `-Wall`: Enable all warnings
+- `--trace`: Enable waveform tracing (creates VCD files)
+- `-cc`: Generate C++ output
+- `--exe`: Specify C++ testbench
+- `-O3`: Optimization level (optional)
+- `--timing`: Enable timing models (optional)
+
+## Troubleshooting
+
+If you encounter issues with the Docker build:
+
+1. Make sure Docker has enough resources allocated
+2. Check that all required packages are installed in the Dockerfile
+3. Verify that your host system has connectivity to GitHub (for cloning Verilator)
+
+## References
+
+- [Verilator Documentation](https://verilator.org/guide/latest/)
+- [Verilog HDL Quick Reference](https://www.ece.uvic.ca/~fayez/courses/ceng465/vlogref.pdf)
 
