@@ -1,0 +1,46 @@
+# Ignore Verilator source and build directory
+/verilator/
+
+# Ignore allfiles tracking logs
+allfiles-*.txt
+
+# Verilator output directories
+obj_dir/
+*/obj_dir/
+
+# Common build output directories
+/build/
+/bin/
+
+# Compiled object files
+*.o
+*.obj
+*.so
+*.a
+*.dll
+*.lib
+
+# Backup files
+*~
+*.bak
+*.backup
+*.swp
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
