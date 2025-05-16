@@ -8,8 +8,8 @@ PARAMS = -GWIDTH=$(WIDTH)
 VERILATOR_FLAGS = -Wall --trace --timing -Wno-fatal
 
 # Source files
-SRC = universal_shift_register.sv
-TB = universal_shift_register_tb.sv
+SRC = universal_shift_register.v
+TB = universal_shift_register_tb.v
 
 # Build targets
 .PHONY: all clean run

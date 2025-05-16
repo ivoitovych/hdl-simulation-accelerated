@@ -33,10 +33,10 @@ module universal_shift_register_tb;
     integer test_case;
     integer error_count;
     reg [WIDTH-1:0] expected_q;
-    
+
     // For random generation
     reg [31:0] seed = 123456789;
-    
+
     // Test helpers
     integer i;
     reg bit_val;
@@ -46,7 +46,7 @@ module universal_shift_register_tb;
         clk = 0;
         forever #(CLK_PERIOD/2) clk = ~clk;
     end
-    
+
     // Simple pseudo-random function
     function [31:0] pseudo_random;
         begin
@@ -188,10 +188,10 @@ module universal_shift_register_tb;
 
         // Rapid mode change tests
         for (i = 0; i < 4; i = i + 1) begin
-            bit_val = (i & 1) ? 1'b1 : 1'b0;
+            bit_val = ((i & 32'h1) != 0) ? 1'b1 : 1'b0;
             parallel_in = {WIDTH{1'b1}};
             apply_inputs(i[1:0], 1, bit_val, ~bit_val, parallel_in);
-            
+
             case (i[1:0])
                 2'b00: begin
                     // Hold - no change to expected_q
@@ -209,7 +209,7 @@ module universal_shift_register_tb;
                     expected_q = parallel_in;
                 end
             endcase
-            
+
             check_output(expected_q, test_case);
             test_case = test_case + 1;
         end
@@ -224,12 +224,12 @@ module universal_shift_register_tb;
         // Shift the walking 1 left
         for (i = 0; i < WIDTH-1; i = i + 1) begin
             apply_inputs(2'b10, 1, 0, 0, 0);
-            
+
             // Manual calculation for walking 1
             parallel_in = 0;
             parallel_in[i+1] = 1'b1;
             expected_q = parallel_in;
-            
+
             check_output(expected_q, test_case);
             test_case = test_case + 1;
         end
@@ -244,15 +244,15 @@ module universal_shift_register_tb;
         $display("Starting random testing...");
         for (i = 0; i < 100; i = i + 1) begin
             // Create random inputs with our pseudo-random function
-            mode = pseudo_random() % 4;
-            enable = pseudo_random() % 2;
-            serial_in_right = pseudo_random() % 2;
-            serial_in_left = pseudo_random() % 2;
-            
+            mode            = pseudo_random()[1:0];
+            enable          = pseudo_random()[0];
+            serial_in_right = pseudo_random()[0];
+            serial_in_left  = pseudo_random()[0];
+
             // Create proper width random parallel input
             parallel_in = 0;
             for (integer j = 0; j < WIDTH; j = j + 1) begin
-                parallel_in[j] = (pseudo_random() % 2) ? 1'b1 : 1'b0;
+                parallel_in[j] = ((pseudo_random() & 32'h1) != 0) ? 1'b1 : 1'b0;
             end
 
             // Apply and predict next output
