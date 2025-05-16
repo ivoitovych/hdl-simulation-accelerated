@@ -107,6 +107,24 @@ The testbench (`universal_shift_register_tb.v`) implements a thorough verificati
    - Pseudorandom input generation
    - Result validation
 
+### Running in Docker Environment
+
+This example can be run within the Docker container provided by the parent project. To run this example in the Docker environment:
+
+```bash
+# Navigate to the project root
+cd /path/to/hdl-simulation-accelerated
+
+# Run the Docker container
+docker run -it -v $(pwd):/workdir/project verilator-dev /bin/bash
+
+# Inside the container, navigate to this example
+cd /workdir/project/examples/shift_register
+
+# Run the example
+make
+```
+
 ## Integration with Acceleration Framework
 
 This shift register design serves as an excellent test case for accelerating HDL simulation on AI hardware. The simple yet configurable nature of this module makes it ideal for demonstrating parallel simulation techniques and exploring the performance benefits of hardware acceleration for digital design verification.
