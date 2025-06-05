@@ -65,11 +65,17 @@ class VerilatorParser:
         """Parse all relevant files in the obj_dir"""
         try:
             self._find_module_name()
+            print(f"  Module name: {self.module_name}")
             self._parse_header_file()
+            print(f"  Found {len(self.state_variables)} state variables")
             self._parse_implementation_file()
+            print(f"  Found {len(self.reset_assignments)} reset assignments")
+            print(f"  Found {len(self.sequential_assignments)} sequential assignments")
             return True
         except Exception as e:
             print(f"Error parsing Verilator files: {e}")
+            import traceback
+            traceback.print_exc()
             return False
     
     def _find_module_name(self):
@@ -139,20 +145,20 @@ class VerilatorParser:
     
     def _extract_simulation_params(self, content: str):
         """Extract simulation parameters from Verilator source"""
-        # Look for delay values (clock period)
+        # Look for delay values (clock period) - find first delay pattern
         delay_match = re.search(r'delay\(0x([0-9A-Fa-f]+)ULL', content)
         if delay_match:
             # Convert hex to decimal and assume it's half clock period
             delay_value = int(delay_match.group(1), 16)
             self.simulation_config.clock_period_ns = delay_value * 2
         
-        # Look for reset duration
-        reset_delay_match = re.search(r'co_await.*delay\(0x([0-9A-Fa-f]+)ULL.*rst.*=.*0U', content)
+        # Look for reset duration - find delay followed by rst = 0U
+        reset_delay_match = re.search(r'delay\(0x([0-9A-Fa-f]+)ULL[^}]*rst.*=.*0U', content, re.DOTALL)
         if reset_delay_match:
             self.simulation_config.reset_duration_ns = int(reset_delay_match.group(1), 16)
         
         # Look for maximum cycles (VL_FINISH condition)
-        finish_match = re.search(r'\(0x([0-9A-Fa-f]+)U == .*\)', content)
+        finish_match = re.search(r'\(0x([0-9A-Fa-f]+)U.*==.*\)', content)
         if finish_match:
             self.simulation_config.max_cycles = int(finish_match.group(1), 16)
     
@@ -163,28 +169,43 @@ class VerilatorParser:
         in_reset_block = False
         in_else_block = False
         current_condition = None
+        brace_depth = 0
         
         for line in lines:
             line = line.strip()
+            if not line:
+                continue
             
-            # Check for reset condition
-            if re.search(r'if.*rst.*\{', line):
+            # Track brace depth
+            brace_depth += line.count('{') - line.count('}')
+            
+            # Check for reset condition - look for rst in if condition
+            if re.search(r'if\s*\([^)]*rst[^)]*\)\s*\{', line):
                 in_reset_block = True
                 continue
-            elif re.search(r'\} else \{', line):
+            elif re.search(r'\}\s*else\s*\{', line):
                 in_reset_block = False
                 in_else_block = True
                 continue
-            elif line == '}':
+            elif line.startswith('}') and brace_depth <= 0:
                 in_reset_block = False
                 in_else_block = False
                 current_condition = None
+                brace_depth = 0
                 continue
             
-            # Parse assignments
-            assignment_match = re.search(r'__Vdly__\w+__DOT__(\w+) = (.+);', line)
-            if not assignment_match:
-                assignment_match = re.search(r'vlSelfRef\.[\w__DOT__]+(\w+) = (.+);', line)
+            # Parse assignments - look for both __Vdly__ and direct assignments
+            assignment_patterns = [
+                r'__Vdly__[^=]*__DOT__(\w+)\s*=\s*(.+);',
+                r'vlSelfRef\.[^=]*__DOT__(\w+)\s*=\s*(.+);',
+                r'state->(\w+)\s*=\s*(.+);'  # In case there are direct state assignments
+            ]
+            
+            assignment_match = None
+            for pattern in assignment_patterns:
+                assignment_match = re.search(pattern, line)
+                if assignment_match:
+                    break
             
             if assignment_match:
                 target, expression = assignment_match.groups()
@@ -195,23 +216,34 @@ class VerilatorParser:
                 elif in_else_block:
                     self.sequential_assignments.append(Assignment(target, expression, current_condition))
             
-            # Check for conditional statements
-            if_match = re.search(r'if \((.*)\) \{', line)
+            # Check for conditional statements in else block
+            if_match = re.search(r'if\s*\(([^)]+)\)\s*\{', line)
             if if_match and in_else_block:
                 current_condition = self._clean_expression(if_match.group(1))
     
     def _clean_expression(self, expr: str) -> str:
         """Clean up Verilator expressions for TT-Metal"""
         # Remove Verilator-specific prefixes
-        expr = re.sub(r'vlSelfRef\.\w+__DOT__', '', expr)
-        expr = re.sub(r'__Vdly__\w+__DOT__', '', expr)
+        expr = re.sub(r'vlSelfRef\.[^.]*__DOT__', 'state->', expr)
+        expr = re.sub(r'__Vdly__[^.]*__DOT__', '', expr)
         expr = re.sub(r'\(IData\)', '', expr)
-        expr = re.sub(r'\(1U & \(~ \(IData\)\(([^)]+)\)\)\)', r'!(\1)', expr)  # Toggle pattern
-        expr = re.sub(r'\(\(IData\)\(([^)]+)\) & \(IData\)\(([^)]+)\)\)', r'(\1 && \2)', expr)  # AND pattern
+        
+        # Handle toggle patterns: (1U & (~ (IData)(signal))) -> !(signal)
+        expr = re.sub(r'\(1U\s*&\s*\(\s*~\s*\(IData\)\s*\(([^)]+)\)\s*\)\)', r'!(\1)', expr)
+        
+        # Handle AND patterns: ((IData)(a) & (IData)(b)) -> (a && b)
+        expr = re.sub(r'\(\(IData\)\s*\(([^)]+)\)\s*&\s*\(IData\)\s*\(([^)]+)\)\)', r'(\1 && \2)', expr)
+        
+        # Replace state references
+        expr = re.sub(r'vlSelfRef\.minimal_divider_sim__DOT__(\w+)', r'state->\1', expr)
+        
+        # Replace increment pattern: ((IData)(1U) + signal) -> (signal + 1)
+        expr = re.sub(r'\(\(IData\)\(1U\)\s*\+\s*([^)]+)\)', r'(\1 + 1)', expr)
         
         # Replace common patterns
         expr = expr.replace('1U', '1')
         expr = expr.replace('0U', '0')
+        expr = expr.replace('(IData)', '')
         
         return expr.strip()
     
@@ -469,9 +501,9 @@ def main():
     generator = TTMetalGenerator(verilator_parser)
     tt_metal_code = generator.generate()
     
-    # Write output
+    # Write output with proper newline
     output_path = Path(args.output)
-    output_path.write_text(tt_metal_code)
+    output_path.write_text(tt_metal_code + '\n')  # Add trailing newline
     
     print(f"Generated TT-Metal kernel: {output_path}")
     print("Conversion completed successfully!")
