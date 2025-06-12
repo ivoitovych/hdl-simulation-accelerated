@@ -86,3 +86,8 @@ Leverage a massively parallel AI accelerator for high-performance HDL simulation
 * Provide integration with standard HDL simulation languages and tools (e.g., Verilog, VHDL frontends).
 * Develop SDK/documentation for users to run their designs.
 * Benchmark and publish results vs. existing CPU/GPU simulation frameworks.
+
+---
+
+**For the concrete staged implementation plan and examples, see [TTMRTL_PLAN.md](./TTMRTL_PLAN.md).**
+

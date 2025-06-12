@@ -7,6 +7,10 @@ It is both a practical teaching environment and a foundation for research into h
 
 See [`ROADMAP.md`](./ROADMAP.md) for a detailed multi-phase development plan, ranging from simple HDL simulation examples to large-scale simulation accelerated by modern AI hardware.
 
+## 🛠️ Project Plan
+
+See [`TTMRTL_PLAN.md`](./TTMRTL_PLAN.md) for the current stepwise Jira ticket plan, examples, and stage goals.
+
 ## 🗂️ Directory Structure
 
 ```
