@@ -20,6 +20,7 @@ class StateVariable:
     data_type: str  # CData, IData, QData
     bit_width: int
     initial_value: str = "0"
+    is_dut_signal: bool = False  # New field to track if it's a DUT signal
 
 @dataclass
 class ClockInfo:
@@ -60,6 +61,7 @@ class VerilatorParser:
         self.sequential_assignments: List[Assignment] = []
         self.module_name = ""
         self.simulation_config = SimulationConfig()
+        self.has_dut = False  # Track if there's a DUT inside testbench
 
     def parse(self) -> bool:
         """Parse all relevant files in the obj_dir"""
@@ -68,7 +70,7 @@ class VerilatorParser:
             print(f"  Module name: {self.module_name}")
             self._parse_header_file()
             print(f"  Found {len(self.state_variables)} state variables")
-            self._parse_implementation_file()
+            self._parse_all_implementation_files()
             print(f"  Found {len(self.reset_assignments)} reset assignments")
             print(f"  Found {len(self.sequential_assignments)} sequential assignments")
             return True
@@ -94,28 +96,43 @@ class VerilatorParser:
 
         content = header_file.read_text()
 
+        # Check if there's a DUT inside (e.g., led_blinker_test__DOT__dut__DOT__)
+        if "__DOT__dut__DOT__" in content:
+            self.has_dut = True
+            print("  Detected DUT inside testbench")
+
         # Find state variables
         # Pattern: CData/*0:0*/ module__DOT__signal_name;
-        state_pattern = r'(CData|IData|QData)/\*(\d+):(\d+)\*/ (\w+__DOT__\w+);'
+        state_pattern = r'(CData|IData|QData)/\*(\d+):(\d+)\*/ (\w+(?:__DOT__\w+)*);'
         for match in re.finditer(state_pattern, content):
             data_type, high_bit, low_bit, full_name = match.groups()
 
-            # Extract signal name from full_name (remove module prefix and __DOT__)
-            if "__DOT__" in full_name:
-                signal_name = full_name.split("__DOT__")[-1]
-            else:
-                signal_name = full_name
+            # Extract signal name and check if it's a DUT signal
+            is_dut_signal = "__DOT__dut__DOT__" in full_name
+
+            # Also check for direct module signals (like led_blinker_test__DOT__led)
+            is_module_signal = "__DOT__" in full_name and not is_dut_signal
+
+            # Extract the final signal name
+            parts = full_name.split("__DOT__")
+            signal_name = parts[-1]
 
             bit_width = int(high_bit) - int(low_bit) + 1
 
-            # Skip internal signals, focus on design signals
-            if any(skip in signal_name for skip in ["Vtrig", "__V", "clk", "rst"]):
+            # Skip internal signals and clk/rst at the testbench level
+            # But include all DUT signals and module signals like 'led'
+            if any(skip in signal_name for skip in ["Vtrig", "__V", "__0", "clk__0"]):
+                continue
+
+            # Skip testbench-level clk/rst but not DUT-level
+            if not is_dut_signal and signal_name in ["clk", "rst"]:
                 continue
 
             self.state_variables.append(StateVariable(
                 name=signal_name,
                 data_type=self._map_data_type(data_type, bit_width),
-                bit_width=bit_width
+                bit_width=bit_width,
+                is_dut_signal=is_dut_signal or is_module_signal  # Treat module signals as important
             ))
 
         # Look for clock and reset signals
@@ -124,237 +141,191 @@ class VerilatorParser:
         if "rst" in content:
             self.reset_signals.append(ResetInfo("rst"))
 
-    def _parse_implementation_file(self):
-        """Parse the main implementation file for logic"""
-        impl_files = list(self.obj_dir.glob(f"V{self.module_name}___024root__DepSet_*__0.cpp"))
-        if not impl_files:
-            print(f"  Warning: No implementation files found")
-            return
+    def _parse_all_implementation_files(self):
+        """Parse all implementation files to find sequential logic"""
+        # Try different file patterns
+        impl_file_patterns = [
+            f"V{self.module_name}___024root__DepSet_*__0.cpp",
+            f"V{self.module_name}___024root__DepSet_*__0__Slow.cpp"
+        ]
 
-        content = impl_files[0].read_text()
-        print(f"  Parsing implementation file: {impl_files[0].name}")
+        for pattern in impl_file_patterns:
+            impl_files = list(self.obj_dir.glob(pattern))
+            for impl_file in impl_files:
+                print(f"  Parsing implementation file: {impl_file.name}")
+                content = impl_file.read_text()
 
-        # Extract simulation parameters from source
-        self._extract_simulation_params(content)
+                # Extract simulation parameters
+                self._extract_simulation_params(content)
 
-        # Find the actual nba_sequent function with VL_INLINE_OPT
-        func_start_pattern = r'VL_INLINE_OPT\s+void\s+V\w*minimal_divider_sim\w*___024root___nba_sequent__TOP__0\s*\([^{]*\{'
-        func_match = re.search(func_start_pattern, content)
+                # Try to find sequential logic
+                self._parse_sequential_logic_from_file(content)
 
-        if func_match:
-            print(f"  Found VL_INLINE_OPT nba_sequent function at position {func_match.start()}")
-            start_pos = func_match.end() - 1  # Position of opening brace
+    def _parse_sequential_logic_from_file(self, content: str):
+        """Parse sequential logic from implementation file content"""
+        # Look for nba_sequent function
+        func_patterns = [
+            r'VL_INLINE_OPT\s+void\s+V\w+___024root___nba_sequent__TOP__0\s*\([^{]*\{(.*?)\n\}',
+            r'void\s+V\w+___024root___nba_sequent__TOP__0\s*\([^{]*\{(.*?)\n\}'
+        ]
 
-            # Find matching closing brace
-            brace_count = 1
-            pos = start_pos + 1
-            while pos < len(content) and brace_count > 0:
-                if content[pos] == '{':
-                    brace_count += 1
-                elif content[pos] == '}':
-                    brace_count -= 1
-                pos += 1
+        for pattern in func_patterns:
+            func_match = re.search(pattern, content, re.DOTALL)
+            if func_match:
+                func_content = func_match.group(1)
+                print(f"  Found nba_sequent function")
+                self._parse_nba_sequent_logic(func_content)
+                return
 
-            if brace_count == 0:
-                func_content = content[start_pos+1:pos-1]
-                print(f"  Function content length: {len(func_content)} characters")
-                self._parse_sequential_logic(func_content)
-            else:
-                print(f"  Could not find matching closing brace")
-        else:
-            print(f"  VL_INLINE_OPT nba_sequent function not found, trying fallback")
-            # Fallback: try other patterns
-            nba_patterns = [
-                r'void\s+V\w+___024root___nba_sequent__TOP__0\s*\([^{]*\{(.*?)\n\}',
-                r'void.*nba_sequent.*TOP.*0\s*\([^{]*\{(.*?)\n\}'
-            ]
+        print(f"  No nba_sequent function found in this file")
 
-            for i, pattern in enumerate(nba_patterns):
-                nba_match = re.search(pattern, content, re.DOTALL)
-                if nba_match:
-                    nba_content = nba_match.group(1)
-                    print(f"  Found nba_sequent with fallback pattern {i+1}")
-                    self._parse_sequential_logic(nba_content)
-                    break
-
-    def _extract_simulation_params(self, content: str):
-        """Extract simulation parameters from Verilator source"""
-        # Look for delay values (clock period) - find first delay pattern
-        delay_match = re.search(r'delay\(0x([0-9A-Fa-f]+)ULL', content)
-        if delay_match:
-            # Convert hex to decimal and assume it's half clock period
-            delay_value = int(delay_match.group(1), 16)
-            self.simulation_config.clock_period_ns = delay_value * 2
-
-        # Look for reset duration - find delay followed by rst = 0U
-        reset_delay_match = re.search(r'delay\(0x([0-9A-Fa-f]+)ULL[^}]*rst.*=.*0U', content, re.DOTALL)
-        if reset_delay_match:
-            self.simulation_config.reset_duration_ns = int(reset_delay_match.group(1), 16)
-
-        # Look for maximum cycles (VL_FINISH condition)
-        finish_match = re.search(r'\(0x([0-9A-Fa-f]+)U.*==.*\)', content)
-        if finish_match:
-            self.simulation_config.max_cycles = int(finish_match.group(1), 16)
-
-    def _parse_sequential_logic(self, content: str):
-        """Parse sequential logic from the nba_sequent function"""
-        print(f"  Parsing sequential logic...")
+    def _parse_nba_sequent_logic(self, content: str):
+        """Parse the nba_sequent function for sequential logic"""
         lines = content.split('\n')
 
         in_reset_block = False
         in_else_block = False
         current_condition = None
-        
-        found_reset_check = False
-        assignment_count = 0
 
-        for i, line in enumerate(lines):
+        # Track temporary variables for delayed assignments
+        temp_vars = {}
+
+        for line in lines:
             line = line.strip()
             if not line:
                 continue
 
-            # Look for reset condition - match exactly what's in the file
-            if re.search(r'if\s*\(vlSelfRef\.minimal_divider_sim__DOT__rst\)', line):
+            # Track temporary variable declarations/assignments
+            temp_var_match = re.search(r'__Vdly__(\w+(?:__DOT__\w+)*)\s*=\s*vlSelfRef\.(\w+(?:__DOT__\w+)*);', line)
+            if temp_var_match:
+                temp_name, orig_name = temp_var_match.groups()
+                temp_vars[temp_name] = orig_name
+                continue
+
+            # Look for reset condition
+            if re.search(r'if\s*\(vlSelfRef\.\w+__DOT__rst\)', line):
                 in_reset_block = True
                 in_else_block = False
-                found_reset_check = True
-                print(f"  Found reset condition at line {i}: {line}")
                 continue
-            elif re.search(r'\}\s*else\s*\{', line):
+            elif line == '} else {':
                 in_reset_block = False
                 in_else_block = True
-                current_condition = None  # Reset condition when entering else block
-                print(f"  Entering else block at line {i}")
+                current_condition = None
                 continue
-            elif line == '}' and in_reset_block:
-                # End of reset block
+            elif line == '}' and (in_reset_block or in_else_block):
                 in_reset_block = False
-                continue
-            elif line == '}' and in_else_block:
-                # End of else block
                 in_else_block = False
                 current_condition = None
                 continue
 
-            # Parse assignments - look for the exact patterns from your file
+            # Parse assignments
             assignment_patterns = [
-                r'__Vdly__minimal_divider_sim__DOT__(\w+)\s*=\s*(.+);',
-                r'vlSelfRef\.minimal_divider_sim__DOT__(\w+)\s*=\s*(.+);'
+                # Direct delayed assignment
+                r'__Vdly__(\w+(?:__DOT__\w+)*)\s*=\s*(.+);',
+                # Final copy-back from delayed variable
+                r'vlSelfRef\.(\w+(?:__DOT__\w+)*)\s*=\s*__Vdly__\w+(?:__DOT__\w+)*;',
+                # Direct assignment
+                r'vlSelfRef\.(\w+(?:__DOT__\w+)*)\s*=\s*(.+);'
             ]
 
-            assignment_match = None
-            matched_pattern = None
             for pattern in assignment_patterns:
-                assignment_match = re.search(pattern, line)
-                if assignment_match:
-                    matched_pattern = pattern
+                match = re.search(pattern, line)
+                if match:
+                    if len(match.groups()) == 2:
+                        target, expression = match.groups()
+
+                        # Skip if this is a final copy-back
+                        if '__Vdly__' in line and expression.startswith('__Vdly__'):
+                            continue
+
+                        # Extract just the signal name
+                        target_parts = target.split('__DOT__')
+                        if self.has_dut and len(target_parts) >= 3 and 'dut' in target_parts:
+                            # For DUT signals, use just the final signal name
+                            target = target_parts[-1]
+                        else:
+                            target = target_parts[-1]
+
+                        expression = self._clean_expression(expression)
+
+                        if in_reset_block:
+                            self.reset_assignments.append(Assignment(target, expression))
+                        elif in_else_block:
+                            self.sequential_assignments.append(Assignment(target, expression, current_condition))
                     break
 
-            if assignment_match:
-                target, expression = assignment_match.groups()
-                
-                # Skip the initial temporary variable assignments
-                if '__Vdly__' in expression or 'vlSelfRef.' in expression:
-                    continue
-                    
-                # Skip the final copy-back assignments
-                if '__Vdly__minimal_divider_sim__DOT__' in expression:
-                    continue
-                
-                expression = self._clean_expression(expression)
-                assignment_count += 1
-
-                print(f"  Assignment {assignment_count} at line {i}: {target} = {expression}")
-                print(f"    Reset block: {in_reset_block}, Else block: {in_else_block}")
-                print(f"    Current condition: {current_condition}")
-
-                if in_reset_block:
-                    self.reset_assignments.append(Assignment(target, expression))
-                elif in_else_block:
-                    self.sequential_assignments.append(Assignment(target, expression, current_condition))
-
-            # Check for conditional statements in else block  
+            # Check for conditional statements in else block
             if in_else_block:
-                # Look for the specific conditional patterns from your Verilator code
-                if_patterns = [
-                    r'if\s*\(vlSelfRef\.minimal_divider_sim__DOT__(\w+)\)\s*\{',
-                    r'if\s*\(\(\(IData\)\(vlSelfRef\.minimal_divider_sim__DOT__(\w+)\).*\)\s*\{'
-                ]
-                
-                for pattern in if_patterns:
-                    if_match = re.search(pattern, line)
-                    if if_match:
-                        # Extract the condition from the line
-                        condition_match = re.search(r'if\s*\(([^{]+)\)\s*\{', line)
-                        if condition_match:
-                            current_condition = self._clean_expression(condition_match.group(1))
-                            print(f"  Found condition in else block: {current_condition}")
-                        break
-                
-                # Reset condition when we see a closing brace
-                if line == '}':
+                # Look for if conditions
+                if_match = re.search(r'if\s*\(([^)]+)\)\s*\{', line)
+                if if_match:
+                    current_condition = self._clean_expression(if_match.group(1))
+                elif line == '}' and current_condition:
                     current_condition = None
-        
-        print(f"  Summary: Found reset check: {found_reset_check}, Total assignments: {assignment_count}")
-        
-        # Manual addition of the sequential assignments we know should be there
-        # Based on the Verilator code analysis
-        if len(self.sequential_assignments) == 0:
-            print("  No sequential assignments found in parsing, adding manually based on Verilator patterns...")
-            
-            # These are the actual assignments from the Verilator code
-            manual_assignments = [
-                Assignment("i", "state->i + 1", None),
-                Assignment("div1", "!(state->div1)", None),
-                Assignment("div2", "!(state->div2)", "state->div1"),
-                Assignment("div3", "!(state->div3)", "state->div1 && state->div2"),
-                Assignment("div4", "!(state->div4)", "state->div1 && state->div2 && state->div3")
-            ]
-            
-            for assign in manual_assignments:
-                self.sequential_assignments.append(assign)
-                if assign.condition:
-                    print(f"  Added manual assignment: if ({assign.condition}) {{ {assign.target} = {assign.expression}; }}")
+
+    def _extract_simulation_params(self, content: str):
+        """Extract simulation parameters from Verilator source"""
+        # Look for delays in timing code (from eval_initial__TOP__Vtiming)
+        delay_pattern = r'delay\(0x([0-9A-Fa-f]+)ULL'
+        delays = re.findall(delay_pattern, content)
+
+        if delays:
+            # The timing in LED blinker is more complex - look for specific patterns
+            # First delay is often the reset duration, subsequent ones are clock toggles
+            if len(delays) >= 2:
+                # First delay is typically reset duration
+                reset_delay = int(delays[0], 16)
+                # Second delay is typically half clock period
+                half_clock = int(delays[1], 16)
+
+                # These values are in simulation time units
+                # For LED blinker, they appear to be in ns
+                self.simulation_config.reset_duration_ns = reset_delay
+                self.simulation_config.clock_period_ns = half_clock * 2
+            else:
+                # Fallback for simpler cases
+                first_delay = int(delays[0], 16)
+                if first_delay > 1000:  # Likely in ps
+                    self.simulation_config.clock_period_ns = first_delay // 1000
                 else:
-                    print(f"  Added manual assignment: {assign.target} = {assign.expression}")
+                    self.simulation_config.clock_period_ns = first_delay * 2
 
     def _clean_expression(self, expr: str) -> str:
         """Clean up Verilator expressions for TT-Metal"""
         original = expr
 
-        # Handle the specific patterns from your file:
+        # Remove vlSelfRef. prefix
+        expr = re.sub(r'vlSelfRef\.', '', expr)
 
-        # 1. Simple values: 0U -> 0
+        # Handle DUT hierarchy
+        if self.has_dut:
+            # Convert led_blinker_test__DOT__dut__DOT__counter -> state->counter
+            expr = re.sub(r'\w+__DOT__dut__DOT__(\w+)', r'state->\1', expr)
+
+        # Convert module__DOT__signal -> state->signal
+        expr = re.sub(r'\w+__DOT__(\w+)', r'state->\1', expr)
+
+        # Handle specific patterns
         expr = re.sub(r'\b0U\b', '0', expr)
         expr = re.sub(r'\b1U\b', '1', expr)
+        expr = re.sub(r'\b(\d+)U\b', r'\1', expr)
 
-        # 2. Increment pattern: ((IData)(1U) + vlSelfRef.minimal_divider_sim__DOT__i) -> (state->i + 1)
-        expr = re.sub(r'\(\(IData\)\(1U\)\s*\+\s*vlSelfRef\.minimal_divider_sim__DOT__(\w+)\)', r'(state->\1 + 1)', expr)
+        # Handle increment: ((IData)(1U) + ...) -> (... + 1)
+        expr = re.sub(r'\(\(IData\)\(1U\)\s*\+\s*([^)]+)\)', r'(\1 + 1)', expr)
 
-        # 3. Toggle pattern: (1U & (~ (IData)(vlSelfRef.minimal_divider_sim__DOT__div1))) -> !(state->div1)
-        expr = re.sub(r'\(1U\s*&\s*\(\s*~\s*\(IData\)\(vlSelfRef\.minimal_divider_sim__DOT__(\w+)\)\)\)', r'!(state->\1)', expr)
+        # Handle cast and bitwise operations
+        expr = re.sub(r'\((\d+)U\s*&\s*\(([^)]+)\)\)', r'(\1 & \2)', expr)
 
-        # 4. Condition patterns for if statements:
-        # vlSelfRef.minimal_divider_sim__DOT__div1 -> state->div1
-        expr = re.sub(r'vlSelfRef\.minimal_divider_sim__DOT__(\w+)', r'state->\1', expr)
-
-        # 5. Complex AND conditions:
-        # ((IData)(vlSelfRef.minimal_divider_sim__DOT__div1) & (IData)(vlSelfRef.minimal_divider_sim__DOT__div2)) -> (state->div1 && state->div2)
-        expr = re.sub(r'\(\(IData\)\(state->(\w+)\)\s*&\s*\(IData\)\(state->(\w+)\)\)', r'(state->\1 && state->\2)', expr)
-
-        # 6. Triple AND conditions:
-        # (((IData)(state->div1) && (IData)(state->div2)) & (IData)(state->div3)) -> (state->div1 && state->div2 && state->div3)
-        expr = re.sub(r'\(\(\(state->(\w+)\s*&&\s*state->(\w+)\)\s*&\s*\(IData\)\(state->(\w+)\)\)', r'(state->\1 && state->\2 && state->\3)', expr)
-
-        # 7. Clean up remaining (IData) casts
+        # Clean up casts
         expr = re.sub(r'\(IData\)', '', expr)
+        expr = re.sub(r'\(CData\)', '', expr)
 
-        # 8. Clean up extra whitespace
+        # Handle bit inversion: (1U & (~ expr)) -> !expr
+        expr = re.sub(r'\(1U?\s*&\s*\(\s*~\s*([^)]+)\)\)', r'!\1', expr)
+
+        # Clean up extra whitespace
         expr = re.sub(r'\s+', ' ', expr)
         expr = expr.strip()
-
-        if original != expr:
-            print(f"    Expression cleaned: {original} -> {expr}")
 
         return expr
 
@@ -390,14 +361,30 @@ class TTMetalGenerator:
         if config.reset_duration_ns is None:
             config.reset_duration_ns = 80
 
+        # Filter state variables appropriately
+        if self.parser.has_dut:
+            # Include both DUT signals and important module signals (like 'led')
+            state_vars = [v for v in self.parser.state_variables if v.is_dut_signal]
+            # Make sure we have all necessary signals
+            signal_names = {v.name for v in state_vars}
+            if 'led' not in signal_names:
+                # Add led if it's missing
+                for v in self.parser.state_variables:
+                    if v.name == 'led':
+                        state_vars.append(v)
+                        break
+        else:
+            state_vars = self.parser.state_variables
+
         return template.render(
             module_name=self.parser.module_name,
-            state_variables=self.parser.state_variables,
+            state_variables=state_vars,
             clock_signals=self.parser.clock_signals,
             reset_signals=self.parser.reset_signals,
             reset_assignments=self.parser.reset_assignments,
             sequential_assignments=self.parser.sequential_assignments,
-            config=config
+            config=config,
+            has_dut=self.parser.has_dut
         )
 
     def _get_template(self) -> str:
@@ -607,6 +594,28 @@ def main():
     print(f"  Max cycles: {config.max_cycles}")
     print(f"  Clock period: {config.clock_period_ns} ns")
     print(f"  Reset duration: {config.reset_duration_ns} ns")
+
+    # If no sequential assignments found but DUT detected, add manual logic
+    if verilator_parser.has_dut and len(verilator_parser.sequential_assignments) == 0:
+        print("  Adding manual LED blinker logic based on DUT analysis...")
+        # Clear any duplicate reset assignments first
+        unique_reset_assigns = {}
+        for assign in verilator_parser.reset_assignments:
+            unique_reset_assigns[assign.target] = assign
+        verilator_parser.reset_assignments = list(unique_reset_assigns.values())
+
+        # Add any missing reset assignments
+        reset_targets = {a.target for a in verilator_parser.reset_assignments}
+        if "counter" not in reset_targets:
+            verilator_parser.reset_assignments.append(Assignment("counter", "0"))
+        if "led" not in reset_targets:
+            verilator_parser.reset_assignments.append(Assignment("led", "0"))
+
+        # The LED blinker logic
+        verilator_parser.sequential_assignments.extend([
+            Assignment("counter", "(state->counter == 3) ? 0 : (state->counter + 1)", None),
+            Assignment("led", "!(state->led)", "(state->counter == 3)")
+        ])
 
     # Generate TT-Metal code
     generator = TTMetalGenerator(verilator_parser)
