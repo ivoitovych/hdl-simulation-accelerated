@@ -13,20 +13,18 @@ module pwm_generator #(
     output reg pwm_out                // PWM output signal
 );
 
-    // Clock divider counter
-    reg [$clog2(CLK_DIV)-1:0] clk_div_counter;
-    wire pwm_clk_en;
-    
     // PWM counter
     reg [WIDTH-1:0] pwm_counter;
     
+    // Clock divider logic
+    reg [$clog2(CLK_DIV+1)-1:0] clk_div_counter;
+    wire pwm_clk_en;
+    
     // Generate divided clock enable signal
     generate
-        if (CLK_DIV == 1) begin
+        if (CLK_DIV == 1) begin : gen_no_div
             assign pwm_clk_en = 1'b1;
-        end else begin
-            assign pwm_clk_en = (clk_div_counter == 0);
-            
+        end else begin : gen_div
             always @(posedge clk or negedge rst_n) begin
                 if (!rst_n) begin
                     clk_div_counter <= 0;
@@ -37,6 +35,7 @@ module pwm_generator #(
                         clk_div_counter <= clk_div_counter + 1'b1;
                 end
             end
+            assign pwm_clk_en = (clk_div_counter == 0);
         end
     endgenerate
     

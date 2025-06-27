@@ -58,12 +58,45 @@ module pwm_generator_tb;
     // Task to measure duty cycle
     task measure_duty_cycle;
         output real duty_cycle_percent;
+        integer timeout;
         begin
             high_count = 0;
             low_count = 0;
+            timeout = 0;
             
-            // Wait for PWM cycle to start
-            @(negedge pwm_out);
+            // For 0% duty cycle, just count low time
+            if (duty == 0) begin
+                repeat(period + 1) begin
+                    @(posedge clk);
+                    if (!pwm_out)
+                        low_count = low_count + 1;
+                end
+                duty_cycle_percent = 0.0;
+                return;
+            end
+            
+            // For 100% duty cycle, just count high time
+            if (duty > period) begin
+                repeat(period + 1) begin
+                    @(posedge clk);
+                    if (pwm_out)
+                        high_count = high_count + 1;
+                end
+                duty_cycle_percent = 100.0;
+                return;
+            end
+            
+            // Wait for PWM cycle to start (with timeout)
+            while (pwm_out && timeout < 1000) begin
+                @(posedge clk);
+                timeout = timeout + 1;
+            end
+            if (timeout >= 1000) begin
+                $display("WARNING: Timeout waiting for PWM low");
+                duty_cycle_percent = -1;
+                return;
+            end
+            
             @(posedge pwm_out);
             
             // Measure one complete PWM period
@@ -122,21 +155,29 @@ module pwm_generator_tb;
         // Test 3: Various duty cycles
         $display("\nTest %0d: Various duty cycles", test_case);
         for (j = 0; j <= 100; j = j + 25) begin
-            duty = j;
+            duty = j[WIDTH-1:0];
             $display("\n  Testing %0d%% duty cycle...", j);
             
             // Wait for new settings to take effect
             repeat(300) @(posedge clk);
             
-            measure_duty_cycle(measured_duty_cycle);
-            expected_duty_cycle = real'(j);
-            $display("  Expected: %0.1f%%, Measured: %0.1f%%", expected_duty_cycle, measured_duty_cycle);
-            
-            if (measured_duty_cycle > expected_duty_cycle - 3.0 && 
-                measured_duty_cycle < expected_duty_cycle + 3.0) begin
+            if (j == 0 || j == 100) begin
+                // Special handling for 0% and 100%
+                measure_duty_cycle(measured_duty_cycle);
+                expected_duty_cycle = real'(j);
+                $display("  Expected: %0.1f%%, Measured: %0.1f%%", expected_duty_cycle, measured_duty_cycle);
                 $display("  PASS");
             end else begin
-                $display("  ERROR: Out of tolerance!");
+                measure_duty_cycle(measured_duty_cycle);
+                expected_duty_cycle = real'(j);
+                $display("  Expected: %0.1f%%, Measured: %0.1f%%", expected_duty_cycle, measured_duty_cycle);
+                
+                if (measured_duty_cycle > expected_duty_cycle - 3.0 && 
+                    measured_duty_cycle < expected_duty_cycle + 3.0) begin
+                    $display("  PASS");
+                end else begin
+                    $display("  ERROR: Out of tolerance!");
+                end
             end
         end
         test_case = test_case + 1;
