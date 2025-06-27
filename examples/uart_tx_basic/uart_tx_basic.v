@@ -15,6 +15,7 @@ module uart_tx_basic #(
 
     // Calculate clock divider for baud rate
     localparam CLKS_PER_BIT = CLK_FREQ / BAUD_RATE;
+    localparam COUNTER_WIDTH = $clog2(CLKS_PER_BIT);
     
     // State machine states
     localparam IDLE       = 3'b000;
@@ -24,12 +25,12 @@ module uart_tx_basic #(
     
     // Registers
     reg [2:0] state;
-    reg [$clog2(CLKS_PER_BIT)-1:0] clk_counter;
+    reg [COUNTER_WIDTH-1:0] clk_counter;
     reg [2:0] bit_index;
     reg [7:0] data_reg;
     
     // Baud rate clock enable
-    wire baud_clk_en = (clk_counter == CLKS_PER_BIT - 1);
+    wire baud_clk_en = (clk_counter == CLKS_PER_BIT[COUNTER_WIDTH-1:0] - 1'b1);
     
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -62,7 +63,7 @@ module uart_tx_basic #(
                         clk_counter <= 0;
                         state <= DATA_BITS;
                     end else begin
-                        clk_counter <= clk_counter + 1;
+                        clk_counter <= clk_counter + 1'b1;
                     end
                 end
                 
@@ -76,10 +77,10 @@ module uart_tx_basic #(
                             bit_index <= 0;
                             state <= STOP_BIT;
                         end else begin
-                            bit_index <= bit_index + 1;
+                            bit_index <= bit_index + 1'b1;
                         end
                     end else begin
-                        clk_counter <= clk_counter + 1;
+                        clk_counter <= clk_counter + 1'b1;
                     end
                 end
                 
@@ -91,7 +92,7 @@ module uart_tx_basic #(
                         state <= IDLE;
                         busy <= 1'b0;
                     end else begin
-                        clk_counter <= clk_counter + 1;
+                        clk_counter <= clk_counter + 1'b1;
                     end
                 end
                 
