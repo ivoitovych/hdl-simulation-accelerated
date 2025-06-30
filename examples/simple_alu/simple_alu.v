@@ -45,6 +45,7 @@ module simple_alu #(
     wire [WIDTH-1:0] shl_result;
     wire [WIDTH-1:0] shr_result;
     wire [WIDTH-1:0] mul_result;
+    wire [2*WIDTH-1:0] mul_full;  // Full multiplication result
     
     // Compute results combinationally
     assign add_result = {1'b0, a} + {1'b0, b};
@@ -56,6 +57,7 @@ module simple_alu #(
     assign shl_result = a << 1;
     assign shr_result = a >> 1;
     assign mul_result = a * b;
+    assign mul_full = a * b;  // Full width multiplication
     
     // Detect rising edge of execute
     always @(posedge clk or negedge rst_n) begin
@@ -168,7 +170,7 @@ module simple_alu #(
                     MUL: begin
                         result <= mul_result;
                         flags[FLAG_CARRY] <= 0;
-                        flags[FLAG_OVF] <= |((a * b) >> WIDTH);
+                        flags[FLAG_OVF] <= |mul_full[2*WIDTH-1:WIDTH];  // Check upper bits
                         flags[FLAG_ZERO] <= (mul_result == 0);
                         flags[FLAG_NEG] <= mul_result[WIDTH-1];
                         done <= 1;
