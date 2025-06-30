@@ -17,11 +17,13 @@ module simple_alu_tb;
     wire [3:0] flags;
     wire done;
     
-    // Flag indices
+    // Flag indices (kept for documentation)
+    /* verilator lint_off UNUSEDPARAM */
     localparam FLAG_ZERO = 3;
     localparam FLAG_NEG  = 2;
     localparam FLAG_CARRY = 1;
     localparam FLAG_OVF  = 0;
+    /* verilator lint_on UNUSEDPARAM */
     
     // Opcodes
     localparam ADD  = 4'b0000;
@@ -38,8 +40,10 @@ module simple_alu_tb;
     // Test variables
     integer test_count;
     integer error_count;
+    /* verilator lint_off UNUSEDSIGNAL */
     reg [WIDTH-1:0] expected_result;
     reg [3:0] expected_flags;
+    /* verilator lint_on UNUSEDSIGNAL */
     
     // Instantiate DUT
     simple_alu #(
@@ -82,6 +86,7 @@ module simple_alu_tb;
         input [WIDTH-1:0] op_a;
         input [WIDTH-1:0] op_b;
         input [3:0] op_code;
+        integer timeout;
         begin
             a = op_a;
             b = op_b;
@@ -90,7 +95,21 @@ module simple_alu_tb;
             execute = 1;
             @(posedge clk);
             execute = 0;
-            @(posedge done);
+            
+            // Wait for done to go high (not edge, just level)
+            timeout = 0;
+            while (!done && timeout < 10) begin
+                @(posedge clk);
+                timeout = timeout + 1;
+            end
+            
+            if (timeout >= 10) begin
+                $display("ERROR: Timeout waiting for done signal!");
+                $display("  Operation: %0d, A=%h, B=%h", op_code, op_a, op_b);
+                $display("  Current state: result=%h, flags=%b, done=%b", result, flags, done);
+                $finish;
+            end
+            
             @(posedge clk);
         end
     endtask
@@ -127,6 +146,9 @@ module simple_alu_tb;
         
         // Reset
         reset_dut();
+        
+        // Debug: Check initial state
+        $display("After reset: result=%h, flags=%b, done=%b", result, flags, done);
         
         // Test ADD operations
         $display("\nTesting ADD operations:");

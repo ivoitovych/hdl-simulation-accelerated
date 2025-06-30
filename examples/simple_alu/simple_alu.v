@@ -34,9 +34,28 @@ module simple_alu #(
     localparam FLAG_OVF  = 0;
     
     // Internal signals
-    reg [WIDTH:0] temp_result;  // Extra bit for carry
     reg execute_prev;
     wire execute_edge;
+    wire [WIDTH:0] add_result;
+    wire [WIDTH:0] sub_result;
+    wire [WIDTH-1:0] and_result;
+    wire [WIDTH-1:0] or_result;
+    wire [WIDTH-1:0] xor_result;
+    wire [WIDTH-1:0] not_result;
+    wire [WIDTH-1:0] shl_result;
+    wire [WIDTH-1:0] shr_result;
+    wire [WIDTH-1:0] mul_result;
+    
+    // Compute results combinationally
+    assign add_result = {1'b0, a} + {1'b0, b};
+    assign sub_result = {1'b0, a} - {1'b0, b};
+    assign and_result = a & b;
+    assign or_result = a | b;
+    assign xor_result = a ^ b;
+    assign not_result = ~a;
+    assign shl_result = a << 1;
+    assign shr_result = a >> 1;
+    assign mul_result = a * b;
     
     // Detect rising edge of execute
     always @(posedge clk or negedge rst_n) begin
@@ -54,7 +73,6 @@ module simple_alu #(
             result <= 0;
             flags <= 0;
             done <= 0;
-            temp_result <= 0;
         end else begin
             // Clear done after one cycle
             if (done)
@@ -64,88 +82,104 @@ module simple_alu #(
             if (execute_edge) begin
                 case (opcode)
                     ADD: begin
-                        temp_result = {1'b0, a} + {1'b0, b};
-                        result <= temp_result[WIDTH-1:0];
-                        flags[FLAG_CARRY] <= temp_result[WIDTH];
+                        result <= add_result[WIDTH-1:0];
+                        flags[FLAG_CARRY] <= add_result[WIDTH];
                         flags[FLAG_OVF] <= (a[WIDTH-1] == b[WIDTH-1]) && 
-                                          (result[WIDTH-1] != a[WIDTH-1]);
+                                          (add_result[WIDTH-1] != a[WIDTH-1]);
+                        flags[FLAG_ZERO] <= (add_result[WIDTH-1:0] == 0);
+                        flags[FLAG_NEG] <= add_result[WIDTH-1];
+                        done <= 1;
                     end
                     
                     SUB: begin
-                        temp_result = {1'b0, a} - {1'b0, b};
-                        result <= temp_result[WIDTH-1:0];
-                        flags[FLAG_CARRY] <= temp_result[WIDTH];
+                        result <= sub_result[WIDTH-1:0];
+                        flags[FLAG_CARRY] <= sub_result[WIDTH];
                         flags[FLAG_OVF] <= (a[WIDTH-1] != b[WIDTH-1]) && 
-                                          (result[WIDTH-1] != a[WIDTH-1]);
+                                          (sub_result[WIDTH-1] != a[WIDTH-1]);
+                        flags[FLAG_ZERO] <= (sub_result[WIDTH-1:0] == 0);
+                        flags[FLAG_NEG] <= sub_result[WIDTH-1];
+                        done <= 1;
                     end
                     
                     AND: begin
-                        result <= a & b;
+                        result <= and_result;
                         flags[FLAG_CARRY] <= 0;
                         flags[FLAG_OVF] <= 0;
+                        flags[FLAG_ZERO] <= (and_result == 0);
+                        flags[FLAG_NEG] <= and_result[WIDTH-1];
+                        done <= 1;
                     end
                     
                     OR: begin
-                        result <= a | b;
+                        result <= or_result;
                         flags[FLAG_CARRY] <= 0;
                         flags[FLAG_OVF] <= 0;
+                        flags[FLAG_ZERO] <= (or_result == 0);
+                        flags[FLAG_NEG] <= or_result[WIDTH-1];
+                        done <= 1;
                     end
                     
                     XOR: begin
-                        result <= a ^ b;
+                        result <= xor_result;
                         flags[FLAG_CARRY] <= 0;
                         flags[FLAG_OVF] <= 0;
+                        flags[FLAG_ZERO] <= (xor_result == 0);
+                        flags[FLAG_NEG] <= xor_result[WIDTH-1];
+                        done <= 1;
                     end
                     
                     NOT: begin
-                        result <= ~a;
+                        result <= not_result;
                         flags[FLAG_CARRY] <= 0;
                         flags[FLAG_OVF] <= 0;
+                        flags[FLAG_ZERO] <= (not_result == 0);
+                        flags[FLAG_NEG] <= not_result[WIDTH-1];
+                        done <= 1;
                     end
                     
                     SHL: begin
-                        result <= a << 1;
+                        result <= shl_result;
                         flags[FLAG_CARRY] <= a[WIDTH-1];
                         flags[FLAG_OVF] <= 0;
+                        flags[FLAG_ZERO] <= (shl_result == 0);
+                        flags[FLAG_NEG] <= shl_result[WIDTH-1];
+                        done <= 1;
                     end
                     
                     SHR: begin
-                        result <= a >> 1;
+                        result <= shr_result;
                         flags[FLAG_CARRY] <= a[0];
                         flags[FLAG_OVF] <= 0;
+                        flags[FLAG_ZERO] <= (shr_result == 0);
+                        flags[FLAG_NEG] <= shr_result[WIDTH-1];
+                        done <= 1;
                     end
                     
                     CMP: begin
-                        temp_result = {1'b0, a} - {1'b0, b};
                         result <= result;  // Don't change result
-                        flags[FLAG_CARRY] <= temp_result[WIDTH];
+                        flags[FLAG_CARRY] <= sub_result[WIDTH];
                         flags[FLAG_OVF] <= (a[WIDTH-1] != b[WIDTH-1]) && 
-                                          (temp_result[WIDTH-1] != a[WIDTH-1]);
-                        // Update zero and negative based on comparison
+                                          (sub_result[WIDTH-1] != a[WIDTH-1]);
                         flags[FLAG_ZERO] <= (a == b);
-                        flags[FLAG_NEG] <= temp_result[WIDTH-1];
+                        flags[FLAG_NEG] <= sub_result[WIDTH-1];
                         done <= 1;
-                        // Early return to avoid overwriting flags
                     end
                     
                     MUL: begin
-                        result <= a * b;  // Truncated to WIDTH bits
+                        result <= mul_result;
                         flags[FLAG_CARRY] <= 0;
-                        flags[FLAG_OVF] <= |(a * b >> WIDTH);  // Overflow if upper bits non-zero
+                        flags[FLAG_OVF] <= |((a * b) >> WIDTH);
+                        flags[FLAG_ZERO] <= (mul_result == 0);
+                        flags[FLAG_NEG] <= mul_result[WIDTH-1];
+                        done <= 1;
                     end
                     
                     default: begin
                         result <= 0;
                         flags <= 0;
+                        done <= 1;
                     end
                 endcase
-                
-                // Update zero and negative flags for non-compare operations
-                if (opcode != CMP) begin
-                    flags[FLAG_ZERO] <= (result == 0);
-                    flags[FLAG_NEG] <= result[WIDTH-1];
-                    done <= 1;
-                end
             end
         end
     end
