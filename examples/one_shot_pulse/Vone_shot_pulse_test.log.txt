@@ -1,0 +1,35 @@
+-Info: one_shot_pulse.v:87: $dumpvar ignored, as Verilated without --trace
+Time(ns)  Enable  Pulse
+   30000     1      0
+   40000     1      0
+   50000     1      0
+   60000     1      0
+   70000     1      0
+   80000     1      1
+   90000     1      1
+  100000     1      0
+  110000     1      0
+  120000     1      0
+  130000     0      0
+  140000     0      0
+  150000     1      0
+  160000     1      0
+  170000     1      0
+  180000     1      0
+  190000     1      0
+  200000     1      1
+  210000     1      1
+  220000     1      0
+  230000     1      0
+  240000     1      0
+  250000     1      0
+  260000     1      0
+  270000     1      0
+  280000     1      0
+  290000     1      0
+
+Simulation complete!
+- one_shot_pulse.v:126: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.037 devel
+- Verilator: $finish at 290ns; walltime 0.001 s; speed 258.513 us/s
+- Verilator: cpu 0.001 s on 1 threads; alloced 57 MB

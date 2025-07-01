@@ -1,0 +1,33 @@
+UART TX Basic Testbench
+======================
+Clock frequency:    50000000 Hz
+Baud rate:      115200
+Bit period:        8680 ns
+
+Test 0: Sending 0x55
+PASS: Received 0x55
+
+Test 1: Sending 0xAA
+PASS: Received 0xaa
+
+Test 2: Sending ASCII 'Hello'
+  Sent: 'H' (0x48), Received: 'H' (0x48)
+  Sent: 'e' (0x65), Received: 'e' (0x65)
+  Sent: 'l' (0x6c), Received: 'l' (0x6c)
+  Sent: 'l' (0x6c), Received: 'l' (0x6c)
+  Sent: 'o' (0x6f), Received: 'o' (0x6f)
+
+Test 3: Back-to-back bytes
+
+Test 4: Checking idle state
+PASS: TX is high in idle state
+PASS: Busy is low in idle state
+
+======================
+Tests completed: 5
+======================
+
+- uart_tx_basic_tb.v:197: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.037 devel
+- Verilator: $finish at 886us; walltime 0.058 s; speed 16.053 ms/s
+- Verilator: cpu 0.055 s on 1 threads; alloced 57 MB

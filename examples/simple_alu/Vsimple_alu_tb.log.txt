@@ -1,0 +1,48 @@
+Starting Simple ALU Testbench
+=============================
+After reset: result=00, flags=0000, done=0
+
+Testing ADD operations:
+PASS: ADD 5+3 - A=05, B=03, Result=08, Flags=0000
+PASS: ADD FF+1 (carry) - A=ff, B=01, Result=00, Flags=1010
+PASS: ADD 7F+1 (overflow) - A=7f, B=01, Result=80, Flags=0101
+
+Testing SUB operations:
+PASS: SUB 8-3 - A=08, B=03, Result=05, Flags=0000
+PASS: SUB 3-8 (negative) - A=03, B=08, Result=fb, Flags=0110
+PASS: SUB 0-1 (borrow) - A=00, B=01, Result=ff, Flags=0110
+
+Testing logical operations:
+PASS: AND F0&0F - A=f0, B=0f, Result=00, Flags=1000
+PASS: OR F0|0F - A=f0, B=0f, Result=ff, Flags=0100
+PASS: XOR AA^55 - A=aa, B=55, Result=ff, Flags=0100
+PASS: NOT ~55 - A=55, B=00, Result=aa, Flags=0100
+
+Testing shift operations:
+PASS: SHL 81<<1 - A=81, B=00, Result=02, Flags=0010
+PASS: SHR 81>>1 - A=81, B=00, Result=40, Flags=0010
+
+Testing compare operations:
+PASS: CMP 5==5 - A=05, B=05, Result=40, Flags=1000
+PASS: CMP 5<8 - A=05, B=08, Result=40, Flags=0110
+PASS: CMP 8>5 - A=08, B=05, Result=40, Flags=0000
+
+Testing multiply operations:
+PASS: MUL 4*5 - A=04, B=05, Result=14, Flags=0000
+PASS: MUL 16*16 (overflow) - A=10, B=10, Result=00, Flags=1001
+
+Testing edge cases:
+PASS: ADD 0+0 - A=00, B=00, Result=00, Flags=1000
+PASS: AND FF&FF - A=ff, B=ff, Result=ff, Flags=0100
+
+=============================
+Test Summary:
+Total tests: 19
+Errors: 0
+All tests PASSED!
+=============================
+
+- simple_alu_tb.v:235: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.037 devel
+- Verilator: $finish at 600ns; walltime 0.001 s; speed 417.188 us/s
+- Verilator: cpu 0.001 s on 1 threads; alloced 57 MB

@@ -1,0 +1,12 @@
+Starting CRC-32 Generator Testbench
+Test case 0 passed! CRC: cbf43926
+Test case 1 passed! CRC: 2144df1c
+Test case 2 passed! CRC: ffffffff
+Test case 3 passed! CRC: 6b2dc0bd
+Test case 4 passed! CRC: b596e05e
+Test case 5 passed! CRC: e0631a53
+All 6 test cases PASSED
+- serial_crc32_generator_tb.v:223: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.037 devel
+- Verilator: $finish at 3us; walltime 0.002 s; speed 1.636 ms/s
+- Verilator: cpu 0.002 s on 1 threads; alloced 57 MB

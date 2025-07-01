@@ -1,0 +1,39 @@
+Time(ns)  Count  Overflow  Underflow  Enable  Load
+   20000     1       0         0        1     0
+   30000     2       0         0        1     0
+   40000     3       0         0        1     0
+   50000     4       0         0        1     0
+   60000     5       0         0        1     0
+   70000     6       0         0        1     0
+   80000     7       0         0        1     0
+   90000     8       0         0        1     0
+  100000     9       0         0        1     0
+  110000    10       0         0        1     0
+  120000   253       0         0        0     1
+  130000   254       0         0        1     0
+  140000   255       1         0        1     0
+  150000     0       0         1        1     0
+  160000     1       0         0        1     0
+  170000     2       0         0        1     0
+  180000     3       0         0        1     0
+  190000     4       0         0        1     0
+  200000     5       0         0        1     0
+  210000     2       0         0        0     1
+  220000     3       0         0        1     0
+  230000     4       0         0        1     0
+  240000     5       0         0        1     0
+  250000     6       0         0        1     0
+  260000     7       0         0        1     0
+  270000     8       0         0        1     0
+  280000     9       0         0        1     0
+  290000    10       0         0        1     0
+  300000    10       0         0        0     0
+  310000    10       0         0        0     0
+  320000    10       0         0        0     0
+
+Simulation complete!
+Demonstrated: Basic counting, overflow wrap-around, load operation, enable control
+- counter_8bit.v:121: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.037 devel
+- Verilator: $finish at 320ns; walltime 0.001 s; speed 275.032 us/s
+- Verilator: cpu 0.001 s on 1 threads; alloced 57 MB

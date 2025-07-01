@@ -1,0 +1,55 @@
+time=    50 ns  cycle= 0  div1=0  div2=0  div3=0  div4=0
+time=   150 ns  cycle= 0  div1=0  div2=0  div3=0  div4=0
+time=   250 ns  cycle= 1  div1=1  div2=0  div3=0  div4=0
+time=   350 ns  cycle= 2  div1=0  div2=1  div3=0  div4=0
+time=   450 ns  cycle= 3  div1=1  div2=1  div3=0  div4=0
+time=   550 ns  cycle= 4  div1=0  div2=0  div3=1  div4=0
+time=   650 ns  cycle= 5  div1=1  div2=0  div3=1  div4=0
+time=   750 ns  cycle= 6  div1=0  div2=1  div3=1  div4=0
+time=   850 ns  cycle= 7  div1=1  div2=1  div3=1  div4=0
+time=   950 ns  cycle= 8  div1=0  div2=0  div3=0  div4=1
+time=  1050 ns  cycle= 9  div1=1  div2=0  div3=0  div4=1
+time=  1150 ns  cycle=10  div1=0  div2=1  div3=0  div4=1
+time=  1250 ns  cycle=11  div1=1  div2=1  div3=0  div4=1
+time=  1350 ns  cycle=12  div1=0  div2=0  div3=1  div4=1
+time=  1450 ns  cycle=13  div1=1  div2=0  div3=1  div4=1
+time=  1550 ns  cycle=14  div1=0  div2=1  div3=1  div4=1
+time=  1650 ns  cycle=15  div1=1  div2=1  div3=1  div4=1
+time=  1750 ns  cycle=16  div1=0  div2=0  div3=0  div4=0
+time=  1850 ns  cycle=17  div1=1  div2=0  div3=0  div4=0
+time=  1950 ns  cycle=18  div1=0  div2=1  div3=0  div4=0
+time=  2050 ns  cycle=19  div1=1  div2=1  div3=0  div4=0
+time=  2150 ns  cycle=20  div1=0  div2=0  div3=1  div4=0
+time=  2250 ns  cycle=21  div1=1  div2=0  div3=1  div4=0
+time=  2350 ns  cycle=22  div1=0  div2=1  div3=1  div4=0
+time=  2450 ns  cycle=23  div1=1  div2=1  div3=1  div4=0
+time=  2550 ns  cycle=24  div1=0  div2=0  div3=0  div4=1
+time=  2650 ns  cycle=25  div1=1  div2=0  div3=0  div4=1
+time=  2750 ns  cycle=26  div1=0  div2=1  div3=0  div4=1
+time=  2850 ns  cycle=27  div1=1  div2=1  div3=0  div4=1
+time=  2950 ns  cycle=28  div1=0  div2=0  div3=1  div4=1
+time=  3050 ns  cycle=29  div1=1  div2=0  div3=1  div4=1
+time=  3150 ns  cycle=30  div1=0  div2=1  div3=1  div4=1
+time=  3250 ns  cycle=31  div1=1  div2=1  div3=1  div4=1
+time=  3350 ns  cycle=32  div1=0  div2=0  div3=0  div4=0
+time=  3450 ns  cycle=33  div1=1  div2=0  div3=0  div4=0
+time=  3550 ns  cycle=34  div1=0  div2=1  div3=0  div4=0
+time=  3650 ns  cycle=35  div1=1  div2=1  div3=0  div4=0
+time=  3750 ns  cycle=36  div1=0  div2=0  div3=1  div4=0
+time=  3850 ns  cycle=37  div1=1  div2=0  div3=1  div4=0
+time=  3950 ns  cycle=38  div1=0  div2=1  div3=1  div4=0
+time=  4050 ns  cycle=39  div1=1  div2=1  div3=1  div4=0
+time=  4150 ns  cycle=40  div1=0  div2=0  div3=0  div4=1
+time=  4250 ns  cycle=41  div1=1  div2=0  div3=0  div4=1
+time=  4350 ns  cycle=42  div1=0  div2=1  div3=0  div4=1
+time=  4450 ns  cycle=43  div1=1  div2=1  div3=0  div4=1
+time=  4550 ns  cycle=44  div1=0  div2=0  div3=1  div4=1
+time=  4650 ns  cycle=45  div1=1  div2=0  div3=1  div4=1
+time=  4750 ns  cycle=46  div1=0  div2=1  div3=1  div4=1
+time=  4850 ns  cycle=47  div1=1  div2=1  div3=1  div4=1
+time=  4950 ns  cycle=48  div1=0  div2=0  div3=0  div4=0
+time=  5050 ns  cycle=49  div1=1  div2=0  div3=0  div4=0
+- minimal_divider_sim.v:42: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.037 devel
+- Verilator: $finish at 5ns; walltime 0.001 s; speed 3.917 us/s
+- Verilator: cpu 0.001 s on 1 threads; alloced 57 MB

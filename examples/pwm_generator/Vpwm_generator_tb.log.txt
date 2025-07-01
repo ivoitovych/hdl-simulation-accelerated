@@ -1,0 +1,49 @@
+Starting PWM Generator Testbench
+=================================
+
+Test 0: Reset behavior
+PASS: PWM output correctly reset to 0
+
+Test 1: 50% duty cycle
+Expected: 50.0%, Measured: 50.0%
+PASS: Duty cycle within tolerance
+
+Test 2: Various duty cycles
+
+  Testing 0% duty cycle...
+  Expected: 0.0%, Measured: 0.0%
+  PASS
+
+  Testing 25% duty cycle...
+  Expected: 25.0%, Measured: 25.0%
+  PASS
+
+  Testing 50% duty cycle...
+  Expected: 50.0%, Measured: 50.0%
+  PASS
+
+  Testing 75% duty cycle...
+  Expected: 75.0%, Measured: 75.0%
+  PASS
+
+  Testing 100% duty cycle...
+  Expected: 100.0%, Measured: 100.0%
+  PASS
+
+Test 3: Disable PWM
+PASS: PWM output correctly disabled
+
+Test 4: Dynamic duty cycle changes
+  Ramping up duty cycle...
+  Ramping down duty cycle...
+PASS: Dynamic duty cycle test completed
+
+=================================
+PWM Generator Tests Completed
+Total test cases: 5
+=================================
+
+- pwm_generator_tb.v:224: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.037 devel
+- Verilator: $finish at 86us; walltime 0.014 s; speed 6.491 ms/s
+- Verilator: cpu 0.013 s on 1 threads; alloced 57 MB
