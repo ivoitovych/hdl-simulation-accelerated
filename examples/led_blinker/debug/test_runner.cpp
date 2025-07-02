@@ -8,7 +8,7 @@
 
 // Check if KERNEL_FILE is defined
 #ifndef KERNEL_FILE
-    #error "KERNEL_FILE must be defined. Use -DKERNEL_FILE=\"your_kernel.cpp\""
+    #error "KERNEL_FILE must be defined. Use -DKERNEL_FILE=your_kernel.cpp"
 #endif
 
 // Define a dummy namespace if not provided
@@ -24,15 +24,15 @@ int main() {
     std::cout << "Kernel file: " << TOSTRING(KERNEL_FILE) << std::endl;
     std::cout << "Namespace: " << TOSTRING(NAMESPACE) << std::endl;
     std::cout << "==========================================" << std::endl;
-    
+
     // Call the simulation functions
     NAMESPACE::unpack_main();
     NAMESPACE::math_main();
     NAMESPACE::pack_main();
-    
+
     std::cout << "==========================================" << std::endl;
     std::cout << "=== Test Complete ===" << std::endl;
-    
+
     return 0;
 }
 
