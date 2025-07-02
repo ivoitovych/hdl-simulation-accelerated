@@ -20,7 +20,7 @@ module serial_crc32_generator (
             crc_reg <= (crc_reg >> 1) ^ ({32{(crc_reg[0] ^ data_in)}} & CRC_POLY);
     end
 
-    // Завжди оновлюємо crc_out (щоб можна було зчитати на enable=0)
+    // Always update crc_out (so it can be read when enable=0)
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n)
             crc_out <= 32'h00000000;
