@@ -33,7 +33,7 @@ module dff_re_tb_traditional;
         d = 0;
         
         // Display header
-        $display("# timestamp,clk,rst_n,enable,d,q");
+        $display("timestamp,clk,rst_n,enable,d,q");
         
         // Wait for initial settling
         #0 $display("%0d,%b,%b,%b,%b,%b", $time, clk, rst_n, enable, d, q);
@@ -115,4 +115,3 @@ module dff_re_tb_traditional;
     end
 
 endmodule
-

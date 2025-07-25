@@ -29,7 +29,7 @@ The example uses a D Flip-Flop with synchronous reset and enable as the device u
 - `dff_re_tb_traditional.v` - Traditional monolithic testbench
 - `stim_gen.v` - Standalone stimulus generator
 - `dut_sim.v` - Standalone DUT simulator
-- `checker.v` - Standalone results checker/verifier
+- `checker.v` - Standalone results checker/verifier (compiled as `results_checker`)
 - `Makefile` - Build automation for both approaches
 - `README.md` - This file
 

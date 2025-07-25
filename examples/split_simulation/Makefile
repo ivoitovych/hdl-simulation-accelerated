@@ -20,7 +20,7 @@ RESULTS_DIR = results
 TRADITIONAL_EXE = $(OBJ_DIR)/Vdff_re_tb_traditional
 STIM_EXE = $(OBJ_DIR)/Vstim_gen
 SIM_EXE = $(OBJ_DIR)/Vdut_sim
-CHECK_EXE = $(OBJ_DIR)/Vchecker
+CHECK_EXE = $(OBJ_DIR)/Vresults_checker
 
 # Results files
 TRADITIONAL_LOG = $(RESULTS_DIR)/traditional_output.log
@@ -70,7 +70,7 @@ $(SIM_EXE): $(SIM_SRC)
 	$(VERILATOR) $(VFLAGS) --top-module dut_sim $(SIM_SRC)
 
 $(CHECK_EXE): $(CHECK_SRC)
-	$(VERILATOR) $(VFLAGS) --top-module checker $(CHECK_SRC)
+	$(VERILATOR) $(VFLAGS) --top-module results_checker $(CHECK_SRC)
 
 # Run traditional approach
 traditional: $(TRADITIONAL_EXE) $(RESULTS_DIR)

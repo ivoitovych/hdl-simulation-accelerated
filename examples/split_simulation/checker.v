@@ -1,7 +1,7 @@
 // checker.v - Standalone results checker/verifier
 `timescale 1ns / 1ps
 
-module checker;
+module results_checker;
 
     // Golden model state
     reg golden_q;
@@ -11,7 +11,7 @@ module checker;
     integer timestamp;
     integer clk_in, rst_n_in, enable_in, d_in, q_actual;
     integer scan_result;
-    reg [200:0] line_buffer;
+    reg [800:0] line_buffer;  // Large enough buffer
     
     // Statistics
     integer total_checks;
@@ -36,8 +36,8 @@ module checker;
         // Read and verify results
         while (!$feof(0)) begin
             if ($fgets(line_buffer, 0)) begin
-                // Skip comment lines
-                if (line_buffer[0] == "#") continue;
+                // Skip comment lines - check if line starts with '#'
+                if (line_buffer[1600-1:1600-8] == 8'h23) continue;  // ASCII '#' = 0x23
                 
                 // Parse CSV line: timestamp,clk,rst_n,enable,d,q
                 scan_result = $sscanf(line_buffer, "%d,%d,%d,%d,%d,%d", 
