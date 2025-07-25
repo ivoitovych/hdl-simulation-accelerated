@@ -10,7 +10,7 @@ DUT_SRC = dff_re.v
 TRADITIONAL_SRC = dff_re_tb_traditional.v $(DUT_SRC)
 STIM_SRC = stim_gen.v
 SIM_SRC = dut_sim.v $(DUT_SRC)
-CHECK_SRC = checker.v
+CHECK_SRC = results_checker.v
 
 # Output directories
 OBJ_DIR = obj_dir
