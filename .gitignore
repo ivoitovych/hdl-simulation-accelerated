@@ -29,6 +29,9 @@ allfiles-*.txt
 # Logs
 *.log
 
+# Waveform output files
+*.vcd
+
 # OS generated files
 .DS_Store
 .DS_Store?
