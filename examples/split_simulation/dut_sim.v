@@ -1,3 +1,4 @@
+
 // dut_sim.v - Standalone DUT simulator
 `timescale 1ns / 1ps
 
@@ -9,13 +10,14 @@ module dut_sim;
     reg enable;
     reg d;
     wire q;
-    
+
     // File I/O variables
     integer timestamp;
-    integer clk_in, rst_n_in, enable_in, d_in;
+    reg clk_in, rst_n_in, enable_in, d_in;
     integer scan_result;
-    reg [800:0] line_buffer;  // Large enough buffer
-    
+    reg [8*100:1] line_buffer;  // String buffer for line reading
+    integer char_count;
+
     // Instantiate DUT
     dff_re dut (
         .clk(clk),
@@ -24,7 +26,7 @@ module dut_sim;
         .d(d),
         .q(q)
     );
-    
+
     // Main simulation loop
     initial begin
         // Initialize signals
@@ -32,42 +34,48 @@ module dut_sim;
         rst_n = 0;
         enable = 0;
         d = 0;
-        
+
         // Output CSV header
         $display("timestamp,clk,rst_n,enable,d,q");
-        
+
         // Read and process input vectors
-        while (!$feof(0)) begin
-            // Try to read a line from stdin
-            if ($fgets(line_buffer, 0)) begin
-                // Skip comment lines - check if line starts with '#'
-                if (line_buffer[1600-1:1600-8] == 8'h23) continue;  // ASCII '#' = 0x23
-                
-                // Parse CSV line: timestamp,clk,rst_n,enable,d
-                scan_result = $sscanf(line_buffer, "%d,%d,%d,%d,%d", 
-                                    timestamp, clk_in, rst_n_in, enable_in, d_in);
-                
-                if (scan_result == 5) begin
-                    // Apply inputs (convert from integer to single bit)
-                    clk = clk_in[0];
-                    rst_n = rst_n_in[0];
-                    enable = enable_in[0];
-                    d = d_in[0];
-                    
-                    // Wait for signal propagation
-                    #1;
-                    
-                    // Output current state
-                    $display("%0d,%b,%b,%b,%b,%b", 
-                           timestamp, clk, rst_n, enable, d, q);
-                end
-            end else begin
-                // End of input
-                break;
+        while (1) begin
+            char_count = $fgets(line_buffer, 32'h8000_0000); // stdin
+
+            if (char_count == 0) begin
+                // End of file
+                $finish;
+            end
+
+            // Skip empty lines and comment lines
+            if (line_buffer[8*100-:8] == "#" || line_buffer[8*100-:8] == "\n") begin
+                continue;
+            end
+
+            // Skip header line if it contains "timestamp"
+            if (line_buffer[8*100-:72] == "timestamp") begin
+                continue;
+            end
+
+            // Parse CSV line: timestamp,clk,rst_n,enable,d
+            scan_result = $sscanf(line_buffer, "%d,%b,%b,%b,%b",
+                                timestamp, clk_in, rst_n_in, enable_in, d_in);
+
+            if (scan_result == 5) begin
+                // Apply inputs (convert from integer to single bit)
+                clk    = clk_in;
+                rst_n  = rst_n_in;
+                enable = enable_in;
+                d      = d_in;
+
+                // Wait for signal propagation
+                #1;
+
+                // Output current state
+                $display("%0d,%b,%b,%b,%b,%b",
+                       timestamp, clk, rst_n, enable, d, q);
             end
         end
-        
-        $finish;
     end
 
 endmodule

@@ -5,8 +5,8 @@
 allfiles-*.txt
 
 # Verilator output directories
-# obj_dir/
-# */obj_dir/
+obj_dir/
+*/obj_dir/
 
 # Common build output directories
 /build/
