@@ -1,4 +1,4 @@
-// results_checker.v - Standalone results checker/verifier
+// results_checker.v - Standalone results checker/verifier (warning-free version)
 `timescale 1ns / 1ps
 
 module results_checker;
@@ -9,10 +9,10 @@ module results_checker;
 
     // Input parsing variables
     integer timestamp;
-    reg clk_in, rst_n_in, enable_in, d_in, q_actual;
+    reg clk_in, rst_n_in, enable_in, d_in, q_actual;  // Changed from integer to reg
     integer scan_result;
-    reg [8*100:1] line_buffer;  // String buffer
-    integer char_count;
+    reg [8*200:1] line_buffer;
+    integer line_count;
 
     // Statistics
     integer total_checks;
@@ -31,67 +31,60 @@ module results_checker;
         reset_checks = 0;
         enable_checks = 0;
         data_prop_checks = 0;
+        line_count = 0;
 
         $display("=== DUT Verification Starting ===");
 
         // Read and verify results
-        while (1) begin
-            char_count = $fgets(line_buffer, 32'h8000_0000); // stdin
+        while (!$feof(0)) begin
+            if ($fgets(line_buffer, 0) != 0) begin  // Fixed width truncation warning
+                line_count = line_count + 1;
 
-            if (char_count == 0) begin
-                // End of file
-                break;
-            end
+                // Skip first line (header) by line number
+                if (line_count == 1) continue;
 
-            // Skip empty lines and comment lines
-            if (line_buffer[8*100-:8] == "#" || line_buffer[8*100-:8] == "\n") begin
-                continue;
-            end
+                // Parse CSV line: timestamp,clk,rst_n,enable,d,q
+                scan_result = $sscanf(line_buffer, "%d,%d,%d,%d,%d,%d",
+                                    timestamp, clk_in, rst_n_in, enable_in, d_in, q_actual);
 
-            // Skip header line
-            if (line_buffer[8*100-:72] == "timestamp") begin
-                continue;
-            end
+                if (scan_result == 6) begin
+                    total_checks = total_checks + 1;
 
-            // Parse CSV line: timestamp,clk,rst_n,enable,d,q
-            scan_result = $sscanf(line_buffer, "%d,%b,%b,%b,%b,%b",
-                                timestamp, clk_in, rst_n_in, enable_in, d_in, q_actual);
-
-            if (scan_result == 6) begin
-                total_checks = total_checks + 1;
-
-                // Update golden model on rising clock edge
-                if (clk_in && !prev_clk) begin
-                    // Rising edge detected
-                    if (!rst_n_in) begin
-                        // Reset active
-                        golden_q = 0;
-                        reset_checks = reset_checks + 1;
-                    end else if (enable_in) begin
-                        // Enabled, capture data
-                        golden_q = d_in;
-                        data_prop_checks = data_prop_checks + 1;
-                    end else begin
-                        // Disabled, hold value
-                        enable_checks = enable_checks + 1;
+                    // Update golden model on rising clock edge
+                    if (clk_in && !prev_clk) begin
+                        // Rising edge detected
+                        if (!rst_n_in) begin
+                            // Reset active
+                            golden_q = 0;
+                            reset_checks = reset_checks + 1;
+                        end else if (enable_in) begin
+                            // Enabled, capture data
+                            golden_q = d_in;
+                            data_prop_checks = data_prop_checks + 1;
+                        end else begin
+                            // Disabled, hold value
+                            enable_checks = enable_checks + 1;
+                        end
                     end
+
+                    // Check actual vs expected
+                    if (q_actual !== golden_q) begin
+                        $display("ERROR at t=%0d: Expected q=%b, Got q=%b (clk=%b, rst_n=%b, enable=%b, d=%b)",
+                               timestamp, golden_q, q_actual, clk_in, rst_n_in, enable_in, d_in);
+                        errors = errors + 1;
+                    end else begin
+                        $display("PASS  at t=%0d: q=%b (clk=%b, rst_n=%b, enable=%b, d=%b)",
+                               timestamp, q_actual, clk_in, rst_n_in, enable_in, d_in);
+                    end
+
+                    // Specific behavioral checks
+                    check_reset_behavior(timestamp, clk_in, rst_n_in, q_actual);
+                    check_enable_behavior(timestamp, clk_in, rst_n_in, enable_in, q_actual);  // Removed unused 'd' parameter
+
+                    prev_clk = clk_in;
                 end
-
-                // Check actual vs expected
-                if (q_actual !== golden_q) begin
-                    $display("ERROR at t=%0d: Expected q=%b, Got q=%b (clk=%b, rst_n=%b, enable=%b, d=%b)",
-                           timestamp, golden_q, q_actual, clk_in, rst_n_in, enable_in, d_in);
-                    errors = errors + 1;
-                end else begin
-                    $display("PASS  at t=%0d: q=%b (clk=%b, rst_n=%b, enable=%b, d=%b)",
-                           timestamp, q_actual, clk_in, rst_n_in, enable_in, d_in);
-                end
-
-                // Specific behavioral checks
-                check_reset_behavior(timestamp, clk_in, rst_n_in, q_actual);
-                check_enable_behavior(timestamp, clk_in, rst_n_in, enable_in, d_in, q_actual);
-
-                prev_clk = clk_in;
+            end else begin
+                break;
             end
         end
 
@@ -115,22 +108,25 @@ module results_checker;
         end
     endtask
 
-    // Task to check enable behavior
+    // Task to check enable behavior (removed unused 'd' parameter)
     task check_enable_behavior;
         input integer ts;
         input clk;
         input rst_n;
         input enable;
-        input d;
         input q;
-        reg prev_q;
-        reg prev_valid;
+        // Use static variables to persist between calls
+        static reg prev_q = 0;
+        static reg prev_valid = 0;
         begin
-            if (rst_n && clk) begin
-                if (prev_valid && !enable && q !== prev_q) begin
+            if (rst_n && clk && prev_valid) begin
+                if (!enable && q !== prev_q) begin
                     $display("ENABLE_ERROR at t=%0d: q changed when enable=0", ts);
                     errors = errors + 1;
                 end
+            end
+
+            if (clk) begin
                 prev_q = q;
                 prev_valid = 1;
             end
