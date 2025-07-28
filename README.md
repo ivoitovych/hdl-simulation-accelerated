@@ -23,6 +23,23 @@ This project is integrated as a submodule in the official Tenstorrent TT-Metal r
 - **Working hardware example**: The `minimal_divider` example runs on real TT-Metal devices
 - **Build system integration**: Seamless compilation within the TT-Metal build environment
 
+### Integration Steps
+
+To integrate this project into your TT-Metal repository:
+
+1. **Add as submodule** in the programming examples directory:
+   ```bash
+   cd tt_metal/programming_examples
+   git submodule add git@github.com:ivoitovych/hdl-simulation-accelerated.git hdl_simulation_accelerated
+   ```
+
+2. **Update CMakeLists.txt** to include the submodule in the build:
+   ```cmake
+   # Add this line to tt_metal/programming_examples/CMakeLists.txt
+   # after the CREATE_PGM_EXAMPLES_EXE line:
+   add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/hdl_simulation_accelerated)
+   ```
+
 ### Running on TT-Metal Hardware
 
 ```bash
