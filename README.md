@@ -1,7 +1,11 @@
 # HDL Simulation Accelerated
 
-This repository provides a **Docker-based, reproducible environment for Verilog (HDL) simulation** using Verilator, targeting both classical CPU flows and future acceleration on AI hardware (e.g., TT-Metal/Tenstorrent).  
+This repository provides a **Docker-based, reproducible environment for Verilog (HDL) simulation** using Verilator, targeting both classical CPU flows and future acceleration on AI hardware (e.g., TT-Metal/Tenstorrent).
 It is both a practical teaching environment and a foundation for research into high-performance simulation.
+
+## ✅ **Proof of Concept Achievement**
+
+**HDL simulation is now running on real TT-Metal AI accelerator hardware!** The minimal_divider example has been successfully integrated and executed on Tenstorrent hardware, validating the core concept of HDL simulation acceleration.
 
 ## 🚀 Project Roadmap
 
@@ -10,6 +14,22 @@ See [`ROADMAP.md`](./ROADMAP.md) for a detailed multi-phase development plan, ra
 ## 🛠️ Project Plan
 
 See [`TTMRTL_PLAN.md`](./TTMRTL_PLAN.md) for the current stepwise Jira ticket plan, examples, and stage goals.
+
+## 🔗 TT-Metal Integration
+
+This project is integrated as a submodule in the official Tenstorrent TT-Metal repository, enabling HDL simulations to run directly on TT-Metal hardware. The integration includes:
+
+- **Verilator-to-TT-Metal converter**: Automatically translates Verilog designs to TT-Metal compute kernels
+- **Working hardware example**: The `minimal_divider` example runs on real TT-Metal devices
+- **Build system integration**: Seamless compilation within the TT-Metal build environment
+
+### Running on TT-Metal Hardware
+
+```bash
+# In the TT-Metal repository with this project as a submodule:
+./build_metal.sh --build-programming-examples
+./build_Debug/programming_examples/hdl_simulation_accelerated/minimal_divider
+```
 
 ## 🗂️ Directory Structure
 
@@ -39,6 +59,10 @@ See [`TTMRTL_PLAN.md`](./TTMRTL_PLAN.md) for the current stepwise Jira ticket pl
 │       ├── universal\_shift\_register\_tb.v
 │       ├── Makefile
 │       └── README.md
+├── verilator2ttmetal/              # Converter tool for TT-Metal integration
+│   ├── verilator2ttmetal.py       # Main converter script
+│   └── README.md
+└── CMakeLists.txt                  # TT-Metal build integration
 
 ````
 
@@ -98,6 +122,7 @@ make -j$(nproc) -C obj_dir -f Vcounter.mk Vcounter
 * **Verilator** (latest, built from source)
 * **GNU Make, GCC, G++, development utilities** (vim, nano, gdb, valgrind)
 * **GTKWave** (optional, for waveform viewing)
+* **TT-Metal Integration** (for AI hardware acceleration)
 * All build dependencies included in the Dockerfile.
 
 ---
@@ -106,6 +131,7 @@ make -j$(nproc) -C obj_dir -f Vcounter.mk Vcounter
 
 * [Verilator Documentation](https://verilator.org/guide/latest/)
 * [Verilog HDL Quick Reference](https://www.ece.uvic.ca/~fayez/courses/ceng465/vlogref.pdf)
+* [TT-Metal Documentation](https://docs.tenstorrent.com/)
 
 ---
 
