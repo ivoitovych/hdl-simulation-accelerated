@@ -1,17 +1,17 @@
 # HDL Simulation Accelerated
 
-### Leveraging AI Hardware for Next-Generation Verilog Simulation
+## Leveraging AI Hardware for Next-Generation Verilog Simulation
 
 
 **An open-source research initiative exploring the acceleration of hardware description language (HDL) simulation using Tenstorrent’s TT-Metal platform. This project bridges the world of traditional digital logic design and modern AI accelerators, providing reproducible tools, working examples, and a clear roadmap for scaling HDL verification into the era of high-performance parallel computing.**
 
-### Introduction to HDL and RTL Simulation
+## Introduction to HDL and RTL Simulation
 
 In the world of digital hardware design, creating complex integrated circuits (ICs) like those powering smartphones, AI processors, or automotive systems is a meticulous process. At its core lies **Hardware Description Language (HDL)**, a specialized programming language used to model and describe the behavior and structure of electronic circuits. Think of HDL as the "code" for hardware, similar to how software developers use languages like Python or C++ to build applications. Popular HDLs include Verilog and VHDL, which allow engineers to define everything from simple logic gates to intricate systems-on-chip (SoCs).
 
 HDL designs are often expressed at the **Register-Transfer Level (RTL)**, an abstraction layer where the circuit is described in terms of data storage elements (registers) and the operations that transfer data between them. For example, an RTL description might outline how a counter increments a value on each clock cycle, specifying the flow of bits without delving into transistor-level details. This level strikes a balance: detailed enough for accurate modeling but abstract enough to manage complexity.
 
-#### Why Design with HDL?
+### Why Design with HDL?
 Traditional hardware design involved drawing schematics by hand, which became impractical as circuits grew to billions of transistors. HDL revolutionized this by enabling a software-like workflow: engineers "write" the hardware design as code, which can then be simulated, tested, and automatically synthesized into physical layouts. This approach offers several key benefits:
 - **Modularity and Reusability**: Designs can be broken into reusable modules, much like functions in software, speeding up development.
 - **Scalability**: HDL handles massive complexity, essential for modern chips in AI, 5G, autonomous vehicles, and data centers.
@@ -20,7 +20,7 @@ Traditional hardware design involved drawing schematics by hand, which became im
 
 In essence, HDL bridges the gap between conceptual ideas and tangible silicon, allowing teams to iterate quickly in a digital realm before committing to physical production.
 
-#### The Role of HDL/RTL Simulation in the Industry and Development Process
+### The Role of HDL/RTL Simulation in the Industry and Development Process
 HDL/RTL simulation is the virtual testing ground where designs are executed in software to verify they work as intended. It's like running a program in a debugger before deploying it— but for hardware, where "bugs" could mean faulty chips costing millions to fix.
 
 In the semiconductor industry, valued at over $500 billion globally as of 2025, simulation is a cornerstone of the **design flow**. The process typically unfolds as follows:
@@ -33,7 +33,7 @@ In the semiconductor industry, valued at over $500 billion globally as of 2025, 
 
 Simulation fits early in this pipeline, catching 80-90% of design flaws before costly fabrication. In production, it's vital for industries like consumer electronics (e.g., Apple's custom silicon), automotive (e.g., Tesla's self-driving chips), and hyperscalers (e.g., Google's TPUs). Without it, errors could lead to recalls, delays, or failures in mission-critical systems. As chip complexity explodes—driven by Moore's Law and demands for AI/edge computing—simulation ensures reliability while accelerating time-to-market.
 
-#### Key Approaches to HDL/RTL Simulation
+### Key Approaches to HDL/RTL Simulation
 Several methods exist to simulate HDL/RTL designs, each balancing speed, accuracy, and cost:
 - **Software-Based Simulation**: Tools like Verilator (open-source) or commercial ones (e.g., Synopsys VCS) compile HDL code into executable programs run on CPUs. It's accessible and great for debugging but slow for large designs, as it processes events sequentially.
 - **Hardware Emulation**: Uses specialized hardware like FPGAs or custom emulators (e.g., Cadence Palladium) to mimic the design in real-time. This offers 100-1000x speedups for billion-gate simulations but requires expensive setups.
@@ -42,12 +42,12 @@ Several methods exist to simulate HDL/RTL designs, each balancing speed, accurac
 
 The choice depends on project scale: startups might stick to software for cost reasons, while big firms use emulation for speed.
 
-#### What's Happening in the Field Today
+### What's Happening in the Field Today
 The HDL/RTL simulation landscape is evolving rapidly amid chip shortages, AI booms, and open-source trends. Designs now routinely exceed 100 billion transistors, pushing for faster tools—e.g., cloud-based simulation for distributed processing. Open-source initiatives like Verilator and RISC-V are democratizing access, enabling students and small teams to innovate without proprietary lock-in. Meanwhile, integration with AI hardware is a hot area, repurposing tensor processors for simulation acceleration to handle data-intensive verification. Challenges include rising power consumption in simulations and the need for better automation, but advancements promise shorter design cycles and more reliable hardware.
 
 This foundation sets the stage for our project, which builds on these concepts to accelerate simulations using innovative hardware-software integration.
 
-### Competitors in Hardware-Accelerated HDL/RTL Simulation and Emulation
+## Competitors in Hardware-Accelerated HDL/RTL Simulation and Emulation
 
 The market for hardware-accelerated simulation and emulation of Hardware Description Language (HDL) and Register-Transfer Level (RTL) designs is dominated by established Electronic Design Automation (EDA) vendors offering specialized hardware platforms. These tools are used to verify complex chip designs before fabrication, addressing the limitations of pure software simulation (e.g., speed bottlenecks in large-scale SoCs). Competitors primarily focus on FPGA-based emulation, processor-based systems, or hybrid approaches, with prices ranging from hundreds of thousands to millions of dollars per system. Cadence, as you mentioned, is a key player with its "desktop supercomputer"-like platforms for high-performance simulation.
 
@@ -76,7 +76,7 @@ Key competitors and their offerings include:
 Tenstorrent's hardware (e.g., Grayskull e150, Wormhole chips) isn't currently marketed for HDL/RTL simulation, but its scalable, RISC-V-based architecture with dataflow processing could be adapted for parallel simulation workloads, especially given its open-source software stack. This positions a TT-based solution as a disruptive, open alternative to proprietary systems, potentially running open-source simulators like Verilator on TT hardware for cost-effective acceleration. No direct competitors use similar AI-oriented hardware for this, but GPU-based setups (e.g., NVIDIA) are the closest analog.
 
 
-### Potential Clients
+## Potential Clients
 
 Potential clients for a Tenstorrent-based HDL/RTL simulation system (with open-source SW) include organizations involved in chip design, where verification accounts for 50-70% of development time. The open-source aspect appeals to academia, startups, and companies seeking vendor independence, lower costs, and customizability, while TT hardware's scalability suits high-performance needs.
 
@@ -92,7 +92,7 @@ Potential clients for a Tenstorrent-based HDL/RTL simulation system (with open-s
 Intel is the largest EDA spender, followed by Samsung and TSMC, indicating strong demand from foundries as well.
 
 
-### Market Volume and Sales Potential
+## Market Volume and Sales Potential
 
 The broader EDA market (including simulation/emulation) is growing rapidly due to AI, 5G, and automotive chip complexity. Verification tools, including hardware emulation, represent ~30-40% of EDA spend, driven by the need for faster cycles amid shrinking node sizes.
 
@@ -112,11 +112,11 @@ Overall, a TT-based solution could carve a niche in cost-sensitive, open ecosyst
 
 Summarizing the analysis—the market remains dominated by EDA giants like Cadence/Synopsys (proprietary, high-cost), with growing niches in open-source/GPU acceleration. TT's open-stack positions it well as a disruptor for cost-sensitive clients (academia/startups), especially amid the AI chip boom. Updated 2025 EDA size (~USD 15-17B) aligns with projections; the emulation sub-market (~USD 1-2B) holds. Sales potential is realistic (niche 5-10% adoption), but scaling depends on proving 10-100x speedups versus incumbents.
 
-### Possible Approach Analysis
+## Possible Approach Analysis
 
 This section analyzes various approaches to accelerating Hardware Description Language (HDL) and Register-Transfer Level (RTL) simulations, with a focus on Verilog-based designs as targeted by the "hdl-simulation-accelerated" project. Traditional CPU-based simulation, while flexible and widely used, often becomes a bottleneck for large-scale designs due to sequential processing limits, where verification can consume 50-70% of development time. Acceleration methods leverage parallelism, specialized hardware, or hybrid techniques to achieve speedups ranging from 10x to 1000x, depending on design complexity and implementation. The analysis covers key approaches, their mechanisms, advantages, disadvantages, and real-world examples, drawing from recent advancements as of 2025. A comparative summary is provided, followed by justification for the project's chosen method: integrating Verilator with Tenstorrent's TT-Metal AI accelerator hardware.
 
-#### 1. Software-Only Simulation Optimization
+### 1. Software-Only Simulation Optimization
    - **Description**: Enhances pure software simulators like Verilator, Icarus Verilog, or commercial tools (e.g., Synopsys VCS) through multi-threading, code optimization, or compilation to native executables. Verilator, for instance, converts Verilog to optimized C++ for cycle-accurate simulation, with recent extensions supporting GPU offloading or distributed computing.
    - **Pros**: Low cost, high flexibility for debugging, easy integration with open-source ecosystems; no specialized hardware required, making it accessible for small teams or academia.
    - **Cons**: Limited by CPU parallelism (e.g., multi-threading yields only 2-5x speedup for large designs); struggles with billion-gate simulations due to memory and compute bottlenecks; not truly hardware-accelerated.
@@ -124,7 +124,7 @@ This section analyzes various approaches to accelerating Hardware Description La
  Renode's DPI-based co-simulation (2025) enables software-hardware interplay without full hardware emulation.
 
 
-#### 2. FPGA-Based Prototyping and Emulation
+### 2. FPGA-Based Prototyping and Emulation
    - **Description**: Maps RTL designs directly onto Field-Programmable Gate Arrays (FPGAs) for hardware-accelerated execution, often combined with software simulators for hybrid verification. Tools synthesize Verilog to FPGA bitstreams, allowing real-time or near-real-time simulation.
    - **Pros**: High fidelity to actual hardware behavior; supports large designs (up to billions of gates); energy-efficient for embedded applications; reconfigurable for iterative testing.
    - **Cons**: Complex setup and synthesis time (hours to days); limited observability for debugging compared to software; higher upfront costs for FPGA boards; programming requires HDL expertise.
@@ -132,7 +132,7 @@ This section analyzes various approaches to accelerating Hardware Description La
  Synopsys HAPS and Cadence Protium use FPGA clusters for prototyping, ideal for SoC validation.
 
 
-#### 3. GPU-Accelerated Simulation
+### 3. GPU-Accelerated Simulation
    - **Description**: Offloads parallelizable RTL workloads (e.g., gate-level evaluations) to Graphics Processing Units (GPUs) using frameworks like CUDA or OpenCL. Simulators compile Verilog models into GPU kernels for massive parallelism.
    - **Pros**: Excellent for data-parallel tasks, achieving 10-100x speedups on commodity hardware; cost-effective with consumer GPUs; integrates well with existing simulators like Verilator.
    - **Cons**: High power consumption and heat; not ideal for irregular workloads (e.g., sequential logic); requires redesign of simulation algorithms for GPU architecture; memory bandwidth limitations for very large designs.
@@ -140,7 +140,7 @@ This section analyzes various approaches to accelerating Hardware Description La
  Older works like GPU-based hardware simulation (2011, updated applications in 2025) show viability for parallel RTL.
 
 
-#### 4. Custom Hardware-Software Co-Design Accelerators
+### 4. Custom Hardware-Software Co-Design Accelerators
    - **Description**: Designs specialized hardware architectures (e.g., ASICs or custom processors) optimized for RTL simulation, paired with compilers for automatic mapping. This includes bulk-synchronous parallel (BSP) models or speculative execution.
    - **Pros**: Tailored for simulation workloads, offering massive speedups (100-1000x); efficient resource utilization; supports scalable, multi-chip setups.
    - **Cons**: High development cost and time; less flexible for design changes; requires expertise in hardware design; not easily accessible for open-source projects.
@@ -148,7 +148,7 @@ This section analyzes various approaches to accelerating Hardware Description La
  Manticore (2023-2025) employs static BSP for hardware-accelerated RTL, demonstrating parallelism exploitation.
 
 
-#### 5. AI Accelerator-Based Simulation (Project's Approach)
+### 5. AI Accelerator-Based Simulation (Project's Approach)
    - **Description**: Repurposes AI-oriented hardware (e.g., tensor processors like Tenstorrent's TT-Metal) for RTL simulation by converting Verilog models (via Verilator) into parallel compute kernels. This leverages dataflow architectures optimized for massive parallelism in tensor operations, adapting them to gate-level logic simulation.
  (Note: While not widely documented for RTL yet, parallels exist with GPU methods and emerging AI-agentic tools.)
    - **Pros**: Scalable for AI-like workloads; open-source friendly (e.g., TT-Metal's ecosystem); lower power than GPUs; high customizability via software conversion tools; potential for 50-200x speedups in parallel designs.
@@ -156,14 +156,14 @@ This section analyzes various approaches to accelerating Hardware Description La
    - **Examples**: The project's `verilator2ttmetal.py` tool exemplifies this, with successful proofs on simple designs like ripple dividers. Agentic AI approaches (2025) extend LLM-driven acceleration to RTL workflows, hinting at hybrid AI-HDL potential.
 
 
-#### 6. Hybrid and Emerging Methods
+### 6. Hybrid and Emerging Methods
    - **Description**: Combines multiple techniques, such as co-simulation (software with hardware emulation) or cloud-distributed setups. Examples include UVM acceleration or agentic AI for automated optimization.
    - **Pros**: Balances cost, speed, and flexibility; scalable via cloud; supports complex scenarios like RISC-V verification.
    - **Cons**: Integration overhead; potential latency in distributed systems; dependency on multiple tools.
    - **Examples**: Siemens' Veloce for hybrid emulation; PyMTL for Python-based generation and simulation.
 
 
-#### Comparative Summary
+### Comparative Summary
 
 | Approach                  | Speedup Potential | Cost | Flexibility | Power Efficiency | Suitability for Open-Source Projects |
 |---------------------------|-------------------|------|-------------|------------------|-------------------------------------|
@@ -178,14 +178,14 @@ Adapted from comparative studies on accelerators for HPC/AI tasks, applied to RT
  FPGAs excel in reconfigurability and efficiency but lag in ease-of-use compared to GPUs; AI accelerators bridge this with dataflow optimization, offering better energy profiles than GPUs for tensor-mapped workloads.
 
 
-#### Justification for the Project's Approach
+### Justification for the Project's Approach
 The "hdl-simulation-accelerated" project's use of Verilator with TT-Metal AI accelerators is justified by its balance of accessibility, cost, and innovation. Unlike expensive custom co-designs or power-hungry GPUs, TT-Metal leverages open-source software for conversion, enabling reproducible, scalable acceleration on hardware optimized for parallel dataflows—ideal for RTL's combinatorial logic. This approach aligns with emerging trends in repurposing AI hardware for EDA tasks, offering a disruptive alternative to proprietary FPGA/emulation systems while fostering community contributions. Future extensions could incorporate hybrid elements (e.g., GPU co-acceleration) for even greater versatility.
 
-### The Big Picture: Path to a Production-Ready Accelerated HDL Simulation System
+## The Big Picture: Path to a Production-Ready Accelerated HDL Simulation System
 
 In an era where chip designs are exploding in complexity—driven by AI, edge computing, and custom silicon—traditional HDL/RTL simulation tools are straining under the load, often extending verification timelines from weeks to months. This creates a ripe opportunity for innovation: repurposing massively parallel AI accelerators, like Tenstorrent's hardware, to deliver open-source, cost-effective acceleration. The vision is a scalable ecosystem that democratizes high-speed simulation, reducing vendor lock-in and empowering diverse users from startups to hyperscalers. Starting from a proof-of-concept (POC) like the "hdl-simulation-accelerated" project, the journey to production readiness involves iterative development, rigorous testing, and strategic expansions. Below, we outline the phased approach, emphasizing clear milestones to build from foundational experiments to a robust, market-ready solution.
 
-#### Phase 1: Proof-of-Concept and Foundational Development
+### Phase 1: Proof-of-Concept and Foundational Development
 The foundation begins with a targeted POC, mirroring the current project, to validate the core idea: accelerating HDL simulations on Tenstorrent hardware using open-source tools. Goals here are straightforward and progressive:
 - **Simple Simulations**: Achieve initial success by running basic Verilog designs (e.g., counters, dividers, shift registers) on a single Tenstorrent device via Verilator-to-TT-Metal conversion, demonstrating end-to-end functionality and basic speedups.
 - **Intermediate Complexity**: Scale to industry-relevant examples (e.g., CRC generators, simple processors) with testbenches, focusing on cycle-accuracy and waveform visualization to ensure reliability.
@@ -193,7 +193,7 @@ The foundation begins with a targeted POC, mirroring the current project, to val
 
 This phase prioritizes reproducibility (e.g., Docker environments) and community feedback, aiming for a minimum viable prototype within 3-6 months. Key activities include tool development (e.g., enhanced converters), hardware testing on devices like Grayskull or Wormhole, and initial benchmarks against baselines like Verilator on CPUs.
 
-#### Phase 2: Core System Development and Optimization
+### Phase 2: Core System Development and Optimization
 Building on the POC, transition to full system engineering for stability and scalability:
 - **Architecture Refinement**: Design a modular framework integrating Verilator outputs with TT-Metal kernels, incorporating error handling, automated partitioning for parallel execution, and support for popular extensions. Address synchronization challenges inherent in hardware-accelerated simulation.
 - **Performance Tuning**: Implement optimizations like dynamic load balancing across TT-Metal cores, memory-efficient dataflows, and hybrid CPU-AI workflows to achieve consistent speedups (e.g., 5-20x for typical designs, up to 50x for highly parallel architectures).
@@ -202,7 +202,7 @@ Building on the POC, transition to full system engineering for stability and sca
 
 This phase, spanning 9-15 months, culminates in an alpha release: a stable, open-source package deployable on single Tenstorrent devices, with documentation and APIs for early adopter feedback.
 
-#### Phase 3: Initial Release and Market Entry
+### Phase 3: Initial Release and Market Entry
 Launch the system as a beta version, focusing on usability and feedback loops:
 - **Packaging and Distribution**: Release via GitHub or platforms like PyPI, with pre-built binaries, cloud compatibility (e.g., AWS/GCP instances with TT hardware), and user-friendly interfaces (e.g., GUI for waveform analysis).
 - **Community Building**: Host webinars, contribute to open-source EDA forums (e.g., CHIPS Alliance), and gather metrics on adoption to refine the roadmap.
@@ -210,7 +210,7 @@ Launch the system as a beta version, focusing on usability and feedback loops:
 
 Target a 1.0 release within 18-24 months from POC start, positioning it as a viable alternative to proprietary tools for mid-tier users and specific use cases.
 
-#### Post-Release: Expansion and Ecosystem Growth
+### Post-Release: Expansion and Ecosystem Growth
 Once established, evolve the system into a comprehensive platform through iterative enhancements and partnerships:
 - **Functionality Expansion**: Add advanced features like multi-device orchestration for billion-gate simulations, AI-assisted debugging (e.g., anomaly detection in waveforms), and support for emerging HDL standards. Consider entering the universe of mixed-signal designs where feasible.
 - **Hardware Offerings**: Scale to Tenstorrent clusters (e.g., multi-card setups or cloud-based farms) for hyperscale workloads, potentially collaborating on custom TT hardware variants optimized for simulation (e.g., enhanced dataflow engines).
@@ -220,7 +220,7 @@ Once established, evolve the system into a comprehensive platform through iterat
 
 This roadmap not only transforms a POC into a production-grade system but also fosters an open, collaborative future for HDL simulation, ultimately shortening design cycles and lowering barriers in the multi-billion-dollar EDA market.
 
-### Open-Source HDL/RTL Simulators Comparison
+## Open-Source HDL/RTL Simulators Comparison
 
 Here is an extended comparison table of open-source HDL/RTL simulators. The primary focus remains on those with multi-core simulation support, which are crucial for accelerated simulations on massively parallel hardware like Tenstorrent's TT-Metal AI accelerator. For completeness, other open-source simulators are included with minimal details, as they lack multi-core support and are less relevant to the POC project.
 
@@ -242,11 +242,11 @@ Here is an extended comparison table of open-source HDL/RTL simulators. The prim
 | VeriWell | Verilog | GPL-2.0 | <span style="color:red">No</span> | None | Partial compliance; outdated. | No |
 | FreeHDL | VHDL | GPL-2.0 | <span style="color:red">No</span> | None | Basic VHDL; incomplete. | No |
 
-### Project Goals
+## Project Goals
 
 The "hdl-simulation-accelerated" project has a set of well-defined goals that align with its role as an open-source research initiative. These goals can be categorized into short-term (proof-of-concept and foundational development) and long-term (scalability and broader impact) objectives. Here's a structured breakdown:
 
-#### Short-Term Goals:
+### Short-Term Goals:
 1. **Demonstrate Feasibility of Hardware Acceleration for HDL Simulations**:
    - Achieve a working proof-of-concept where Verilog-based HDL simulations run on AI accelerator hardware, specifically Tenstorrent's TT-Metal platform. This includes successfully executing simple designs (e.g., the minimal ripple divider) on real hardware to validate the acceleration hypothesis.
 
@@ -262,7 +262,7 @@ The "hdl-simulation-accelerated" project has a set of well-defined goals that al
    - Outline a multi-phase roadmap (in ROADMAP.md) covering development from basic examples to advanced tools and hardware testing.
    - Create a detailed, task-oriented plan (in TTMRTL_PLAN.md, structured like Jira tickets) for TT-Metal RTL integration, including steps for converter development, validation, and community engagement.
 
-#### Long-Term Goals:
+### Long-Term Goals:
 1. **Scale to Complex, Large-Scale Simulations**:
    - Extend the acceleration framework to handle more intricate digital circuit designs, progressing from simple examples to industry-scale simulations (e.g., billion-gate SoCs), leveraging TT-Metal's massive parallelism for significant speedups.
 
@@ -275,35 +275,35 @@ The "hdl-simulation-accelerated" project has a set of well-defined goals that al
 
 Prioritize these goals in the repository's structure, with immediate focus on proof-of-concept achievements (e.g., hardware execution of examples) and foundational tools, while the hint at future expansions.
 
-### Reasoning Behind the Goals
+## Reasoning Behind the Goals
 
 The goals are rooted in addressing key challenges in HDL simulation and hardware verification, while capitalizing on emerging opportunities in AI hardware and open-source development. The reasoning can be broken down into problem-solving, technological, and strategic aspects, inferred from the project's overview, methods, and achievements:
 
-#### Problem-Solving Rationale:
+### Problem-Solving Rationale:
 - **Bottlenecks in Traditional HDL Simulation**: Conventional CPU-based simulators like Verilator, while efficient and open-source, become computationally intensive and slow for complex designs (e.g., large-scale SoCs with millions of gates). Verification often consumes 50-70% of chip development time, leading to delays in design cycles. The project aims to accelerate this by offloading simulations to massively parallel AI hardware, which excels at handling dataflow and tensor-like operations inherent in gate-level logic.
 - **Need for Scalability and Speed**: As digital circuits grow in complexity (driven by AI, 5G, and automotive applications), pure software simulation hits limits. By targeting AI accelerators like TT-Metal, the project seeks to enable faster cycle-accurate simulations, potentially reducing verification time from days to hours.
 
-#### Technological Rationale:
+### Technological Rationale:
 - **Leveraging Verilator and TT-Metal Synergies**: Verilator's ability to compile Verilog into optimized C++ makes it an ideal base for acceleration, as the generated code can be adapted to parallel kernels. TT-Metal's architecture (designed for AI workloads with high parallelism) is well-suited for simulating combinatorial and sequential logic in HDL, allowing for distributed computation across tensors. The conversion tool and integration goals stem from the need to bridge these disparate domains—traditional EDA tools and modern AI hardware—creating a novel hybrid approach.
 - **Reproducibility and Accessibility**: Hardware-related projects often suffer from setup inconsistencies. The Docker environment and submodule integration ensure easy adoption, making the project practical for education and research. Examples with testbenches provide hands-on learning, reasoning that users (e.g., students, researchers) need tangible starting points to experiment.
 - **Open-Source Emphasis**: By keeping everything open-source and "as-is," the project avoids proprietary lock-in (common in commercial EDA tools like Cadence or Synopsys), encouraging innovation and customization. This aligns with the growing trend of open ecosystems in hardware design (e.g., RISC-V), where community input can drive improvements.
 
-#### Strategic Rationale:
+### Strategic Rationale:
 - **Research and Educational Focus**: The project positions itself as a platform for exploring high-performance computing in verification, not a commercial product. Goals like the roadmap and planning documents reflect a phased, iterative approach to build momentum, starting with proofs-of-concept to attract contributors and validate ideas before scaling.
 - **Innovation in EDA-AI Intersection**: With AI accelerators becoming ubiquitous, there's untapped potential to repurpose them for non-AI tasks like simulation. Achievements like hardware execution and tool development serve as milestones to demonstrate viability, potentially influencing broader adoption in chip design workflows.
 - **Community and Future-Proofing**: Encouraging contributions ensures sustainability, while the non-production status manages expectations. The reasoning here is to spark interest in accelerated verification, paving the way for future benchmarks, optimizations, and integrations that could impact fields like embedded systems and custom silicon development.
 
 In summary, the goals are designed to solve real-world pain points in HDL simulation through innovative hardware-software integration, with reasoning grounded in efficiency gains, technological fit, and open collaboration. This positions the project as a forward-looking initiative in the evolving landscape of hardware design tools.
 
-### Proof-of-Concept Development Path
+## Proof-of-Concept Development Path
 
-#### Overview
+### Overview
 
 The development of the "hdl-simulation-accelerated" project adopted an exploratory, research-oriented methodology, navigating the challenges of pioneering HDL simulation acceleration on AI hardware like Tenstorrent's TT-Metal platform. This path was non-linear, shaped by ongoing discoveries, iterative testing, and adaptive refinements to align with practical limitations and emerging insights.
 
 The process unfolded across logical phases, each building on the last to achieve key milestones.
 
-#### 1. Initial Research and Toolchain Exploration
+### 1. Initial Research and Toolchain Exploration
 
 * **Objective**: Select an open-source HDL simulator suitable for parallel execution and hardware acceleration, focusing on extensibility.
 * **Approach**:
@@ -314,7 +314,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Verilator's modular C++ output serves as an ideal intermediary for mapping to TT-Metal's kernel framework, enabling efficient adaptation without full redesign.
 
-#### 2. Environment Setup and Reproducibility
+### 2. Environment Setup and Reproducibility
 
 * **Objective**: Create a consistent, cross-platform setup to eliminate dependency issues and facilitate reliable experimentation.
 * **Approach**:
@@ -325,7 +325,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Ensured reproducibility for users and researchers, simplifying onboarding while maintaining consistency across diverse systems.
 
-#### 3. Progressive Example Development
+### 3. Progressive Example Development
 
 * **Objective**: Establish a graduated set of HDL designs to test and validate the acceleration workflow at increasing levels of complexity.
 * **Approach**:
@@ -336,7 +336,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Served as both an educational tool and a robust testbed, enabling incremental validation and debugging of the overall system.
 
-#### 4. Verilator Output Analysis and Conversion Tool Creation
+### 4. Verilator Output Analysis and Conversion Tool Creation
 
 * **Objective**: Automate the translation of Verilator-generated C++ code into TT-Metal-compatible compute kernels.
 * **Approach**:
@@ -347,7 +347,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Validated automated conversion feasibility, reducing manual effort and paving the way for broader scalability in HDL acceleration.
 
-#### 5. Runtime Framework Substitution
+### 5. Runtime Framework Substitution
 
 * **Objective**: Adapt Verilator's simulation code to operate within TT-Metal's constrained environment, bypassing standard C++ runtime limitations.
 * **Approach**:
@@ -358,7 +358,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * TT-Metal's architecture supports direct porting of most logic with runtime adaptations, enhancing portability and reducing overhead.
 
-#### 6. TT-Metal Integration and Hardware Demonstration
+### 6. TT-Metal Integration and Hardware Demonstration
 
 * **Objective**: Demonstrate HDL simulation execution on actual Tenstorrent hardware.
 * **Approach**:
@@ -369,7 +369,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Marked a pivotal achievement: empirical proof of Verilog simulations on AI accelerators, transitioning from concept to tangible results.
 
-#### 7. Host-to-Kernel Communication Experiments
+### 7. Host-to-Kernel Communication Experiments
 
 * **Objective**: Enable seamless data exchange between the host CPU and TT-Metal kernels for interactive simulations.
 * **Approach**:
@@ -380,7 +380,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Confirmed TT-Metal's suitability for dynamic, verification-focused workflows, essential for practical EDA applications.
 
-#### 8. Documentation, Planning, and Community Enablement
+### 8. Documentation, Planning, and Community Enablement
 
 * **Objective**: Render the project accessible, extensible, and primed for collaboration in education and research.
 * **Approach**:
@@ -391,18 +391,18 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Reduced entry barriers while providing a structured path for future enhancements, fostering open-source growth.
 
-#### Summary
+### Summary
 
 The proof-of-concept path for the "hdl-simulation-accelerated" project was defined by targeted research, incremental builds, and breakthrough validations. Each phase advanced clear objectives through practical experimentation, culminating in a foundational platform ready for optimization and community expansion in the evolving field of hardware-accelerated simulation.
 
-### Achievements to Date
+## Achievements to Date
 
-#### Overview
+### Overview
 
 Despite the ambitious scope and inherent uncertainties of this research-oriented project, the “hdl-simulation-accelerated” initiative has accomplished several notable milestones. The following achievements validate both the technical feasibility and the future potential of accelerating HDL simulation on AI hardware platform - Tenstorrent’s TT-Metal. These outcomes provide a solid foundation for further development, benchmarking, and real-world adoption.
 
 
-#### 1. **Proof-of-Concept Demonstration on Real Hardware**
+### 1. **Proof-of-Concept Demonstration on Real Hardware**
 
 * **Key Milestone:** Successfully executed Verilog HDL simulations—converted via Verilator—on Tenstorrent TT-Metal hardware.
 * **Details:**
@@ -412,7 +412,7 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 * **Impact:** Validates the central hypothesis and demonstrates hardware acceleration beyond conventional CPU-based simulation.
 
 
-#### 2. **Automated Conversion Tool Development**
+### 2. **Automated Conversion Tool Development**
 
 * **Key Milestone:** Created `verilator2ttmetal.py`, a Python-based converter that translates Verilator-generated C++ code into TT-Metal compute kernels.
 * **Details:**
@@ -422,7 +422,7 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 * **Impact:** Lowers the barrier for hardware acceleration, enabling rapid migration of new HDL projects and encouraging experimentation.
 
 
-#### 3. **Integration into Tenstorrent’s Official Ecosystem**
+### 3. **Integration into Tenstorrent’s Official Ecosystem**
 
 * **Key Milestone:** Incorporated the project as a submodule in the official TT-Metal repository.
 * **Details:**
@@ -431,7 +431,7 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 * **Impact:** Expands project accessibility, fosters collaboration, and signals recognition by the hardware vendor.
 
 
-#### 4. **Comprehensive Suite of HDL Simulation Examples**
+### 4. **Comprehensive Suite of HDL Simulation Examples**
 
 * **Key Milestone:** Developed and documented a diverse collection of HDL examples, progressing from basic modules to advanced dataflow designs.
 * **Details:**
@@ -441,7 +441,7 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 * **Impact:** Serves as both an educational resource and a robust testbed for future research and toolchain validation.
 
 
-#### 5. **End-to-End Reproducible Environment**
+### 5. **End-to-End Reproducible Environment**
 
 * **Key Milestone:** Established a Docker-based, fully reproducible development and simulation environment.
 * **Details:**
@@ -451,7 +451,7 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 * **Impact:** Greatly simplifies onboarding, increases reliability, and enables repeatable research.
 
 
-#### 6. **Documentation and Planning Infrastructure**
+### 6. **Documentation and Planning Infrastructure**
 
 * **Key Milestone:** Produced detailed project documentation and multi-phase planning resources.
 * **Details:**
@@ -461,7 +461,7 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 * **Impact:** Enhances transparency, invites community involvement, and provides a clear vision for ongoing and future development.
 
 
-#### 7. **Bidirectional Host-to-Kernel Communication Demonstrations**
+### 7. **Bidirectional Host-to-Kernel Communication Demonstrations**
 
 * **Key Milestone:** Demonstrated and validated communication between simulation host (CPU) and TT-Metal compute kernels.
 * **Details:**
@@ -470,7 +470,7 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 * **Impact:** Proves TT-Metal’s capability for interactive simulation, not just batch processing—an important step for practical EDA workflow integration.
 
 
-#### 8. **Community-Ready, Open-Source Orientation**
+### 8. **Community-Ready, Open-Source Orientation**
 
 * **Key Milestone:** Project released under an open-source license, welcoming feedback and contributions.
 * **Details:**
@@ -479,32 +479,32 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 * **Impact:** Lays the groundwork for broader adoption, third-party extension, and academic/industry collaboration.
 
 
-#### Summary Table of Achievements
+### Summary Table of Achievements
 
-| Area                          | Status                        | Details/Examples                                          |
-| -- | - |  |
-| Hardware-accelerated HDL sim  | ✅ Working POC                | minimal\_divider, arbitrary\_struct\_dataflow on TT-Metal |
-| Automated code conversion     | ✅ Tool completed             | verilator2ttmetal.py, ongoing improvements                |
-| TT-Metal integration          | ✅ Submodule                  | Part of Tenstorrent’s build ecosystem                     |
-| Example set                   | ✅ 12+ diverse designs        | Single-file, multi-file, protocol, and dataflow examples  |
-| Reproducible environment      | ✅ Docker container           | Ubuntu LTS, Verilator, TT-Metal, Make, GTKWave            |
-| Host-kernel communication     | ✅ Proven in examples         | Data exchange, pipeline simulation                        |
-| Documentation and planning    | ✅ Comprehensive              | Overall and per-component documentation                   |
-| Community engagement          | ✅ Ready for collaboration    | Open license, contribution guidelines                     |
+| Area                          | Status                      | Details/Examples                                         |
+|-------------------------------|-----------------------------|---------------------------------------------------------|
+| Hardware-accelerated HDL sim  | ✅ Working POC               | minimal_divider, arbitrary_struct_dataflow on TT-Metal   |
+| Automated code conversion     | ✅ Tool completed            | verilator2ttmetal.py, ongoing improvements               |
+| TT-Metal integration          | ✅ Submodule                 | Part of Tenstorrent’s build ecosystem                    |
+| Example set                   | ✅ 12+ diverse designs       | Single-file, multi-file, protocol, and dataflow examples |
+| Reproducible environment      | ✅ Docker container          | Ubuntu LTS, Verilator, TT-Metal, Make, GTKWave           |
+| Host-kernel communication     | ✅ Proven in examples        | Data exchange, pipeline simulation                       |
+| Documentation and planning    | ✅ Comprehensive             | Overall and per-component documentation                  |
+| Community engagement          | ✅ Ready for collaboration   | Open license, contribution guidelines                    |
 
 
-#### Conclusion
+### Conclusion
 
 These achievements collectively demonstrate that the "hdl-simulation-accelerated" project has moved from concept to reality—providing a reproducible, extensible platform for accelerating HDL simulation on next-generation Tenstorrent's AI hardware. The foundation laid so far enables deeper hardware integration, performance benchmarking, and future expansion, while encouraging community-driven research and innovation in the EDA-AI intersection.
 
-### Examples and Evaluation
+## Examples and Evaluation
 
-#### Overview
+### Overview
 
 A core strength of the “hdl-simulation-accelerated” project is its structured suite of HDL simulation examples, spanning a spectrum from simple, single-module designs to advanced, multi-file projects with real-world protocols and TT-Metal acceleration. This section details the design, evaluation, and integration status of these examples, illustrating both the technical breadth and the practical impact of the proof-of-concept effort.
 
 
-#### 1. **Examples Directory Structure**
+### 1. **Examples Directory Structure**
 
 The `examples/` directory is organized to provide incremental learning and to serve as a robust testbed for toolchain development. Each example includes:
 
@@ -517,7 +517,7 @@ The `examples/` directory is organized to provide incremental learning and to se
 Examples are classified as **single-file** (basic modules) or **multi-file** (complex projects with separate DUT and testbench).
 
 
-#### 2. **Comprehensive Examples Table**
+### 2. **Comprehensive Examples Table**
 
 | Example Name                | Plan Ref   | DUT Lang | TB Lang | Structure   | Sim Type                | Build System     | TT-Metal Integration   | Verification Level       | Key Features                                  |
 | --------------------------- | ---------- | -------- | ------- | ----------- | ----------------------- | ---------------- | ---------------------- | ------------------------ | --------------------------------------------- |
@@ -535,20 +535,20 @@ Examples are classified as **single-file** (basic modules) or **multi-file** (co
 | arbitrary\_struct\_dataflow | Advanced   | C++      | C++     | Multi-file  | Full verification       | TT-Metal build   | ✅ Working              | Pipeline, 100% integrity | Custom dataflow on TT-Metal, complex pipeline |
 
 
-#### 3. **Evaluation by Category**
+### 3. **Evaluation by Category**
 
-##### A. **File Structure and Complexity**
+#### A. **File Structure and Complexity**
 
 * **Single-file examples:** Ideal for basic concepts and rapid iteration. Good for onboarding and early-stage testing.
 * **Multi-file examples:** Emulate professional EDA project structure, enabling more realistic verification and stressing the conversion workflow.
 
-##### B. **Simulation and Verification Types**
+#### B. **Simulation and Verification Types**
 
 * **Waveform only:** Quick functional checks, especially in early integration (e.g., minimal\_divider).
 * **Waveform + Verification:** Combines simulation output with automated pass/fail checks (e.g., counter overflow, protocol adherence).
 * **Full/Comprehensive Verification:** Includes randomized testing, edge case coverage, and standards compliance, providing high confidence in design and toolchain.
 
-##### C. **TT-Metal Integration Status**
+#### C. **TT-Metal Integration Status**
 
 * **No Integration:** Pure Verilator CPU-based simulation (majority).
 * **Partial Integration:** Led\_blinker and uart\_tx\_basic (prototype stage, ongoing development).
@@ -556,17 +556,17 @@ Examples are classified as **single-file** (basic modules) or **multi-file** (co
 
   * **arbitrary\_struct\_dataflow** also demonstrates custom C++ kernel capabilities, data integrity verification, and pipeline processing—critical for future scalability.
 
-##### D. **Verification Complexity**
+#### D. **Verification Complexity**
 
 * Ranges from basic (timing/edge check) to advanced (protocol compliance, randomized stress testing, multi-stage pipelines).
 
-##### E. **Educational and Research Value**
+#### E. **Educational and Research Value**
 
 * Examples progress in complexity, supporting both incremental learning and robust toolchain evaluation.
 * Serve as reference cases for future TT-Metal integration, optimization, and benchmarking.
 
 
-#### 4. **Key Findings and Impact**
+### 4. **Key Findings and Impact**
 
 * **TT-Metal Integration Progress:**
   4 out of 12 examples show partial or complete hardware acceleration, demonstrating migration potential and technical feasibility.
@@ -580,7 +580,7 @@ Examples are classified as **single-file** (basic modules) or **multi-file** (co
   The structured example suite lowers barriers for new contributors and enables scalable experimentation for researchers and EDA tool developers.
 
 
-#### 5. **Recommendations for Enhancement**
+### 5. **Recommendations for Enhancement**
 
 * **Expand TT-Metal Coverage:**
   Continue converting additional examples, especially multi-file and protocol-oriented designs, to fully leverage AI hardware.
@@ -594,41 +594,41 @@ Examples are classified as **single-file** (basic modules) or **multi-file** (co
   Enhance distributed/pipeline simulation with binary communication for improved speed and robustness.
 
 
-#### Conclusion
+### Conclusion
 
 The examples and their evaluation highlight not only the technical achievements of the project to date, but also the robust foundation established for future scaling and community-driven innovation. This curated suite of HDL simulation cases proves both the depth and the adaptability of the “hdl-simulation-accelerated” approach, demonstrating readiness for ongoing research, real-world adoption, and educational outreach.
 
-### Limitations and Challenges
+## Limitations and Challenges
 
-#### Overview
+### Overview
 
 As with any pioneering research project operating at the intersection of hardware acceleration, electronic design automation (EDA), and open-source development, “hdl-simulation-accelerated” has encountered a range of limitations and challenges. Documenting these issues is essential—not only for transparency, but also for informing future development, guiding community contributions, and managing stakeholder expectations.
 
 
-#### 1. **Technical Limitations**
+### 1. **Technical Limitations**
 
-##### A. **Performance Benchmarking Not Yet Realized**
+#### A. **Performance Benchmarking Not Yet Realized**
 
 * **Status:**
   The current proof-of-concept (POC) stage has prioritized functional correctness and integration over performance optimization.
 * **Impact:**
   No quantitative benchmarks (e.g., simulation speedup, resource utilization) have been gathered or published, leaving the exact acceleration benefits to be evaluated in future phases.
 
-##### B. **Partial Hardware Integration**
+#### B. **Partial Hardware Integration**
 
 * **Status:**
   Only a subset of the provided HDL examples (notably, “minimal\_divider” and “arbitrary\_struct\_dataflow”) are fully ported and validated on TT-Metal hardware.
 * **Impact:**
   Most examples still rely on CPU-based simulation, with partial or prototype TT-Metal support in a few cases (e.g., “led\_blinker”, “uart\_tx\_basic”). Broader coverage will require additional engineering.
 
-##### C. **Limited Support for Complex HDL Constructs**
+#### C. **Limited Support for Complex HDL Constructs**
 
 * **Status:**
   The current conversion tool and runtime adaptations are best suited to relatively simple combinatorial and sequential logic.
 * **Impact:**
   More advanced Verilog features, large-scale multi-module designs, and vendor-specific constructs may require significant enhancement to the conversion tool and runtime library.
 
-##### D. **TT-Metal Platform Constraints**
+#### D. **TT-Metal Platform Constraints**
 
 * **Status:**
   TT-Metal hardware and software are primarily designed for AI and tensor workloads—not for cycle-accurate, event-driven HDL simulation.
@@ -636,23 +636,23 @@ As with any pioneering research project operating at the intersection of hardwar
   Achieving high simulation fidelity, supporting full language semantics, and optimizing for timing-accurate results may be constrained by hardware architecture and available APIs.
 
 
-#### 2. **Developmental and Process Challenges**
+### 2. **Developmental and Process Challenges**
 
-##### A. **Exploratory Research Nature**
+#### A. **Exploratory Research Nature**
 
 * **Status:**
   The project began with no established playbook, roadmap, or direct precedent in the community.
 * **Impact:**
   Required extensive exploration, iterative design, and risk-taking. Progress was sometimes unpredictable and non-linear.
 
-##### B. **Single-Developer Limitation**
+#### B. **Single-Developer Limitation**
 
 * **Status:**
   The initial phases—including environment setup, converter design, example creation, and documentation—were undertaken by a single developer.
 * **Impact:**
   Progress was necessarily constrained by available human resources, and cross-validation or parallelization of efforts was limited.
 
-##### C. **Toolchain Versioning and Reproducibility Issues**
+#### C. **Toolchain Versioning and Reproducibility Issues**
 
 * **Status:**
   Variations in toolchain versions (e.g., Verilator, Ubuntu, TT-Metal SDK) initially caused inconsistent builds and simulation results.
@@ -660,16 +660,16 @@ As with any pioneering research project operating at the intersection of hardwar
   Addressed via Dockerization and version pinning, but ongoing maintenance and compatibility testing are required.
 
 
-#### 3. **Community and Ecosystem Considerations**
+### 3. **Community and Ecosystem Considerations**
 
-##### A. **Early Stage, Limited Adoption**
+#### A. **Early Stage, Limited Adoption**
 
 * **Status:**
   As a research-oriented proof-of-concept, the project has not yet achieved significant community adoption or external validation.
 * **Impact:**
   Feature requests, bug reports, and third-party contributions remain limited. Broader impact will depend on increased visibility and community engagement.
 
-##### B. **Documentation and Usability**
+#### B. **Documentation and Usability**
 
 * **Status:**
   While documentation is extensive, the learning curve for new contributors remains high, especially for those unfamiliar with both HDL and AI hardware development.
@@ -677,7 +677,7 @@ As with any pioneering research project operating at the intersection of hardwar
   Onboarding may require further guides, tutorials, and example walkthroughs.
 
 
-#### 4. **Open Problems and Future Technical Challenges**
+### 4. **Open Problems and Future Technical Challenges**
 
 * **Performance and Scalability:**
   Quantitative performance benchmarking, scaling to large multi-million gate designs, and demonstrating competitive speedups are key open challenges.
@@ -687,18 +687,18 @@ As with any pioneering research project operating at the intersection of hardwar
   Improving portability and abstraction layers to support other AI accelerators or heterogeneous hardware platforms is an opportunity for broader impact.
 
 
-#### Conclusion
+### Conclusion
 
 These limitations and challenges reflect both the complexity and the innovative nature of the “hdl-simulation-accelerated” project. Rather than signifying shortcomings, they represent valuable lessons learned and areas for targeted improvement in subsequent development phases. Acknowledging these constraints transparently enables better planning, realistic expectations, and invites focused community collaboration to overcome them.
 
-### Next Stages and Future Work
+## Next Stages and Future Work
 
-#### Overview
+### Overview
 
 With foundational milestones achieved and proof-of-concept success established, “hdl-simulation-accelerated” is now well-positioned to transition from feasibility exploration to practical application, performance benchmarking, and wider adoption. The next phases aim to address current limitations, expand TT-Metal integration, and grow the project's community and ecosystem impact.
 
 
-#### 1. **Expand TT-Metal Integration Across Example Suite**
+### 1. **Expand TT-Metal Integration Across Example Suite**
 
 * **Goal:**
   Port additional HDL examples—including multi-file, protocol, and complex designs—to TT-Metal, demonstrating broader applicability and technical depth.
@@ -711,7 +711,7 @@ With foundational milestones achieved and proof-of-concept success established, 
   Accelerate a greater variety of digital logic, providing compelling evidence for TT-Metal’s versatility.
 
 
-#### 2. **Performance Benchmarking and Optimization**
+### 2. **Performance Benchmarking and Optimization**
 
 * **Goal:**
   Move beyond functional correctness to demonstrate concrete performance improvements and resource utilization benefits.
@@ -724,7 +724,7 @@ With foundational milestones achieved and proof-of-concept success established, 
   Provide quantifiable metrics that validate the value of hardware acceleration, supporting technical and business cases for adoption.
 
 
-#### 3. **Support for Advanced HDL Constructs and Larger Designs**
+### 3. **Support for Advanced HDL Constructs and Larger Designs**
 
 * **Goal:**
   Enable the simulation of more complex, industry-scale circuits—approaching the needs of real-world ASIC/FPGA verification.
@@ -737,7 +737,7 @@ With foundational milestones achieved and proof-of-concept success established, 
   Move from educational/toy designs to industry-relevant use cases, broadening project impact.
 
 
-#### 4. **Verification, Validation, and Testing Enhancements**
+### 4. **Verification, Validation, and Testing Enhancements**
 
 * **Goal:**
   Increase the reliability, repeatability, and thoroughness of simulations on TT-Metal.
@@ -750,7 +750,7 @@ With foundational milestones achieved and proof-of-concept success established, 
   Deliver higher confidence in simulation correctness and facilitate continuous improvement.
 
 
-#### 5. **Documentation, Usability, and Community Growth**
+### 5. **Documentation, Usability, and Community Growth**
 
 * **Goal:**
   Lower barriers to entry for new users, researchers, and contributors; foster an open and collaborative ecosystem.
@@ -764,7 +764,7 @@ With foundational milestones achieved and proof-of-concept success established, 
   Build a vibrant, sustainable community around accelerated HDL simulation and TT-Metal hardware.
 
 
-#### 6. **Broaden Hardware and Ecosystem Compatibility**
+### 6. **Broaden Hardware and Ecosystem Compatibility**
 
 * **Goal:**
   Make the solution portable and extensible to other AI accelerator platforms and heterogeneous environments.
@@ -776,7 +776,7 @@ With foundational milestones achieved and proof-of-concept success established, 
   Enable wider adoption and future-proof the technology against evolving hardware trends.
 
 
-#### 7. **Prepare for Production-Readiness and Real-World Applications**
+### 7. **Prepare for Production-Readiness and Real-World Applications**
 
 * **Goal:**
   Transition from research prototype to practical, scalable solution.
@@ -789,7 +789,7 @@ With foundational milestones achieved and proof-of-concept success established, 
   Position the project for adoption in professional chip design and verification workflows.
 
 
-#### Conclusion
+### Conclusion
 
 By executing on these next stages, “hdl-simulation-accelerated” will mature from a proof-of-concept initiative into a robust, extensible platform for accelerated HDL simulation—unlocking new possibilities for both the EDA and AI hardware communities. With continued technical innovation and community involvement, the project is poised to drive significant progress at the intersection of hardware design, verification, and high-performance computing.
 
