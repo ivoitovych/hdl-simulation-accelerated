@@ -39,3 +39,4 @@ The choice depends on project scale: startups might stick to software for cost r
 The HDL/RTL simulation landscape is evolving rapidly amid chip shortages, AI booms, and open-source trends. Designs now routinely exceed 100 billion transistors, pushing for faster tools—e.g., cloud-based simulation for distributed processing. Open-source initiatives like Verilator and RISC-V are democratizing access, enabling students and small teams to innovate without proprietary lock-in. Meanwhile, integration with AI hardware is a hot area, repurposing tensor processors for simulation acceleration to handle data-intensive verification. Challenges include rising power consumption in simulations and the need for better automation, but advancements promise shorter design cycles and more reliable hardware.
 
 This foundation sets the stage for our project, which builds on these concepts to accelerate simulations using innovative hardware-software integration.
+
