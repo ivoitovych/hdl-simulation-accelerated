@@ -1,12 +1,12 @@
-### Proof-of-Concept Development Path
+## Proof-of-Concept Development Path
 
-#### Overview
+### Overview
 
 The development of the "hdl-simulation-accelerated" project adopted an exploratory, research-oriented methodology, navigating the challenges of pioneering HDL simulation acceleration on AI hardware like Tenstorrent's TT-Metal platform. This path was non-linear, shaped by ongoing discoveries, iterative testing, and adaptive refinements to align with practical limitations and emerging insights.
 
 The process unfolded across logical phases, each building on the last to achieve key milestones.
 
-#### 1. Initial Research and Toolchain Exploration
+### 1. Initial Research and Toolchain Exploration
 
 * **Objective**: Select an open-source HDL simulator suitable for parallel execution and hardware acceleration, focusing on extensibility.
 * **Approach**:
@@ -17,7 +17,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Verilator's modular C++ output serves as an ideal intermediary for mapping to TT-Metal's kernel framework, enabling efficient adaptation without full redesign.
 
-#### 2. Environment Setup and Reproducibility
+### 2. Environment Setup and Reproducibility
 
 * **Objective**: Create a consistent, cross-platform setup to eliminate dependency issues and facilitate reliable experimentation.
 * **Approach**:
@@ -28,7 +28,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Ensured reproducibility for users and researchers, simplifying onboarding while maintaining consistency across diverse systems.
 
-#### 3. Progressive Example Development
+### 3. Progressive Example Development
 
 * **Objective**: Establish a graduated set of HDL designs to test and validate the acceleration workflow at increasing levels of complexity.
 * **Approach**:
@@ -39,7 +39,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Served as both an educational tool and a robust testbed, enabling incremental validation and debugging of the overall system.
 
-#### 4. Verilator Output Analysis and Conversion Tool Creation
+### 4. Verilator Output Analysis and Conversion Tool Creation
 
 * **Objective**: Automate the translation of Verilator-generated C++ code into TT-Metal-compatible compute kernels.
 * **Approach**:
@@ -50,7 +50,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Validated automated conversion feasibility, reducing manual effort and paving the way for broader scalability in HDL acceleration.
 
-#### 5. Runtime Framework Substitution
+### 5. Runtime Framework Substitution
 
 * **Objective**: Adapt Verilator's simulation code to operate within TT-Metal's constrained environment, bypassing standard C++ runtime limitations.
 * **Approach**:
@@ -61,7 +61,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * TT-Metal's architecture supports direct porting of most logic with runtime adaptations, enhancing portability and reducing overhead.
 
-#### 6. TT-Metal Integration and Hardware Demonstration
+### 6. TT-Metal Integration and Hardware Demonstration
 
 * **Objective**: Demonstrate HDL simulation execution on actual Tenstorrent hardware.
 * **Approach**:
@@ -72,7 +72,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Marked a pivotal achievement: empirical proof of Verilog simulations on AI accelerators, transitioning from concept to tangible results.
 
-#### 7. Host-to-Kernel Communication Experiments
+### 7. Host-to-Kernel Communication Experiments
 
 * **Objective**: Enable seamless data exchange between the host CPU and TT-Metal kernels for interactive simulations.
 * **Approach**:
@@ -83,7 +83,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Confirmed TT-Metal's suitability for dynamic, verification-focused workflows, essential for practical EDA applications.
 
-#### 8. Documentation, Planning, and Community Enablement
+### 8. Documentation, Planning, and Community Enablement
 
 * **Objective**: Render the project accessible, extensible, and primed for collaboration in education and research.
 * **Approach**:
@@ -94,7 +94,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Reduced entry barriers while providing a structured path for future enhancements, fostering open-source growth.
 
-#### Summary
+### Summary
 
 The proof-of-concept path for the "hdl-simulation-accelerated" project was defined by targeted research, incremental builds, and breakthrough validations. Each phase advanced clear objectives through practical experimentation, culminating in a foundational platform ready for optimization and community expansion in the evolving field of hardware-accelerated simulation.
 

@@ -481,8 +481,8 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 
 ### Summary Table of Achievements
 
-| Area                          | Status                      | Details/Examples                                         |
-|-------------------------------|-----------------------------|---------------------------------------------------------|
+| Area                          | Status                       | Details/Examples                                         |
+|-------------------------------|------------------------------|----------------------------------------------------------|
 | Hardware-accelerated HDL sim  | ✅ Working POC               | minimal_divider, arbitrary_struct_dataflow on TT-Metal   |
 | Automated code conversion     | ✅ Tool completed            | verilator2ttmetal.py, ongoing improvements               |
 | TT-Metal integration          | ✅ Submodule                 | Part of Tenstorrent’s build ecosystem                    |

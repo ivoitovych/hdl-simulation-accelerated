@@ -1,4 +1,4 @@
-### Competitors in Hardware-Accelerated HDL/RTL Simulation and Emulation
+## Competitors in Hardware-Accelerated HDL/RTL Simulation and Emulation
 
 The market for hardware-accelerated simulation and emulation of Hardware Description Language (HDL) and Register-Transfer Level (RTL) designs is dominated by established Electronic Design Automation (EDA) vendors offering specialized hardware platforms. These tools are used to verify complex chip designs before fabrication, addressing the limitations of pure software simulation (e.g., speed bottlenecks in large-scale SoCs). Competitors primarily focus on FPGA-based emulation, processor-based systems, or hybrid approaches, with prices ranging from hundreds of thousands to millions of dollars per system. Cadence, as you mentioned, is a key player with its "desktop supercomputer"-like platforms for high-performance simulation.
 
@@ -27,7 +27,7 @@ Key competitors and their offerings include:
 Tenstorrent's hardware (e.g., Grayskull e150, Wormhole chips) isn't currently marketed for HDL/RTL simulation, but its scalable, RISC-V-based architecture with dataflow processing could be adapted for parallel simulation workloads, especially given its open-source software stack. This positions a TT-based solution as a disruptive, open alternative to proprietary systems, potentially running open-source simulators like Verilator on TT hardware for cost-effective acceleration. No direct competitors use similar AI-oriented hardware for this, but GPU-based setups (e.g., NVIDIA) are the closest analog.
 
 
-### Potential Clients
+## Potential Clients
 
 Potential clients for a Tenstorrent-based HDL/RTL simulation system (with open-source SW) include organizations involved in chip design, where verification accounts for 50-70% of development time. The open-source aspect appeals to academia, startups, and companies seeking vendor independence, lower costs, and customizability, while TT hardware's scalability suits high-performance needs.
 
@@ -43,7 +43,7 @@ Potential clients for a Tenstorrent-based HDL/RTL simulation system (with open-s
 Intel is the largest EDA spender, followed by Samsung and TSMC, indicating strong demand from foundries as well.
 
 
-### Market Volume and Sales Potential
+## Market Volume and Sales Potential
 
 The broader EDA market (including simulation/emulation) is growing rapidly due to AI, 5G, and automotive chip complexity. Verification tools, including hardware emulation, represent ~30-40% of EDA spend, driven by the need for faster cycles amid shrinking node sizes.
 
