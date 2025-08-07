@@ -40,13 +40,13 @@ IMPLEMENT_TT_METAL_VERILATOR_KERNEL_CUSTOM(Vuart_tx_basic_tb, Vuart_tx_basic_tb_
             root->uart_tx_basic_tb__DOT__clk = 0;
         }
     }
-    
+
     // Reset for first 2 cycles
     if (cycle < 2) {
         root->uart_tx_basic_tb__DOT__rst_n = 1;
     } else {
         root->uart_tx_basic_tb__DOT__rst_n = 0;
     }
-    
+
     return cycle < 1000; // Run for 1000 cycles
 })

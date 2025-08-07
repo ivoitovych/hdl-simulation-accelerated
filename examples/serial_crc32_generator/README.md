@@ -25,7 +25,7 @@ This implementation uses the standard IEEE 802.3 polynomial:
 - x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x + 1
 - Represented as: 0x04C11DB7
 
-**Note:** This implementation uses the standard CRC-32 polynomial in *reflected* (LSB-first) form: `0xEDB88320` (the bit-reversed version of `0x04C11DB7`).  
+**Note:** This implementation uses the standard CRC-32 polynomial in *reflected* (LSB-first) form: `0xEDB88320` (the bit-reversed version of `0x04C11DB7`).
 This is the standard for most software and serial hardware CRC-32 generators.
 
 ### Processing Method
@@ -38,7 +38,7 @@ The module processes data one bit at a time, suitable for serial communication a
    - If feedback is 1, XORs the CRC register with the polynomial.
 3. Returns the complemented value of the final CRC register.
 
-**Bit Order:**  
+**Bit Order:**
 Data bytes must be fed **least significant bit first (LSB-first)**. If your data source transmits data MSB-first (most common in Ethernet frames), you need to reverse the bits in each byte before sending them to this generator.
 
 ## Usage

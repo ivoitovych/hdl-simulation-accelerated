@@ -101,7 +101,7 @@ The broader EDA market (including simulation/emulation) is growing rapidly due t
 
 - **Emulation/Simulation Sub-Market**: Estimated at USD 1-2 billion annually (based on verification's share), with hardware emulation growing at 10-15% CAGR due to demand for AI/edge chips. Open-source tools (e.g., Verilator) capture ~10-20% of simulation usage, mainly in academia/startups, but hardware integration could expand this.
 
-- **Possible Sales Volumes for TT-Based Systems**: 
+- **Possible Sales Volumes for TT-Based Systems**:
   - **Pricing Edge**: TT hardware (e.g., Wormhole dev kits at ~USD 1,000-5,000 per unit) is cheaper than Cadence/Synopsys systems (USD 1M+). A TT-based emulation setup could sell at USD 10,000-100,000 per workstation/cluster, appealing to mid-tier clients.
   - **Volume Estimate**: With 2,000-3,500 potential clients, initial adoption might target 5-10% (100-350 clients) in the first 2-3 years, focusing on open-source enthusiasts. Annual sales could reach 500-1,000 units (e.g., dev kits or clusters), generating USD 5-50 million in revenue, scaling to USD 100-200 million as AI chip design booms. This assumes differentiation via open-source SW for custom workflows, reducing lock-in.
   - **Growth Drivers**: Rising chip complexity (e.g., 100B+ transistors) and open-source momentum (e.g., RISC-V ecosystem) could boost TT's share, especially if integrated with tools like OpenLane or eSim.

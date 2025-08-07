@@ -28,18 +28,18 @@ module universal_shift_register #(
         end
         else if (enable) begin
             case (mode)
-                HOLD: 
+                HOLD:
                     q <= q;            // Hold current value
-                
+
                 SHIFT_RIGHT:
                     q <= {serial_in_right, q[WIDTH-1:1]}; // Shift right
-                
+
                 SHIFT_LEFT:
                     q <= {q[WIDTH-2:0], serial_in_left};  // Shift left
-                
+
                 LOAD:
                     q <= parallel_in;  // Parallel load
-                
+
                 default:
                     q <= q;            // Default: hold value
             endcase

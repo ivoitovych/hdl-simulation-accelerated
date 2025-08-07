@@ -6,7 +6,7 @@ A simple edge detection module that identifies rising edges, falling edges, and 
 
 This module monitors an input signal and detects transitions between clock cycles. It provides three output signals:
 - `rising_edge` - High for one cycle when input transitions from 0→1
-- `falling_edge` - High for one cycle when input transitions from 1→0  
+- `falling_edge` - High for one cycle when input transitions from 1→0
 - `any_edge` - High for one cycle when any transition occurs
 
 ## Features

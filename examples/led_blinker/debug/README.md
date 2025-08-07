@@ -4,9 +4,9 @@ This directory provides a generic test runner and debug utilities for running TT
 
 ## Contents
 
-- **test_runner.cpp**  
+- **test_runner.cpp**
   A generic C++ test runner that includes and executes a specified TT-Metal kernel source file. It calls the standard kernel entry points: `unpack_main()`, `math_main()`, and `pack_main()` within a specified namespace.
-- **dprint.h**  
+- **dprint.h**
   A lightweight debug print utility that mimics TT-Metal’s `DPRINT` macro for formatted output in simulation.
 
 ## Usage
@@ -25,7 +25,7 @@ namespace ckernel {
 
 ### 2. Build the Test Runner
 
-Compile the test runner, specifying your kernel file as a preprocessor macro (`KERNEL_FILE`).  
+Compile the test runner, specifying your kernel file as a preprocessor macro (`KERNEL_FILE`).
 **No quotes are needed** around the filename.
 
 ```sh

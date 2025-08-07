@@ -65,7 +65,7 @@ The examples directory contains various Verilog HDL simulation examples demonstr
 ### TTMRTL-001 (Single-File Examples)
 Simple self-contained designs demonstrating basic concepts:
 - Counter operations (8bit_counter)
-- Edge detection (edge_detector) 
+- Edge detection (edge_detector)
 - Timing generation (led_blinker, one_shot_pulse)
 - Frequency division (minimal_divider)
 

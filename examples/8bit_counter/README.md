@@ -101,10 +101,10 @@ module counter_16bit (
     output wire overflow,
     output wire underflow
 );
-    
+
     assign overflow = enable && (count == 16'hFFFF) && !load;
     assign underflow = enable && (count == 16'h0000) && !load;
-    
+
     always @(posedge clk) begin
         if (rst) begin
             count <= 16'h0000;
@@ -122,7 +122,7 @@ endmodule
 This example can be run within the Docker container:
 
 ```bash
-# Navigate to the project root  
+# Navigate to the project root
 cd /path/to/hdl-simulation-accelerated
 
 # Run the Docker container

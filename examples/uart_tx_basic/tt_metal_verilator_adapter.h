@@ -43,14 +43,14 @@ class VlForkSync {
 public:
     void init(int, void*) {}
     void done(const char*, int) {}
-    
+
     class JoinAwaitable {
     public:
         bool await_ready() const noexcept { return true; }
         void await_suspend(std::coroutine_handle<>) const noexcept {}
         void await_resume() const noexcept {}
     };
-    
+
     JoinAwaitable join(void*, const char*, int) {
         return JoinAwaitable{};
     }
@@ -68,7 +68,7 @@ public:
     bool empty() const { return true; }
     uint64_t nextTimeSlot() { return 0; }
     void resume() {}
-    
+
     // Coroutine delay stub
     class DelayAwaitable {
     public:
@@ -76,7 +76,7 @@ public:
         void await_suspend(std::coroutine_handle<>) const noexcept {}
         void await_resume() const noexcept {}
     };
-    
+
     DelayAwaitable delay(uint64_t, void*, const char*, int) {
         return DelayAwaitable{};
     }
@@ -103,7 +103,7 @@ class VerilatedModel {
 public:
     VerilatedModel(VerilatedContext&) {}
     virtual ~VerilatedModel() = default;
-    static VerilatedContext* threadContextp() { 
+    static VerilatedContext* threadContextp() {
         static VerilatedContext ctx;
         return &ctx;
     }
@@ -132,14 +132,14 @@ class VlTriggerScheduler {
 public:
     void resume(const char*) {}
     void commit(const char*) {}
-    
+
     class TriggerAwaitable {
     public:
         bool await_ready() const noexcept { return false; }
         void await_suspend(std::coroutine_handle<>) const noexcept {}
         void await_resume() const noexcept {}
     };
-    
+
     TriggerAwaitable trigger(int, void*, const char*, const char*, int) {
         return TriggerAwaitable{};
     }
@@ -192,32 +192,32 @@ private:
     std::unique_ptr<VerilatedContext> contextp;
     std::unique_ptr<VModel> model;
     bool m_finished = false;
-    
+
 public:
     TTMetalVerilatorRunner() {
         contextp = std::make_unique<VerilatedContext>();
         model = std::make_unique<VModel>(contextp.get(), "TOP");
     }
-    
+
     void run(uint64_t max_cycles = 1000000) {
         DPRINT << "Starting Verilator model on TT-Metal" << ENDL();
         DPRINT << "=================================" << ENDL();
-        
+
         uint64_t cycle = 0;
         while (!contextp->gotFinish() && !m_finished && cycle < max_cycles) {
             // Evaluate model
             model->eval();
-            
+
             // Check for pending events and advance time
             if (!model->eventsPending()) break;
             contextp->time(model->nextTimeSlot());
-            
+
             cycle++;
         }
-        
+
         // Final evaluation
         model->final();
-        
+
         DPRINT << "=================================" << ENDL();
         DPRINT << "Simulation completed after " << cycle << " cycles" << ENDL();
         DPRINT << "Final time: " << contextp->time() << ENDL();

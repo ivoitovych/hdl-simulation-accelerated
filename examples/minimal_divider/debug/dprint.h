@@ -26,7 +26,7 @@ struct EndlType {
     friend std::ostream& operator<<(std::ostream& os, const EndlType&) {
         return os << std::endl;
     }
-    
+
     friend DPrintStream& operator<<(DPrintStream& dp, const EndlType&) {
         std::cout << std::endl;
         return dp;

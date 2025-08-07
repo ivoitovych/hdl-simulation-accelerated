@@ -65,7 +65,7 @@ inline void eval_posedge_clk(RTLSimState* state) {
             state->div4 = !(state->div4);
         }
         }
-    
+
 }
 
 // Print current state using DPRINT
@@ -107,7 +107,7 @@ void run_rtl_simulation() {
                 sim_state.rst = 0;
                 DPRINT << "Reset deasserted at time " << simulation_time_ns << " ns" << ENDL();
             }
-            
+
 
             // Evaluate logic on positive clock edge
             eval_posedge_clk(&sim_state);
@@ -118,7 +118,7 @@ void run_rtl_simulation() {
             if (!sim_state.rst) {
                 cycles_completed++;
             }
-            
+
         }
 
         // Advance simulation time by half clock period
@@ -129,7 +129,7 @@ void run_rtl_simulation() {
             toggle_clk(&sim_state);
             simulation_time_ns += CLOCK_PERIOD_NS / 2;
         }
-        
+
     }
 
     DPRINT << "================================================================" << ENDL();

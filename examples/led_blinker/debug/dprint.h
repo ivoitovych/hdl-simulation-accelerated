@@ -9,7 +9,7 @@
 class DPrintStream {
 private:
     std::ostringstream buffer;
-    
+
 public:
     // Template operator<< to handle any type
     template<typename T>
@@ -17,13 +17,13 @@ public:
         buffer << value;
         return *this;
     }
-    
+
     // Special handling for manipulators like std::endl
     DPrintStream& operator<<(std::ostream& (*pf)(std::ostream&)) {
         buffer << pf;
         return *this;
     }
-    
+
     // Flush the buffer to stdout
     void flush() {
         std::cout << buffer.str();
@@ -31,7 +31,7 @@ public:
         buffer.str("");
         buffer.clear();
     }
-    
+
     // Get the accumulated string (for testing)
     std::string str() const {
         return buffer.str();
@@ -83,19 +83,19 @@ inline DPrintStream& DPrintStream::operator<<(const EndlType& /*endl*/) {
 #ifdef ENABLE_TIMESTAMPS
     #include <chrono>
     #include <ctime>
-    
+
     inline std::string getTimestamp() {
         auto now = std::chrono::system_clock::now();
         auto time_t = std::chrono::system_clock::to_time_t(now);
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
             now.time_since_epoch()) % 1000;
-        
+
         std::stringstream ss;
         ss << std::put_time(std::localtime(&time_t), "[%H:%M:%S");
         ss << '.' << std::setfill('0') << std::setw(3) << ms.count() << "] ";
         return ss.str();
     }
-    
+
     #define DPRINT_TS getDPRINT() << getTimestamp()
 #else
     #define DPRINT_TS DPRINT

@@ -11,11 +11,11 @@ Key components include:
   - `shift_register/`: A universal shift register supporting multiple modes (e.g., shift left/right, parallel load).
   - `simple/`: A basic 8-bit counter example with a C++ testbench.
 - **verilator2ttmetal/`: Houses the conversion tool (`verilator2ttmetal.py`) that translates Verilator-generated code into TT-Metal compute kernels, along with its own README.
-- **Supporting Files**: 
+- **Supporting Files**:
   - `Dockerfile`: Defines the environment setup.
   - `CMakeLists.txt`: Handles build integration for TT-Metal.
   - `.gitignore`: Excludes build artifacts.
-- **Documentation**: 
+- **Documentation**:
   - `README.md`: Main overview, setup instructions, and example usage.
   - `ROADMAP.md`: Outlines long-term goals (though detailed extraction was limited, it references multi-phase development from simple examples to large-scale simulations).
   - `TTMRTL_PLAN.md`: A stepwise plan (potentially Jira-inspired) for TT-Metal integration, covering tasks like converter development and hardware testing.

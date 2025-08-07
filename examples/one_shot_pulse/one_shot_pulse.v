@@ -19,7 +19,7 @@ module one_shot_pulse #(
     reg counting;
     reg pulse_active;
     reg pulse_done;  // Remember that we already generated a pulse
-    
+
     always @(posedge clk) begin
         if (rst) begin
             counter <= 0;
@@ -33,13 +33,13 @@ module one_shot_pulse #(
             if (!enable) begin
                 pulse_done <= 0;
             end
-            
+
             // Start counting when enable goes high (only if we haven't done a pulse yet)
             if (enable && !counting && !pulse_active && !pulse_done) begin
                 counting <= 1;
                 counter <= 0;
             end
-            
+
             // Count up to N-1
             if (counting) begin
                 if (counter == N[$clog2(N)-1:0] - 1'b1) begin
@@ -51,7 +51,7 @@ module one_shot_pulse #(
                     counter <= counter + 1'b1;
                 end
             end
-            
+
             // Handle pulse width
             if (pulse_active) begin
                 if (pulse_counter == PULSE_WIDTH[$clog2(PULSE_WIDTH)-1:0] - 1'b1) begin
@@ -71,7 +71,7 @@ module one_shot_pulse_test;
     reg rst = 1;
     reg enable = 0;
     wire pulse;
-    
+
     // Instantiate DUT (Device Under Test)
     // Wait for 5 clock cycles, then generate a 2-cycle wide pulse
     one_shot_pulse #(.N(5), .PULSE_WIDTH(2)) dut (
@@ -80,20 +80,20 @@ module one_shot_pulse_test;
         .enable(enable),
         .pulse(pulse)
     );
-    
+
     integer i;
     initial begin
         $dumpfile("wave.vcd");
         $dumpvars(0, one_shot_pulse_test);
-        
+
         $display("Time(ns)  Enable  Pulse");
-        
+
         // Release reset after 10ns
         #10 rst = 0;
-        
+
         // Test 1: Generate first pulse
         #10 enable = 1;  // Start counting
-        
+
         for (i = 0; i < 10; i = i + 1) begin
             #5 clk = ~clk;  // Clock goes high
             #5 clk = ~clk;  // Clock goes low (one complete cycle = 10ns)
@@ -113,7 +113,7 @@ module one_shot_pulse_test;
             #5 clk = ~clk;
             #5 clk = ~clk;
             $display("%8t     %b      %b", $time, enable, pulse);
-        end	
+        end
 
         // Test 3: Keep enable high (should only generate one pulse)
         for (i = 0; i < 5; i = i + 1) begin
@@ -121,7 +121,7 @@ module one_shot_pulse_test;
             #5 clk = ~clk;
             $display("%8t     %b      %b", $time, enable, pulse);
         end
-        
+
         $display("\nSimulation complete!");
         $finish;
     end

@@ -11,13 +11,13 @@ module counter_8bit (
     output wire overflow,
     output wire underflow
 );
-    
+
     // Overflow occurs when counting up from 255 (wraps to 0)
     assign overflow = enable && (count == 8'hFF) && !load;
-    
-    // Underflow occurs when counting down from 0 (wraps to 255)  
+
+    // Underflow occurs when counting down from 0 (wraps to 255)
     assign underflow = enable && (count == 8'h00) && !load;
-    
+
     always @(posedge clk) begin
         if (rst) begin
             count <= 8'h00;
@@ -38,7 +38,7 @@ module counter_8bit_test;
     wire [7:0] count;
     wire overflow;
     wire underflow;
-    
+
     // Instantiate DUT
     counter_8bit dut (
         .clk(clk),
@@ -50,72 +50,72 @@ module counter_8bit_test;
         .overflow(overflow),
         .underflow(underflow)
     );
-    
+
     integer i;
     initial begin
         $dumpfile("wave.vcd");
         $dumpvars(0, counter_8bit_test);
-        
+
         // Release reset after 10ns
         #10 rst = 0;
-        
+
         $display("Time(ns)  Count  Overflow  Underflow  Enable  Load");
-        
+
         // Test 1: Basic counting from 0
         enable = 1;
         for (i = 0; i < 10; i = i + 1) begin
             #5 clk = ~clk;  // Clock high
-            #5 clk = ~clk;  // Clock low 
-            $display("%8t   %3d       %b         %b        %b     %b", 
+            #5 clk = ~clk;  // Clock low
+            $display("%8t   %3d       %b         %b        %b     %b",
                      $time, count, overflow, underflow, enable, load);
         end
-        
+
         // Test 2: Load a value near overflow (253)
         enable = 0;
         load = 1;
         load_value = 8'd253;
         #5 clk = ~clk;
         #5 clk = ~clk;
-        $display("%8t   %3d       %b         %b        %b     %b", 
+        $display("%8t   %3d       %b         %b        %b     %b",
                  $time, count, overflow, underflow, enable, load);
-        
+
         // Test 3: Continue counting to see overflow
         load = 0;
         enable = 1;
         for (i = 0; i < 8; i = i + 1) begin
             #5 clk = ~clk;
             #5 clk = ~clk;
-            $display("%8t   %3d       %b         %b        %b     %b", 
+            $display("%8t   %3d       %b         %b        %b     %b",
                      $time, count, overflow, underflow, enable, load);
         end
-        
+
         // Test 4: Load value at 2 and count a few more
         enable = 0;
         load = 1;
         load_value = 8'd2;
         #5 clk = ~clk;
         #5 clk = ~clk;
-        $display("%8t   %3d       %b         %b        %b     %b", 
+        $display("%8t   %3d       %b         %b        %b     %b",
                  $time, count, overflow, underflow, enable, load);
-        
+
         load = 0;
         enable = 1;
         for (i = 0; i < 8; i = i + 1) begin
             #5 clk = ~clk;
             #5 clk = ~clk;
-            $display("%8t   %3d       %b         %b        %b     %b", 
+            $display("%8t   %3d       %b         %b        %b     %b",
                      $time, count, overflow, underflow, enable, load);
         end
-        
+
         // Test 5: Disable and verify no counting
         enable = 0;
         for (i = 0; i < 3; i = i + 1) begin
             #5 clk = ~clk;
             #5 clk = ~clk;
-            $display("%8t   %3d       %b         %b        %b     %b", 
+            $display("%8t   %3d       %b         %b        %b     %b",
                      $time, count, overflow, underflow, enable, load);
         end
-        
+
         $display("\nSimulation complete!");
         $display("Demonstrated: Basic counting, overflow wrap-around, load operation, enable control");
         $finish;
