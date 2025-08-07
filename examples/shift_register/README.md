@@ -1,6 +1,6 @@
 # Universal Shift Register
 
-This directory contains a configurable universal shift register implementation in Verilog, along with a comprehensive testbench. The design demonstrates a versatile shift register that can operate in multiple modes and with configurable width.
+This directory contains a configurable universal shift register implementation in Verilog, along with a comprehensive testbench and a modular C++ verification framework. The design demonstrates a versatile shift register that can operate in multiple modes and with configurable width.
 
 ## Features
 
@@ -12,22 +12,40 @@ This directory contains a configurable universal shift register implementation i
   - Parallel Load (load new value)
 - **Complete Testbench**: Thoroughly verifies all functionality
 - **Verilator Integration**: Ready for fast simulation
+- **Modular C++ Verification Framework**: Three-component test system
 
 ## Files
 
 - `universal_shift_register.v` - The core shift register module
 - `universal_shift_register_tb.v` - Comprehensive testbench
+- `test_vector_generator.cpp` - C++ test vector generator
+- `dut_harness.cpp` - C++ DUT harness for Verilator
+- `output_validator.cpp` - C++ output validation tool
+- `test_flow.sh` - Shell script for running the complete flow
 - `Makefile` - Build automation for the project
 
 ## Usage
 
 ### Using the Makefile
 
-To run the simulation with default parameters:
+To run the traditional simulation with default parameters:
 
 ```bash
 # Build and run with default 8-bit width
 make
+```
+
+To run the new test vector-based verification flow:
+
+```bash
+# Run complete test vector flow with default 8-bit width
+make test_vectors
+
+# Run test vector flow with custom width
+make test_vectors WIDTH=7
+
+# Run test vector flow with waveform generation
+make test_vectors_trace WIDTH=8
 ```
 
 To test with a non-power-of-2 width (good for edge case testing):
@@ -49,6 +67,57 @@ To clean up generated files:
 ```bash
 # Remove all build artifacts
 make clean
+```
+
+### Test Vector Verification Flow
+
+The project includes a three-component verification system:
+
+1. **Test Vector Generator** (`test_vector_generator.cpp`)
+   - Generates comprehensive test vectors in a structured format
+   - Includes reset sequences, basic operations, walking ones, and random tests
+   - Outputs to `input_vectors.txt`
+
+2. **DUT Harness** (`dut_harness.cpp`)
+   - Reads input test vectors
+   - Applies them to the Verilated DUT
+   - Captures outputs and writes to `output_vectors.txt`
+   - Supports waveform generation with `+trace` option
+
+3. **Output Validator** (`output_validator.cpp`)
+   - Validates output vectors against expected behavior
+   - Uses internal reference model
+   - Reports pass/fail status for each test
+
+#### Test Vector Format
+
+Input vectors (one per line):
+```
+rst_n enable mode serial_in_right serial_in_left parallel_in[hex]
+```
+
+Output vectors (input + output):
+```
+rst_n enable mode serial_in_right serial_in_left parallel_in[hex] q[hex]
+```
+
+### Running the Test Flow Manually
+
+```bash
+# Build all components
+g++ -o test_vector_generator test_vector_generator.cpp
+g++ -o output_validator output_validator.cpp
+verilator -Wall --trace --cc -GWIDTH=8 universal_shift_register.v --exe dut_harness.cpp
+make -C obj_dir -f Vuniversal_shift_register.mk
+
+# Run the flow
+./test_vector_generator 8
+obj_dir/Vuniversal_shift_register -WIDTH=8
+./output_validator 8
+
+# View generated vectors
+cat input_vectors.txt
+cat output_vectors.txt
 ```
 
 ### Running Manually (Without Makefile)
@@ -90,6 +159,8 @@ The enable signal allows the register to be disabled while maintaining its state
 
 ## Test Methodology
 
+### Traditional Testbench
+
 The testbench (`universal_shift_register_tb.v`) implements a thorough verification approach:
 
 1. **Basic functionality tests**:
@@ -107,6 +178,15 @@ The testbench (`universal_shift_register_tb.v`) implements a thorough verificati
    - Pseudorandom input generation
    - Result validation
 
+### Test Vector Framework
+
+The C++ verification framework provides:
+
+1. **Systematic test generation** with predictable patterns
+2. **Separation of concerns** between test generation, execution, and validation
+3. **Reusable components** for future development
+4. **Easy debugging** with human-readable test vectors
+
 ### Running in Docker Environment
 
 This example can be run within the Docker container provided by the parent project. To run this example in the Docker environment:
@@ -123,9 +203,14 @@ cd /workdir/project/examples/shift_register
 
 # Run the example
 make
+
+# Or run the test vector flow
+make test_vectors
 ```
 
 ## Integration with Acceleration Framework
 
 This shift register design serves as an excellent test case for accelerating HDL simulation on AI hardware. The simple yet configurable nature of this module makes it ideal for demonstrating parallel simulation techniques and exploring the performance benefits of hardware acceleration for digital design verification.
+
+The modular C++ verification framework is designed to be easily adapted for hardware acceleration in future development stages.
 
