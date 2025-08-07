@@ -51,3 +51,4 @@ examples/shift_register/test_vector_generator
 examples/shift_register/input_vectors.txt
 examples/shift_register/output_validator
 examples/shift_register/output_vectors.txt
+examples/shift_register/adaptation_basis/sim_host
