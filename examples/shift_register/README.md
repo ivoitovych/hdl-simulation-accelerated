@@ -24,6 +24,7 @@ This directory contains a configurable universal shift register implementation i
 - `combined_testbench.cpp` - All-in-one C++ testbench
 - `test_flow.sh` - Shell script for running the complete flow
 - `Makefile` - Build automation for the project
+- `adaptation_basis/` - Minimal runtime for embedded/accelerator deployment
 
 ## Usage
 
@@ -248,8 +249,35 @@ make
 make combined_run
 ```
 
+## Adaptation Basis - Running Without Verilator Runtime
+
+The `adaptation_basis/` subdirectory contains a breakthrough achievement: a minimal adaptation layer that allows Verilator-generated RTL simulation code to run **without the full Verilator runtime environment**. This is particularly valuable for embedded systems, hardware accelerators, or other constrained platforms.
+
+### What It Provides
+
+- **Minimal Runtime Replacement**: Lightweight implementations of essential Verilator runtime components
+- **Zero Dependencies**: No STL, no Verilator installation required, only basic system calls
+- **Self-Verifying Tests**: Automatic validation with CORRECT/INCORRECT status reporting
+- **Platform Portable**: Easy to adapt for different embedded or accelerator platforms
+
+### Running the Adaptation Basis Example
+
+```bash
+cd adaptation_basis
+make clean
+make run
+```
+
+This will compile and run the shift register simulation using only the minimal adaptation layer, demonstrating that Verilator-generated code can be successfully decoupled from its runtime environment.
+
+### Key Achievement
+
+This adaptation layer proves that Verilator-generated HDL simulations can run on platforms where the standard Verilator runtime is unavailable or impractical, opening the door for hardware-accelerated RTL simulation on AI accelerators, embedded systems, and other specialized hardware.
+
 ## Integration with Acceleration Framework
 
 This shift register design serves as an excellent test case for accelerating HDL simulation on AI hardware. The simple yet configurable nature of this module makes it ideal for demonstrating parallel simulation techniques and exploring the performance benefits of hardware acceleration for digital design verification.
 
 The modular C++ verification framework is designed to be easily adapted for hardware acceleration in future development stages. The combined testbench approach is particularly suitable for GPU/TPU acceleration as it eliminates file I/O overhead.
+
+The successful implementation of the adaptation basis demonstrates that Verilator-generated code can be deployed on custom hardware platforms, providing a clear path toward accelerated RTL simulation on specialized processors.

@@ -42,12 +42,16 @@ void print_hex_digit(int digit) {
     (void)written; // Explicitly ignore to avoid warning
 }
 
-void print_hex(const char* prefix, unsigned int value) {
-    print_str(prefix);
+void print_hex_value(unsigned int value) {
     print_str("0x");
     for (int i = 1; i >= 0; i--) {  // 8-bit value, so only 2 hex digits
         print_hex_digit((value >> (i * 4)) & 0xF);
     }
+}
+
+void print_hex(const char* prefix, unsigned int value) {
+    print_str(prefix);
+    print_hex_value(value);
     print_str("\n");
 }
 
@@ -56,14 +60,15 @@ bool verify_result(const char* test_name, unsigned int actual, unsigned int expe
     print_str(test_name);
     print_str(": ");
     if (actual == expected) {
-        print_str("CORRECT (");
-        print_hex("got ", actual);
+        print_str("CORRECT (got ");
+        print_hex_value(actual);
         print_str(")\n");
         return true;
     } else {
-        print_str("INCORRECT - ");
-        print_hex("expected ", expected);
-        print_hex("but got ", actual);
+        print_str("INCORRECT - expected ");
+        print_hex_value(expected);
+        print_str(" but got ");
+        print_hex_value(actual);
         print_str("\n");
         return false;
     }
