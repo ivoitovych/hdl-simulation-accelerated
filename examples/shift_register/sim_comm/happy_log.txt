@@ -1,0 +1,92 @@
+$ ./build_Release/programming_examples/hdl_simulation_accelerated/shift_register_sim_comm
+2025-08-08 07:28:43.110 | INFO     | SiliconDriver   - Opened PCI device 0; KMD version: 1.33.0, IOMMU: disabled
+  Detecting chips (found 1)
+                 Device | INFO     | Opening user mode device driver
+2025-08-08 07:28:43.134 | INFO     | SiliconDriver   - Opened PCI device 0; KMD version: 1.33.0, IOMMU: disabled
+2025-08-08 07:28:43.142 | INFO     | SiliconDriver   - Opened PCI device 0; KMD version: 1.33.0, IOMMU: disabled
+2025-08-08 07:28:43.150 | INFO     | SiliconDriver   - Harvesting mask for chip 0 is 0x200 (physical layout: 0x1, logical: 0x200, simulated harvesting mask: 0x0).
+2025-08-08 07:28:43.166 | INFO     | SiliconDriver   - Opened PCI device 0; KMD version: 1.33.0, IOMMU: disabled
+2025-08-08 07:28:43.201 | WARNING  | SiliconDriver   - init_detect_tt_device_numanodes(): Could not determine NumaNodeSet for TT device (physical_device_id: 0 pci_bus_id: 0000:04:00.0)
+2025-08-08 07:28:43.201 | WARNING  | SiliconDriver   - Could not find NumaNodeSet for TT Device (physical_device_id: 0 pci_bus_id: 0000:04:00.0)
+2025-08-08 07:28:43.201 | WARNING  | SiliconDriver   - bind_area_memory_nodeset(): Unable to determine TT Device to NumaNode mapping for physical_device_id: 0. Skipping membind.
+2025-08-08 07:28:43.201 | WARNING  | SiliconDriver   - ---- ttSiliconDevice::init_hugepage: bind_area_to_memory_nodeset() failed (physical_device_id: 0 ch: 0). Hugepage allocation is not on NumaNode matching TT Device. Side-Effect is decreased Device->Host perf (Issue #893).
+2025-08-08 07:28:43.203 | INFO     | SiliconDriver   - Detected PCI devices: [0]
+2025-08-08 07:28:43.203 | INFO     | SiliconDriver   - Using local chip ids: {0} and remote chip ids {}
+2025-08-08 07:28:43.205 | INFO     | SiliconDriver   - Software version 6.0.0, Ethernet FW version 6.14.0 (Device 0)
+                  Metal | INFO     | Initializing device 0. Program cache is NOT enabled
+                  Metal | INFO     | AI CLK for device 0 is:   1000 MHz
+                 Always | WARNING  | Dispatch Core Type = CoreType::WORKER
+                  Metal | INFO     | DPRINT enabled on device 0, worker core (x=0,y=0) (virtual (x=18,y=18)).
+                  Metal | INFO     | DPRINT Server attached device 0
+                   Test | INFO     | === Shift Register RTL Simulation with Communication ===
+                   Test | INFO     | Configuration:
+                   Test | INFO     |   Number of test vectors: 64
+                   Test | INFO     |   Test vector size: 16 bytes
+                   Test | INFO     |   Result size: 16 bytes
+                   Test | INFO     |   Input buffer size: 1024 bytes
+                   Test | INFO     |   Output buffer size: 1024 bytes
+                   Test | INFO     | DRAM buffers created:
+                   Test | INFO     |   Input buffer address: 0x20
+                   Test | INFO     |   Output buffer address: 0x420
+                   Test | INFO     |
+Generating test vectors:
+                   Test | INFO     |   Tests 8-15: Walking ones pattern
+                   Test | INFO     |   Tests 16-23: Walking zeros pattern
+                   Test | INFO     |   Tests 24-31: Alternating shift directions
+                   Test | INFO     |   Tests 32-47: Random mixed operations
+                   Test | INFO     |   Tests 48-63: Edge cases (all 0s, all 1s, disable)
+                   Test | INFO     |
+Writing 64 test vectors to device DRAM...
+                   Test | INFO     | Launching shift register simulation on device...
+                   Test | INFO     | Export TT_METAL_DPRINT_CORES=0,0 to see kernel debug output
+0:(x=0,y=0):BR: === Shift Register Simulator Starting ===
+0:(x=0,y=0):BR: Number of tests: 64
+0:(x=0,y=0):BR: Source address: 0x32
+0:(x=0,y=0):BR: Dest address: 0x1056
+0:(x=0,y=0):BR: Reading test vectors from DRAM...
+0:(x=0,y=0):BR: Test vectors loaded. Starting simulation...
+0:(x=0,y=0):BR: Test 0: mode=0 enable=0 output=0x0 expected=0x0 PASS
+0:(x=0,y=0):BR: Test 1: mode=3 enable=1 output=0x165 expected=0x165 PASS
+0:(x=0,y=0):BR: Test 2: mode=1 enable=1 output=0x210 expected=0x210 PASS
+0:(x=0,y=0):BR: Test 3: mode=2 enable=1 output=0x164 expected=0x164 PASS
+0:(x=0,y=0):BR: Test 4: mode=0 enable=1 output=0x164 expected=0x164 PASS
+0:(x=0,y=0):BR: Writing results to DRAM...
+0:(x=0,y=0):BR: === Simulation Complete ===
+0:(x=0,y=0):BR: Tests run: 64
+0:(x=0,y=0):BR: Tests passed: 64
+0:(x=0,y=0):BR: Tests failed: 0
+                   Test | INFO     |
+Simulation complete! Reading results...
+                   Test | INFO     |
+=== SIMULATION RESULTS ===
+                   Test | INFO     |   Test 0: PASS - Mode:0, Enable:0, Parallel:0x00, Output:0x00, Expected:0x00 (cycles: 1)
+                   Test | INFO     |   Test 1: PASS - Mode:3, Enable:1, Parallel:0xa5, Output:0xa5, Expected:0xa5 (cycles: 2)
+                   Test | INFO     |   Test 2: PASS - Mode:1, Enable:1, Parallel:0x00, Output:0xd2, Expected:0xd2 (cycles: 1)
+                   Test | INFO     |   Test 3: PASS - Mode:2, Enable:1, Parallel:0x00, Output:0xa4, Expected:0xa4 (cycles: 1)
+                   Test | INFO     |   Test 4: PASS - Mode:0, Enable:1, Parallel:0x00, Output:0xa4, Expected:0xa4 (cycles: 1)
+                   Test | INFO     |
+=== SUMMARY ===
+                   Test | INFO     | Total tests: 64
+                   Test | INFO     | Passed: 64 (100.0%)
+                   Test | INFO     | Failed: 0 (0.0%)
+                   Test | INFO     | Total simulation cycles: 79
+                   Test | INFO     | Average cycles per test: 1.2
+                   Test | INFO     |
+=== PERFORMANCE METRICS ===
+                   Test | INFO     | Data transferred to device: 1024 bytes
+                   Test | INFO     | Data transferred from device: 1024 bytes
+                   Test | INFO     | Total data movement: 2048 bytes
+                   Test | INFO     |
+✅ SUCCESS: Shift register simulation with communication verified!
+                   Test | INFO     |    • All 64 test vectors passed
+                   Test | INFO     |    • Host → Device communication working
+                   Test | INFO     |    • RTL simulation on TT-Metal successful
+                   Test | INFO     |    • Device → Host results verified
+                  Metal | INFO     | Closing device 0
+                  Metal | INFO     | DPRINT Server dettached device 0
+                  Metal | INFO     | Disabling and clearing program cache on device 0
+
+
+
+
+
