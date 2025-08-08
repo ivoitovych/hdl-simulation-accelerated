@@ -13,6 +13,7 @@ This directory contains a configurable universal shift register implementation i
 - **Complete Testbench**: Thoroughly verifies all functionality
 - **Verilator Integration**: Ready for fast simulation
 - **Multiple Verification Approaches**: Three different testing methodologies
+- **TT-Metal Acceleration**: Hardware-accelerated RTL simulation on AI processors
 
 ## Files
 
@@ -25,6 +26,8 @@ This directory contains a configurable universal shift register implementation i
 - `test_flow.sh` - Shell script for running the complete flow
 - `Makefile` - Build automation for the project
 - `adaptation_basis/` - Minimal runtime for embedded/accelerator deployment
+- `adapted/` - Failed attempt to port Verilator code to TT-Metal (educational)
+- `rewritten/` - Successful minimal implementation running on TT-Metal
 
 ## Usage
 
@@ -274,6 +277,47 @@ This will compile and run the shift register simulation using only the minimal a
 
 This adaptation layer proves that Verilator-generated HDL simulations can run on platforms where the standard Verilator runtime is unavailable or impractical, opening the door for hardware-accelerated RTL simulation on AI accelerators, embedded systems, and other specialized hardware.
 
+## TT-Metal Hardware Acceleration
+
+### Overview
+
+The `adapted/` and `rewritten/` directories demonstrate the journey of porting RTL simulation to TT-Metal (Tenstorrent Wormhole) AI accelerator hardware:
+
+- **`adapted/`** - ❌ Failed attempt to directly port Verilator-generated code (exceeds memory limits)
+- **`rewritten/`** - ✅ Successful minimal implementation running on TT-Metal
+
+### Running on TT-Metal
+
+To run the successful TT-Metal implementation:
+
+```bash
+# Navigate to TT-Metal directory
+cd ~/setup/tt-metal
+
+# Run the rewritten version
+./build_Release/programming_examples/hdl_simulation_accelerated/universal_shift_register_rewritten
+```
+
+Expected output:
+```
+Starting universal shift register kernel on core {0, 0}...
+0:(x=0,y=0):TR1: === Shift Register Test ===
+0:(x=0,y=0):TR1: ALL PASS!
+```
+
+### Key Learnings from TT-Metal Port
+
+1. **Memory Constraints**: Compute kernels have strict memory limits requiring minimal implementations
+2. **Direct Implementation**: Simple C++ code without framework overhead works best
+3. **Test Preservation**: All functionality and tests successfully preserved in minimal version
+
+### Performance Implications
+
+Running on TT-Metal opens possibilities for:
+- Parallel simulation of multiple test vectors
+- Hardware-accelerated verification at scale
+- Integration with AI workloads on the same hardware
+
 ## Integration with Acceleration Framework
 
 This shift register design serves as an excellent test case for accelerating HDL simulation on AI hardware. The simple yet configurable nature of this module makes it ideal for demonstrating parallel simulation techniques and exploring the performance benefits of hardware acceleration for digital design verification.
@@ -281,3 +325,9 @@ This shift register design serves as an excellent test case for accelerating HDL
 The modular C++ verification framework is designed to be easily adapted for hardware acceleration in future development stages. The combined testbench approach is particularly suitable for GPU/TPU acceleration as it eliminates file I/O overhead.
 
 The successful implementation of the adaptation basis demonstrates that Verilator-generated code can be deployed on custom hardware platforms, providing a clear path toward accelerated RTL simulation on specialized processors.
+
+### Acceleration Achievements
+
+- **Adaptation Basis**: Proves Verilator can run without its runtime (CPU/embedded)
+- **TT-Metal Port**: Demonstrates RTL simulation on AI accelerator hardware
+- **Future Potential**: Path to massively parallel RTL verification on AI hardware
