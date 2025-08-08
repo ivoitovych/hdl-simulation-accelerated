@@ -1,0 +1,28 @@
+$ make run
+g++ -I. -I../obj_dir -O2 -Wno-attributes -o sim_host simple_simulation_main.cpp
+./sim_host
+=== Universal Shift Register Test ===
+Resetting...
+Reset released
+
+Test 1: Load parallel value 0xA5
+  Load 0xA5: CORRECT (got 0xA5)
+
+Test 2: Shift right with serial_in=1
+  After 1st shift: CORRECT (got 0xD2)
+  After 2nd shift: CORRECT (got 0xE9)
+  After 3rd shift: CORRECT (got 0xF4)
+
+Test 3: Shift left with serial_in=0
+  After 1st shift: CORRECT (got 0xE8)
+  After 2nd shift: CORRECT (got 0xD0)
+  After 3rd shift: CORRECT (got 0xA0)
+
+Test 4: Hold mode (should not change)
+  After hold cycles: CORRECT (got 0xA0)
+
+=== Test Summary ===
+Total tests: 0x08
+Passed tests: 0x08
+
+ALL TESTS PASSED!
