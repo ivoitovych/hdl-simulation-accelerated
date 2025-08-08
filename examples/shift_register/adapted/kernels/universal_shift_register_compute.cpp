@@ -25,9 +25,9 @@
 #include "../../obj_dir/Vuniversal_shift_register___024root__DepSet_h684c9756__0__Slow.cpp"
 
 // Include trace files if needed (these can be stubbed)
-#include "../../obj_dir/Vuniversal_shift_register__Trace__0.cpp"
-#include "../../obj_dir/Vuniversal_shift_register__Trace__0__Slow.cpp"
-#include "../../obj_dir/Vuniversal_shift_register__TraceDecls__0__Slow.cpp"
+//#include "../../obj_dir/Vuniversal_shift_register__Trace__0.cpp"
+//#include "../../obj_dir/Vuniversal_shift_register__Trace__0__Slow.cpp"
+//#include "../../obj_dir/Vuniversal_shift_register__TraceDecls__0__Slow.cpp"
 
 // Helper function to print hex values using DPRINT
 void dprint_hex(const char* prefix, uint32_t value) {
