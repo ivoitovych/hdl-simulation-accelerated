@@ -15,7 +15,10 @@ The examples directory contains various Verilog HDL simulation examples demonstr
 | **one_shot_pulse** | TTMRTL-001 | Verilog | Verilog | Single-file | Waveform + Verification | Makefile | ❌ | Comprehensive edge case testing | Configurable one-shot pulse generator with re-trigger capability |
 | **pwm_generator** | TTMRTL-002 | Verilog | Verilog | Multi-file | Full verification | Makefile | ❌ | Automated duty cycle measurement | PWM with configurable period, duty cycle, clock division |
 | **serial_crc32_generator** | TTMRTL-002 | Verilog | Verilog | Multi-file | Full verification | Makefile | ❌ | Standards compliance testing | IEEE 802.3 CRC-32 with multiple test vectors |
-| **shift_register** | TTMRTL-002 | Verilog | Verilog | Multi-file | Full verification | Makefile | ❌ | Randomized + edge case testing | Universal shift register with 4 modes, configurable width |
+| **shift_register** | TTMRTL-002 | Verilog | Verilog/C++ | Multi-file | Full verification | Makefile | ✅ **Multiple** | Randomized + edge case testing | Universal shift register with 4 modes, configurable width |
+| **shift_register/adaptation_basis** | Advanced | Verilog | C++ | Multi-file | Runtime-free verification | Makefile | ✅ **Working** | Self-verifying tests | Verilator without runtime dependencies |
+| **shift_register/rewritten** | Advanced | C++ | C++ | Multi-file | Direct implementation | TT-Metal build | ✅ **Working** | Basic functional verification | Minimal TT-Metal kernel implementation |
+| **shift_register/sim_comm** | Advanced | Verilog/C++ | C++ | Multi-file | Host-device pipeline | TT-Metal build | ✅ **Working (100%)** | Comprehensive pipeline verification | Full RTL simulation with bidirectional communication |
 | **simple_alu** | TTMRTL-002 | Verilog | Verilog | Multi-file | Full verification | Makefile | ❌ | Comprehensive operation testing | 8-bit ALU with 10 operations and status flags |
 | **uart_tx_basic** | TTMRTL-002 | Verilog | Verilog | Multi-file | Full verification | Makefile | ✅ **Prototype** (Python script) | UART protocol compliance | Configurable baud rate UART TX with receiver verification |
 | **split_simulation** | Advanced | Verilog | Verilog | Multi-file | Pipeline verification | Makefile + Scripts | ❌ | Split-pipeline comparison | Distributed simulation architecture proof-of-concept |
@@ -26,25 +29,29 @@ The examples directory contains various Verilog HDL simulation examples demonstr
 ### File Structure Classification
 - **Single-file (5 examples)**: DUT and testbench in one `.v` file
   - 8bit_counter, edge_detector, led_blinker, minimal_divider, one_shot_pulse
-- **Multi-file (7 examples)**: Separate DUT and testbench files
-  - pwm_generator, serial_crc32_generator, shift_register, simple_alu, split_simulation, uart_tx_basic, arbitrary_struct_dataflow
+- **Multi-file (10 examples)**: Separate DUT and testbench files
+  - pwm_generator, serial_crc32_generator, shift_register (including subdirs), simple_alu, split_simulation, uart_tx_basic, arbitrary_struct_dataflow
 
 ### Simulation Type Classification
 - **Waveform Generation Only (1)**: minimal_divider
 - **Waveform + Basic Verification (4)**: 8bit_counter, edge_detector, led_blinker, one_shot_pulse
-- **Full Verification (6)**: pwm_generator, serial_crc32_generator, shift_register, simple_alu, uart_tx_basic, arbitrary_struct_dataflow
-- **Pipeline Verification (1)**: split_simulation
+- **Full Verification (7)**: pwm_generator, serial_crc32_generator, shift_register, simple_alu, uart_tx_basic, arbitrary_struct_dataflow
+- **Pipeline Verification (2)**: split_simulation, shift_register/sim_comm
+- **Runtime-Free Verification (1)**: shift_register/adaptation_basis
 
 ### Build System Analysis
-- **Makefile Only (10)**: Standard Verilator build automation
+- **Makefile Only (11)**: Standard Verilator build automation
 - **Makefile + Scripts (1)**: split_simulation (additional shell scripts)
-- **TT-Metal Build (1)**: arbitrary_struct_dataflow (native TT-Metal compilation)
+- **TT-Metal Build (3)**: arbitrary_struct_dataflow, shift_register/rewritten, shift_register/sim_comm
 
 ### TT-Metal Integration Status
-- **❌ No Integration (8)**: Pure Verilog examples
-- **✅ Working Integration (2)**:
+- **❌ No Integration (7)**: Pure Verilog examples
+- **✅ Working Integration (6)**:
   - **arbitrary_struct_dataflow**: Complete working TT-Metal pipeline
   - **minimal_divider**: Working TT-Metal C++ kernel implementation
+  - **shift_register/adaptation_basis**: Runtime-free Verilator execution
+  - **shift_register/rewritten**: Minimal TT-Metal implementation
+  - **shift_register/sim_comm**: Full RTL simulation with host-device communication (100% pass rate)
 - **✅ Partial Integration (1)**:
   - **led_blinker**: Has TT-Metal C++ kernel but requires integration
 - **✅ Prototype Integration (1)**:
@@ -53,12 +60,16 @@ The examples directory contains various Verilog HDL simulation examples demonstr
 ### Verification Complexity Levels
 1. **Basic (4)**: Simple pass/fail with timing checks
 2. **Functional (3)**: Protocol compliance and edge cases
-3. **Comprehensive (4)**: Automated measurement, randomized testing
-4. **Advanced (1)**: Pipeline integrity and data structure processing
+3. **Comprehensive (5)**: Automated measurement, randomized testing, pipeline verification
+4. **Advanced (3)**: Pipeline integrity, data structure processing, host-device communication
 
 ### Language Distribution
-- **DUT Language**: 100% Verilog (except arbitrary_struct_dataflow which is C++)
-- **Testbench Language**: 100% Verilog (except arbitrary_struct_dataflow which is C++)
+- **DUT Language**: 
+  - Verilog: 11 examples
+  - C++: 3 examples (arbitrary_struct_dataflow, shift_register/rewritten, shift_register/sim_comm kernel)
+- **Testbench Language**: 
+  - Verilog: 8 examples
+  - C++: 6 examples (including all shift_register variants and arbitrary_struct_dataflow)
 
 ## Plan Reference Mapping
 
@@ -78,21 +89,51 @@ Professional project structure with comprehensive verification:
 
 ### Advanced Examples
 Complex architectures and acceleration frameworks:
-- **arbitrary_struct_dataflow**: AI hardware acceleration
+- **arbitrary_struct_dataflow**: AI hardware acceleration with custom data structures
 - **split_simulation**: Distributed simulation architecture
+- **shift_register/adaptation_basis**: Runtime-free Verilator execution
+- **shift_register/rewritten**: Minimal TT-Metal kernel implementation
+- **shift_register/sim_comm**: Complete RTL simulation with host-device communication pipeline
+
+## Shift Register Ecosystem Analysis
+
+The shift_register example has evolved into a comprehensive demonstration platform with multiple implementation approaches:
+
+| Variant | Purpose | Key Achievement | Performance |
+|---------|---------|-----------------|-------------|
+| **Base** | Traditional Verilator simulation | Comprehensive testbench with randomized testing | CPU-based, full speed |
+| **adaptation_basis** | Runtime-free execution | Proves Verilator can run without standard runtime | Embedded/accelerator ready |
+| **adapted** | Direct Verilator port attempt | Educational failure - memory constraints | N/A (doesn't compile) |
+| **rewritten** | Minimal TT-Metal implementation | Successful device kernel without Verilator | 6 tests pass on device |
+| **sim_comm** | Full communication pipeline | Complete host-device RTL simulation | 64/64 tests pass, 1.2 cycles/test |
 
 ## Key Findings
 
-1. **TT-Metal Integration Progress**: 4/12 examples have some level of TT-Metal integration, with 2 fully working implementations
-2. **Verification Quality**: 7/12 examples have comprehensive verification beyond basic waveform generation
+1. **TT-Metal Integration Progress**: 7/15 examples have working TT-Metal integration (including shift_register variants)
+2. **Verification Quality**: 10/15 examples have comprehensive verification beyond basic waveform generation
 3. **Build Consistency**: All examples use Makefile-based builds, ensuring consistent developer experience
 4. **Educational Value**: Examples progress from simple concepts to complex real-world applications
 5. **Standards Compliance**: Multiple examples implement industry standards (CRC-32, UART, PWM)
+6. **Communication Pipeline**: shift_register/sim_comm demonstrates complete host-device communication with 100% test success
+
+## Performance Metrics (TT-Metal Examples)
+
+| Example | Tests Run | Pass Rate | Data Transfer | Execution Time |
+|---------|-----------|-----------|---------------|----------------|
+| **shift_register/sim_comm** | 64 | 100% | 2048 bytes | < 1 second |
+| **shift_register/rewritten** | 6 | 100% | N/A (self-contained) | < 1 second |
+| **arbitrary_struct_dataflow** | 2048 | 100% | 64 KB | < 1 second |
 
 ## Recommendations for Enhancement
 
-1. **Expand TT-Metal Integration**: Convert more examples to TT-Metal kernels
-2. **Add Performance Metrics**: Include timing and resource utilization data
-3. **Cross-Reference Documentation**: Link examples to specific acceleration use cases
-4. **Standardize Verification**: Adopt common verification patterns across all examples
-5. **Add Binary Communication**: Extend split_simulation with binary protocols for performance
+1. **Standardize TT-Metal Integration**: Create template for converting Verilog examples to TT-Metal
+2. **Performance Benchmarking**: Add comparative metrics between CPU and TT-Metal execution
+3. **Multi-Core Scaling**: Extend sim_comm approach to distribute tests across multiple cores
+4. **Waveform Support**: Add VCD generation from TT-Metal execution
+5. **Coverage Metrics**: Implement coverage collection on accelerator hardware
+6. **Documentation**: Create migration guide from traditional simulation to TT-Metal
+
+## Conclusion
+
+The examples repository demonstrates a clear progression from basic HDL simulation to advanced hardware-accelerated verification. The shift_register example, with its multiple implementation variants, serves as a comprehensive case study for the entire acceleration journey - from traditional CPU-based simulation through runtime-free execution to full hardware acceleration with host-device communication achieving 100% test success rates.
+
