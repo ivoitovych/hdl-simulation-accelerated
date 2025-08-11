@@ -48,7 +48,7 @@ To integrate this project into your TT-Metal repository:
 
 ```bash
 # In the TT-Metal repository with this project as a submodule:
-./build_metal.sh --build-programming-examples
+./build_metal.sh --build-programming-examples --enable-ccache --debug
 ./build_Debug/programming_examples/hdl_simulation_accelerated/minimal_divider
 ```
 
