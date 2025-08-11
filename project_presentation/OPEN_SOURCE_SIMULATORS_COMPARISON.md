@@ -1,6 +1,6 @@
 ## Open-Source HDL/RTL Simulators Comparison
 
-Here is an extended comparison table of open-source HDL/RTL simulators. The primary focus remains on those with multi-core simulation support, which are crucial for accelerated simulations on massively parallel hardware like Tenstorrent's TT-Metal AI accelerator. For completeness, other open-source simulators are included with minimal details, as they lack multi-core support and are less relevant to the POC project.
+Here is an extended comparison table of open-source HDL/RTL simulators. The primary focus remains on those with multi-core simulation support, which are crucial for accelerated simulations on massively parallel hardware like **Tenstorrent**'s TT-Metal AI accelerator. For completeness, other open-source simulators are included with minimal details, as they lack multi-core support and are less relevant to the POC project.
 
 | Simulator Name | Supported Languages | License | Multi-Core Support | Details on Multi-Core/Parallel | Performance Notes | Active/Maintained |
 |---------------|---------------------|---------|---------------------|--------------------------------|-------------------|-------------------|

@@ -24,12 +24,12 @@ Key competitors and their offerings include:
   - **Open-Source Software Simulators**: Tools like Verilator (cycle-accurate, compiles RTL to C++ for high speed), Icarus Verilog, and ESSENT compete in software-only simulation but can be hardware-accelerated on commodity servers or FPGAs. These are free and integrate with open ecosystems, appealing to cost-sensitive users.
 
 
-Tenstorrent's hardware (e.g., Grayskull e150, Wormhole chips) isn't currently marketed for HDL/RTL simulation, but its scalable, RISC-V-based architecture with dataflow processing could be adapted for parallel simulation workloads, especially given its open-source software stack. This positions a TT-based solution as a disruptive, open alternative to proprietary systems, potentially running open-source simulators like Verilator on TT hardware for cost-effective acceleration. No direct competitors use similar AI-oriented hardware for this, but GPU-based setups (e.g., NVIDIA) are the closest analog.
+**Tenstorrent**'s hardware (e.g., Grayskull, Wormhole, Blackhole chips) isn't currently marketed for HDL/RTL simulation, but its scalable, RISC-V-based architecture with dataflow processing could be adapted for parallel simulation workloads, especially given its open-source software stack. This positions a TT-based solution as a disruptive, open alternative to proprietary systems, potentially running open-source simulators like Verilator on TT hardware for cost-effective acceleration. No direct competitors use similar AI-oriented hardware for this, but GPU-based setups (e.g., NVIDIA) are the closest analog.
 
 
 ## Potential Clients
 
-Potential clients for a Tenstorrent-based HDL/RTL simulation system (with open-source SW) include organizations involved in chip design, where verification accounts for 50-70% of development time. The open-source aspect appeals to academia, startups, and companies seeking vendor independence, lower costs, and customizability, while TT hardware's scalability suits high-performance needs.
+Potential clients for a **Tenstorrent**-based HDL/RTL simulation system (with open-source SW) include organizations involved in chip design, where verification accounts for 50-70% of development time. The open-source aspect appeals to academia, startups, and companies seeking vendor independence, lower costs, and customizability, while TT hardware's scalability suits high-performance needs.
 
 - **Primary Segments**:
   - **Semiconductor and Fabless Companies**: Firms designing complex SoCs, AI chips, or ASICs (e.g., Qualcomm, AMD, NVIDIA, Broadcom). They need fast emulation for pre-silicon validation.

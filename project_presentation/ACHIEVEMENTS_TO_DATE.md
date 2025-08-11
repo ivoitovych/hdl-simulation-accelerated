@@ -2,12 +2,12 @@
 
 ### Overview
 
-Despite the ambitious scope and inherent uncertainties of this research-oriented project, the “hdl-simulation-accelerated” initiative has accomplished several notable milestones. The following achievements validate both the technical feasibility and the future potential of accelerating HDL simulation on AI hardware platform - Tenstorrent’s TT-Metal. These outcomes provide a solid foundation for further development, benchmarking, and real-world adoption.
+Despite the ambitious scope and inherent uncertainties of this research-oriented project, the “hdl-simulation-accelerated” initiative has accomplished several notable milestones. The following achievements validate both the technical feasibility and the future potential of accelerating HDL simulation on AI hardware platform - **Tenstorrent**’s TT-Metal. These outcomes provide a solid foundation for further development, benchmarking, and real-world adoption.
 
 
 ### 1. **Proof-of-Concept Demonstration on Real Hardware**
 
-* **Key Milestone:** Successfully executed Verilog HDL simulations—converted via Verilator—on Tenstorrent TT-Metal hardware.
+* **Key Milestone:** Successfully executed Verilog HDL simulations—converted via Verilator—on **Tenstorrent** TT-Metal hardware.
 * **Details:**
 
   * Ran the “minimal\_divider” example (an all-Verilog ripple divider) as a working proof-of-concept on the accelerator.
@@ -25,12 +25,12 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 * **Impact:** Lowers the barrier for hardware acceleration, enabling rapid migration of new HDL projects and encouraging experimentation.
 
 
-### 3. **Integration into Tenstorrent’s Ecosystem**
+### 3. **Integration into **Tenstorrent**’s Ecosystem**
 
 * **Key Milestone:** Incorporated the project as a submodule in the TT-Metal repository (demonstrated on a fork).
 * **Details:**
 
-  * Ensures compatibility with Tenstorrent’s build systems (CMake, Makefile) and facilitates seamless deployment and testing on Tenstorrent hardware.
+  * Ensures compatibility with **Tenstorrent**’s build systems (CMake, Makefile) and facilitates seamless deployment and testing on **Tenstorrent** hardware.
 * **Impact:** Expands project accessibility, fosters collaboration, and signals recognition by the hardware vendor.
 
 
@@ -93,7 +93,7 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 
   * shift\_register/adaptation\_basis demonstrates Verilator simulation without standard runtime dependencies.
   * Enables execution on constrained accelerator environments.
-* **Impact:** Opens possibilities for deployment on Tenstorrent's hardware platforms beyond traditional CPU environments.
+* **Impact:** Opens possibilities for deployment on **Tenstorrent**'s hardware platforms beyond traditional CPU environments.
 
 
 ### 10. **Community-Ready, Open-Source Orientation**
@@ -111,7 +111,7 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 |-------------------------------|------------------------------|----------------------------------------------------------|
 | Hardware-accelerated HDL sim  | ✅ Working POC               | minimal_divider, arbitrary_struct_dataflow, shift_register/sim_comm on TT-Metal |
 | Automated code conversion     | ✅ Tool developed            | verilator2ttmetal.py, ongoing improvements               |
-| TT-Metal integration          | ✅ Submodule                 | Embeddable into the Tenstorrent's build ecosystem                    |
+| TT-Metal integration          | ✅ Submodule                 | Embeddable into the **Tenstorrent**'s build ecosystem                    |
 | Example set                   | ✅ 15+ diverse designs       | Single-file, multi-file, protocol, dataflow, and communication examples |
 | Reproducible environment      | ✅ Docker container          | Ubuntu LTS, Verilator, TT-Metal, Make, GTKWave           |
 | Host-kernel communication     | ✅ Ready                     | Full bidirectional pipeline with 100% verification accuracy |
@@ -122,5 +122,5 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 
 ### Conclusion
 
-These achievements collectively demonstrate that the "hdl-simulation-accelerated" project has moved from concept to reality—providing a reproducible, extensible platform for accelerating HDL simulation on next-generation Tenstorrent's AI hardware. The foundation laid so far enables deeper hardware integration, performance benchmarking, and future expansion, while encouraging community-driven research and innovation in the EDA-AI intersection. The recent success of the shift\_register/sim\_comm example, achieving 100% test accuracy with full host-device communication, marks a significant milestone toward HDL verification on AI accelerators.
+These achievements collectively demonstrate that the "hdl-simulation-accelerated" project has moved from concept to reality—providing a reproducible, extensible platform for accelerating HDL simulation on next-generation **Tenstorrent**'s AI hardware. The foundation laid so far enables deeper hardware integration, performance benchmarking, and future expansion, while encouraging community-driven research and innovation in the EDA-AI intersection. The recent success of the shift\_register/sim\_comm example, achieving 100% test accuracy with full host-device communication, marks a significant milestone toward HDL verification on AI accelerators.
 

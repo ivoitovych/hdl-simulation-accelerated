@@ -4,11 +4,11 @@ The "hdl-simulation-accelerated" project has a set of well-defined goals that al
 
 ### Short-Term Goals:
 1. **Demonstrate Feasibility of Hardware Acceleration for HDL Simulations**:
-   - Achieve a working proof-of-concept where Verilog-based HDL simulations run on AI accelerator hardware, specifically Tenstorrent's TT-Metal platform. This includes successfully executing simple designs (e.g., the minimal ripple divider) on real hardware to validate the acceleration hypothesis.
+   - Achieve a working proof-of-concept where Verilog-based HDL simulations run on AI accelerator hardware, specifically **Tenstorrent**'s TT-Metal platform. This includes successfully executing simple designs (e.g., the minimal ripple divider) on real hardware to validate the acceleration hypothesis.
 
 2. **Develop Conversion and Integration Tools**:
    - Create an automated tool (`verilator2ttmetal`) to translate Verilator-generated C++ code from Verilog models into TT-Metal compute kernels, enabling seamless mapping of HDL logic to parallel AI hardware primitives.
-   - Integrate the project as a submodule in the official Tenstorrent TT-Metal repository, ensuring compatibility with their build system (e.g., via CMake) and ecosystem.
+   - Integrate the project as a submodule in the official **Tenstorrent** TT-Metal repository, ensuring compatibility with their build system (e.g., via CMake) and ecosystem.
 
 3. **Provide Educational and Reproducible Examples**:
    - Build a collection of diverse, ready-to-run HDL examples (e.g., simple counter, serial CRC-32 generator, universal shift register, minimal divider) complete with testbenches, Makefiles, and waveform visualization support (using GTKWave).

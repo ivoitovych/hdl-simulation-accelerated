@@ -30,7 +30,7 @@ Simulation fits early in this pipeline, catching 80-90% of design flaws before c
 Several methods exist to simulate HDL/RTL designs, each balancing speed, accuracy, and cost:
 - **Software-Based Simulation**: Tools like Verilator (open-source) or commercial ones (e.g., Synopsys VCS) compile HDL code into executable programs run on CPUs. It's accessible and great for debugging but slow for large designs, as it processes events sequentially.
 - **Hardware Emulation**: Uses specialized hardware like FPGAs or custom emulators (e.g., Cadence Palladium) to mimic the design in real-time. This offers 100-1000x speedups for billion-gate simulations but requires expensive setups.
-- **Accelerated Simulation**: Leverages parallel computing, such as GPUs (via CUDA) or AI accelerators (e.g., Tenstorrent's platforms), to offload computations. Emerging hybrids combine software tools with hardware for massive parallelism, ideal for complex SoCs.
+- **Accelerated Simulation**: Leverages parallel computing, such as GPUs (via CUDA) or AI accelerators (e.g., **Tenstorrent**'s platforms), to offload computations. Emerging hybrids combine software tools with hardware for massive parallelism, ideal for complex SoCs.
 - **Formal Verification**: Mathematically proves design properties without running simulations, complementing traditional methods for exhaustive checks.
 
 The choice depends on project scale: startups might stick to software for cost reasons, while big firms use emulation for speed.

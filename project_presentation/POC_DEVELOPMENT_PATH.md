@@ -2,7 +2,7 @@
 
 ### Overview
 
-The development of the "hdl-simulation-accelerated" project adopted an exploratory, research-oriented methodology, navigating the challenges of pioneering HDL simulation acceleration on AI hardware like Tenstorrent's TT-Metal platform. This path was non-linear, shaped by ongoing discoveries, iterative testing, and adaptive refinements to align with practical limitations and emerging insights.
+The development of the "hdl-simulation-accelerated" project adopted an exploratory, research-oriented methodology, navigating the challenges of pioneering HDL simulation acceleration on AI hardware like **Tenstorrent**'s TT-Metal platform. This path was non-linear, shaped by ongoing discoveries, iterative testing, and adaptive refinements to align with practical limitations and emerging insights.
 
 The process unfolded across logical phases, each building on the last to achieve key milestones.
 
@@ -65,11 +65,11 @@ The process unfolded across logical phases, each building on the last to achieve
 
 ### 6. TT-Metal Integration and Hardware Demonstration
 
-* **Objective**: Demonstrate HDL simulation execution on actual Tenstorrent hardware.
+* **Objective**: Demonstrate HDL simulation execution on actual **Tenstorrent** hardware.
 * **Approach**:
 
   * Incorporated converted examples (e.g., minimal\_divider) as a submodule in the official TT-Metal repository, utilizing CMake for build integration.
-  * Performed end-to-end testing on Tenstorrent AI accelerator devices (e.g., Grayskull e150, Wormhole), confirming successful runs and basic acceleration.
+  * Performed end-to-end testing on **Tenstorrent** AI accelerator devices (e.g., Grayskull, Wormhole, Blackhole), confirming successful runs and basic acceleration.
   * Developed multiple implementation strategies (adapted, rewritten) to overcome memory constraints.
 * **Impact**:
 
