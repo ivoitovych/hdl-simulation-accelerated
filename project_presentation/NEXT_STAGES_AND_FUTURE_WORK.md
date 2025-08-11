@@ -2,101 +2,154 @@
 
 ### Overview
 
-With foundational milestones achieved and proof-of-concept success established, “hdl-simulation-accelerated” is now well-positioned to transition from feasibility exploration to practical application, performance benchmarking, and wider adoption. The next phases aim to address current limitations, expand TT-Metal integration, and grow the project's community and ecosystem impact.
+With foundational milestones achieved and proof-of-concept success established, “hdl-simulation-accelerated” is now well-positioned to transition from feasibility exploration to practical application, performance benchmarking, and wider adoption.
+The recent achievement of 100% test success with full host-device communication in shift\_register/sim\_comm provides a clear template for future development. The next phases aim to address current limitations, expand TT-Metal integration, and grow the project's community and ecosystem impact.
 
 
-### 1. **Expand TT-Metal Integration Across Example Suite**
+### 1. **Scale Host-Device Communication Model**
 
 * **Goal:**
-  Port additional HDL examples—including multi-file, protocol, and complex designs—to TT-Metal, demonstrating broader applicability and technical depth.
+  Leverage the successful shift\_register/sim\_comm architecture as a template for accelerating more complex designs.
 * **Actions:**
 
-  * Systematically enhance the `verilator2ttmetal` converter to handle more advanced Verilog features and testbenches.
-  * Prioritize integration for high-impact designs (e.g., UART, CRC generators, PWM modules, shift registers).
-  * Develop a standardized process for porting and validating new examples on TT-Metal hardware.
+  * Standardize the 16-byte aligned structure approach for efficient data transfer.
+  * Create reusable host application and device kernel templates based on sim\_comm.
+  * Port protocol-based designs (UART, CRC-32) using the proven communication pipeline.
+  * Develop guidelines for optimal test vector batching and memory management.
 * **Outcome:**
-  Accelerate a greater variety of digital logic, providing compelling evidence for TT-Metal’s versatility.
+  Rapid conversion of existing examples to development-ready TT-Metal implementations.
 
 
-### 2. **Performance Benchmarking and Optimization**
+### 2. **Multi-Core Distribution and Parallelization**
+
+* **Goal:**
+  Extend beyond single-core execution to leverage TT-Metal's massive parallelism.
+* **Actions:**
+
+  * Distribute test vectors across multiple cores (building on sim\_comm's batch processing).
+  * Implement algorithms for dynamic load balancing.
+  * Create parallel simulation of independent modules.
+  * Benchmark speedup factors with increasing core counts.
+* **Outcome:**
+  Demonstrate orders-of-magnitude acceleration for large-scale verification workloads.
+
+
+### 3. **Performance Benchmarking and Optimization**
 
 * **Goal:**
   Move beyond functional correctness to demonstrate concrete performance improvements and resource utilization benefits.
 * **Actions:**
 
-  * Design and execute benchmark tests comparing CPU-based and TT-Metal-accelerated simulations (e.g., runtime, throughput, power usage).
-  * Profile bottlenecks and optimize kernel code and runtime frameworks.
-  * Collect, document, and publish performance data for select examples.
+  * Use sim\_comm's cycle-accurate metrics (1.2 cycles/test) as baseline.
+  * Profile and optimize kernel code for minimal cycle count.
+  * Compare TT-Metal vs CPU performance across example suite.
+  * Measure power efficiency and throughput improvements.
+  * Publish detailed benchmarks with methodology.
 * **Outcome:**
   Provide quantifiable metrics that validate the value of hardware acceleration, supporting technical and business cases for adoption.
 
 
-### 3. **Support for Advanced HDL Constructs and Larger Designs**
+### 4. **Support for Advanced HDL Constructs and Larger Designs**
 
 * **Goal:**
   Enable the simulation of more complex, industry-scale circuits—approaching the needs of real-world ASIC/FPGA verification.
 * **Actions:**
 
   * Extend the conversion toolchain to support advanced Verilog/SystemVerilog features, larger testbenches, and multi-module projects.
-  * Explore distributed and parallel simulation models leveraging TT-Metal’s architecture.
+  * Build on adaptation\_basis work to support more runtime-free scenarios.
   * Pilot simulations with larger, community-contributed or open-source IP blocks.
+  * Implement hierarchical simulation with module-level acceleration.
 * **Outcome:**
   Move from educational/toy designs to industry-relevant use cases, broadening project impact.
 
 
-### 4. **Verification, Validation, and Testing Enhancements**
+### 5. **Verification Infrastructure Enhancement**
 
 * **Goal:**
-  Increase the reliability, repeatability, and thoroughness of simulations on TT-Metal.
+  Build comprehensive verification capabilities matching commercial EDA tools.
 * **Actions:**
 
-  * Standardize verification patterns across all examples.
-  * Add support for assertion-based checking, coverage analysis, and automated regression testing.
-  * Implement CI/CD pipelines for reproducible builds and simulations.
+  * Add waveform generation from TT-Metal execution (VCD export).
+  * Implement assertion-based verification on device.
+  * Support coverage collection and reporting.
+  * Create regression test framework using sim\_comm pipeline.
+  * Add constrained random test generation.
 * **Outcome:**
-  Deliver higher confidence in simulation correctness and facilitate continuous improvement.
+  Professional-grade verification environment on accelerated hardware.
 
 
-### 5. **Documentation, Usability, and Community Growth**
+### 6. **Documentation, Usability, and Community Growth**
 
 * **Goal:**
   Lower barriers to entry for new users, researchers, and contributors; foster an open and collaborative ecosystem.
 * **Actions:**
 
-  * Expand and improve onboarding documentation, tutorials, and usage guides.
-  * Host webinars, write blog posts, and participate in relevant forums to raise project visibility.
-  * Encourage contributions via issues, code reviews, and open discussions.
-  * Partner with academic and industrial stakeholders for pilot projects or joint research.
+  * Create migration guide from traditional simulation to TT-Metal acceleration.
+  * Document best practices learned from sim\_comm success.
+  * Develop tutorials for host-device communication patterns.
+  * Host webinars demonstrating the complete workflow.
+  * Establish partnerships with universities for curriculum integration.
 * **Outcome:**
   Build a vibrant, sustainable community around accelerated HDL simulation and TT-Metal hardware.
 
 
-### 6. **Broaden Hardware and Ecosystem Compatibility**
+### 7. **Integration with Industry Standards and Tools**
 
 * **Goal:**
-  Make the solution portable and extensible to other AI accelerator platforms and heterogeneous environments.
+  Enable integration with existing EDA workflows and standards.
 * **Actions:**
 
-  * Abstract hardware dependencies in the conversion/runtime layers.
-  * Establish modular interfaces for integration with third-party EDA tools and cloud environments.
+  * Add support for SystemVerilog assertions and coverage.
+  * Implement UVM (Universal Verification Methodology) compatibility layer.
+  * Create plugins for popular EDA tools (ModelSim, Xcelium, VCS).
+  * Support standard formats (VCD, FSDB, UCIS).
+  * Enable cloud deployment for scalable verification farms.
 * **Outcome:**
-  Enable wider adoption and future-proof the technology against evolving hardware trends.
+  Drop-in acceleration for existing verification environments.
 
 
-### 7. **Prepare for Production-Readiness and Real-World Applications**
+### 8. **Prepare for Production-Readiness and Real-World Applications**
 
 * **Goal:**
   Transition from research prototype to practical, scalable solution.
 * **Actions:**
 
-  * Engage with early adopters and collect feedback from real-world use.
-  * Harden the toolchain, improve error handling, and document limitations clearly.
-  * Pilot integration with commercial EDA tool flows or cloud-based verification services.
+  * Harden the sim\_comm communication protocol for reliability.
+  * Implement comprehensive error handling and recovery.
+  * Add support for long-running simulations with checkpointing.
+  * Create CI/CD pipelines for continuous verification.
+  * Pilot with industry partners on real chip designs.
 * **Outcome:**
   Position the project for adoption in professional chip design and verification workflows.
 
 
+### 9. **Advanced Features and Innovations**
+
+* **Goal:**
+  Push the boundaries of what's possible with AI hardware for EDA.
+* **Actions:**
+
+  * Explore ML-guided test generation using TT-Metal's AI capabilities.
+  * Implement formal verification acceleration.
+  * Approach mixed analog-digital simulation.
+  * Approach real-time hardware-in-the-loop testing.
+  * Create predictive debugging using simulation history.
+* **Outcome:**
+  Revolutionary capabilities beyond traditional HDL simulation.
+
+
+### Immediate Priority Actions (Q1 2025)
+
+Based on current achievements, the following should be prioritized:
+
+1. **Template Creation**: Extract reusable patterns from shift\_register/sim\_comm
+2. **Multi-Core Demo**: Show linear scaling with parallel test execution
+3. **Benchmark Suite**: Quantify acceleration vs CPU for all working examples
+4. **Documentation Update**: Comprehensive guide for host-device communication
+5. **Community Outreach**: Present results at EDA/hardware conferences
+
+
 ### Conclusion
 
-By executing on these next stages, “hdl-simulation-accelerated” will mature from a proof-of-concept initiative into a robust, extensible platform for accelerated HDL simulation—unlocking new possibilities for both the EDA and AI hardware communities. With continued technical innovation and community involvement, the project is poised to drive significant progress at the intersection of hardware design, verification, and high-performance computing.
+By executing on these next stages, “hdl-simulation-accelerated” will mature from a proof-of-concept initiative into a robust, extensible platform for accelerated HDL simulation. The success of shift\_register/sim\_comm has validated the core approach and provided a clear path forward. With continued technical innovation and community involvement, the project is poised to drive significant progress at the intersection of hardware design, verification, and high-performance computing, ultimately transforming how the industry approaches HDL simulation and verification.
 

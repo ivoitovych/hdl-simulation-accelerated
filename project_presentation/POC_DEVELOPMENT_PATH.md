@@ -56,10 +56,12 @@ The process unfolded across logical phases, each building on the last to achieve
 * **Approach**:
 
   * Analyzed runtime dependencies and created a custom, lightweight substitute framework tailored for TT-Metal's kernel execution model.
+  * Developed adaptation\_basis approach proving Verilator can run without standard runtime.
   * Ensured minimal changes to the generated simulation logic for compatibility and efficiency.
 * **Key Discovery**:
 
   * TT-Metal's architecture supports direct porting of most logic with runtime adaptations, enhancing portability and reducing overhead.
+  * Runtime-free execution opens possibilities for embedded and constrained environments.
 
 ### 6. TT-Metal Integration and Hardware Demonstration
 
@@ -68,6 +70,7 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Incorporated converted examples (e.g., minimal\_divider) as a submodule in the official TT-Metal repository, utilizing CMake for build integration.
   * Performed end-to-end testing on Tenstorrent AI accelerator devices (e.g., Grayskull e150, Wormhole), confirming successful runs and basic acceleration.
+  * Developed multiple implementation strategies (adapted, rewritten) to overcome memory constraints.
 * **Impact**:
 
   * Marked a pivotal achievement: empirical proof of Verilog simulations on AI accelerators, transitioning from concept to tangible results.
@@ -78,18 +81,34 @@ The process unfolded across logical phases, each building on the last to achieve
 * **Approach**:
 
   * Designed and prototyped communication mechanisms for initialization, real-time monitoring, and result verification.
+  * Developed arbitrary\_struct\_dataflow demonstrating custom data structure processing.
   * Addressed challenges like data synchronization and architectural mismatches in AI-to-HDL adaptation.
 * **Impact**:
 
   * Confirmed TT-Metal's suitability for dynamic, verification-focused workflows, essential for practical EDA applications.
 
-### 8. Documentation, Planning, and Community Enablement
+### 8. Complete RTL Simulation Pipeline Development
+
+* **Objective**: Create development-ready RTL simulation with full host-device communication.
+* **Approach**:
+
+  * Developed shift\_register/sim\_comm combining all learnings into comprehensive solution.
+  * Implemented structured 16-byte aligned data transfer for efficiency.
+  * Created bidirectional pipeline: host generates tests → device simulates → host verifies.
+  * Achieved 64 test vectors with 100% pass rate and cycle-accurate metrics.
+* **Impact**:
+
+  * Established template for future conversions and proved production readiness.
+  * Demonstrated complete verification workflow on AI hardware.
+
+### 9. Documentation, Planning, and Community Enablement
 
 * **Objective**: Render the project accessible, extensible, and primed for collaboration in education and research.
 * **Approach**:
 
   * Compiled detailed documentation, including README.md for overviews and usage, ROADMAP.md for multi-phase evolution (e.g., from simple to large-scale simulations), and TTMRTL\_PLAN.md for task-based planning (structured like Jira).
   * Added supporting files like .gitignore and encouraged contributions through GitHub issues/discussions.
+  * Documented the journey from traditional simulation to hardware acceleration.
 * **Impact**:
 
   * Reduced entry barriers while providing a structured path for future enhancements, fostering open-source growth.

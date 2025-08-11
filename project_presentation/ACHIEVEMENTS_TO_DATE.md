@@ -25,9 +25,9 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 * **Impact:** Lowers the barrier for hardware acceleration, enabling rapid migration of new HDL projects and encouraging experimentation.
 
 
-### 3. **Integration into Tenstorrent’s Official Ecosystem**
+### 3. **Integration into Tenstorrent’s Ecosystem**
 
-* **Key Milestone:** Incorporated the project as a submodule in the official TT-Metal repository.
+* **Key Milestone:** Incorporated the project as a submodule in the TT-Metal repository (demonstrated on a fork).
 * **Details:**
 
   * Ensures compatibility with Tenstorrent’s build systems (CMake, Makefile) and facilitates seamless deployment and testing on Tenstorrent hardware.
@@ -41,6 +41,7 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 
   * Examples include: 8-bit counter, edge detector, LED blinker, minimal divider, serial CRC-32 generator, universal shift register, simple ALU, UART transmitter, split pipeline simulation, and advanced dataflow using custom C++ structures.
   * Each example features Verilog source code, testbenches, Makefiles, and (where applicable) TT-Metal integration scripts.
+  * **NEW:** The shift register example now includes multiple implementation variants demonstrating the complete acceleration journey.
 * **Impact:** Serves as both an educational resource and a robust testbed for future research and toolchain validation.
 
 
@@ -70,10 +71,32 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 * **Details:**
 
   * Developed examples supporting arbitrary data exchange, verification feedback, and pipeline synchronization.
+  * **NEW:** The shift\_register/sim\_comm example achieves full bidirectional communication with 64 test vectors processed on device and 100% pass rate.
 * **Impact:** Proves TT-Metal’s capability for interactive simulation, not just batch processing—an important step for practical EDA workflow integration.
 
 
-### 8. **Community-Ready, Open-Source Orientation**
+### 8. **Complete RTL Simulation Pipeline with Host-Device Communication**
+
+* **Key Milestone:** Achieved end-to-end RTL simulation with comprehensive test management and verification on TT-Metal hardware.
+* **Details:**
+
+  * shift\_register/sim\_comm demonstrates host-controlled test generation, device-based simulation execution, and automatic result verification.
+  * Processes 64 test vectors with 100% accuracy, averaging 1.2 cycles per test.
+  * Uses structured 16-byte aligned data transfer for efficient communication.
+* **Impact:** Establishes development-ready verification pipeline on AI hardware, proving feasibility for real-world EDA applications.
+
+
+### 9. **Runtime-Free Verilator Execution**
+
+* **Key Milestone:** Successfully decoupled Verilator-generated code from its runtime environment.
+* **Details:**
+
+  * shift\_register/adaptation\_basis demonstrates Verilator simulation without standard runtime dependencies.
+  * Enables execution on constrained accelerator environments.
+* **Impact:** Opens possibilities for deployment on Tenstorrent's hardware platforms beyond traditional CPU environments.
+
+
+### 10. **Community-Ready, Open-Source Orientation**
 
 * **Key Milestone:** Project released under an open-source license, welcoming feedback and contributions.
 * **Details:**
@@ -86,17 +109,18 @@ Despite the ambitious scope and inherent uncertainties of this research-oriented
 
 | Area                          | Status                       | Details/Examples                                         |
 |-------------------------------|------------------------------|----------------------------------------------------------|
-| Hardware-accelerated HDL sim  | ✅ Working POC               | minimal_divider, arbitrary_struct_dataflow on TT-Metal   |
-| Automated code conversion     | ✅ Tool completed            | verilator2ttmetal.py, ongoing improvements               |
-| TT-Metal integration          | ✅ Submodule                 | Part of Tenstorrent’s build ecosystem                    |
-| Example set                   | ✅ 12+ diverse designs       | Single-file, multi-file, protocol, and dataflow examples |
+| Hardware-accelerated HDL sim  | ✅ Working POC               | minimal_divider, arbitrary_struct_dataflow, shift_register/sim_comm on TT-Metal |
+| Automated code conversion     | ✅ Tool developed            | verilator2ttmetal.py, ongoing improvements               |
+| TT-Metal integration          | ✅ Submodule                 | Embeddable into the Tenstorrent's build ecosystem                    |
+| Example set                   | ✅ 15+ diverse designs       | Single-file, multi-file, protocol, dataflow, and communication examples |
 | Reproducible environment      | ✅ Docker container          | Ubuntu LTS, Verilator, TT-Metal, Make, GTKWave           |
-| Host-kernel communication     | ✅ Proven in examples        | Data exchange, pipeline simulation                       |
+| Host-kernel communication     | ✅ Ready                     | Full bidirectional pipeline with 100% verification accuracy |
+| Runtime-free execution        | ✅ Proven                    | Verilator without standard runtime dependencies          |
 | Documentation and planning    | ✅ Comprehensive             | Overall and per-component documentation                  |
 | Community engagement          | ✅ Ready for collaboration   | Open license, contribution guidelines                    |
 
 
 ### Conclusion
 
-These achievements collectively demonstrate that the "hdl-simulation-accelerated" project has moved from concept to reality—providing a reproducible, extensible platform for accelerating HDL simulation on next-generation Tenstorrent's AI hardware. The foundation laid so far enables deeper hardware integration, performance benchmarking, and future expansion, while encouraging community-driven research and innovation in the EDA-AI intersection.
+These achievements collectively demonstrate that the "hdl-simulation-accelerated" project has moved from concept to reality—providing a reproducible, extensible platform for accelerating HDL simulation on next-generation Tenstorrent's AI hardware. The foundation laid so far enables deeper hardware integration, performance benchmarking, and future expansion, while encouraging community-driven research and innovation in the EDA-AI intersection. The recent success of the shift\_register/sim\_comm example, achieving 100% test accuracy with full host-device communication, marks a significant milestone toward HDL verification on AI accelerators.
 
