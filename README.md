@@ -3,6 +3,10 @@
 This repository provides a **Docker-based, reproducible environment for Verilog (HDL) simulation** using Verilator, targeting both classical CPU flows and future acceleration on AI hardware (e.g., TT-Metal/Tenstorrent).
 It is both a practical teaching environment and a foundation for research into high-performance simulation.
 
+## 📑 **Project Presentation**
+
+For a comprehensive overview, including market analysis, achievements, examples, evaluations, challenges, and future directions, please refer to the [Project Presentation](./PROJECT_PRESENTATION_COMBINED.md).
+
 ## ✅ **Proof of Concept Achievement**
 
 **HDL simulation is now running on real TT-Metal AI accelerator hardware!** The minimal_divider example has been successfully integrated and executed on Tenstorrent hardware, validating the core concept of HDL simulation acceleration.
@@ -51,37 +55,37 @@ To integrate this project into your TT-Metal repository:
 ## 🗂️ Directory Structure
 
 ```
-
 .
 ├── Dockerfile                      # Docker environment (Ubuntu + Verilator + tools)
 ├── .gitignore                      # Ignore build artifacts
+├── PROJECT_PRESENTATION_COMBINED.md # Comprehensive project presentation and documentation
 ├── README.md                       # This file
 ├── ROADMAP.md                      # Detailed project roadmap and goals
+├── TTMRTL_PLAN.md                  # Current stepwise Jira ticket plan, examples, and stage goals
 ├── simple/                         # Simple counter example: C++ testbench + Verilog
 │   ├── counter.v
-│   ├── sim\_main.cpp
-│   └── obj\_dir/                    # (build output, ignored by git)
+│   ├── sim_main.cpp
+│   └── obj_dir/                    # (build output, ignored by git)
 ├── examples/
 │   ├── minimal/                    # Minimal all-Verilog divider simulation (no C++)
-│   │   ├── minimal\_divider\_sim.v
+│   │   ├── minimal_divider_sim.v
 │   │   ├── Makefile
 │   │   └── README.md
-│   ├── serial\_crc32\_generator/     # Bit-serial CRC-32 generator with comprehensive testbench
-│   │   ├── serial\_crc32\_generator.v
-│   │   ├── serial\_crc32\_generator\_tb.v
+│   ├── serial_crc32_generator/     # Bit-serial CRC-32 generator with comprehensive testbench
+│   │   ├── serial_crc32_generator.v
+│   │   ├── serial_crc32_generator_tb.v
 │   │   ├── Makefile
 │   │   └── README.md
-│   └── shift\_register/             # Universal shift register with multiple modes
-│       ├── universal\_shift\_register.v
-│       ├── universal\_shift\_register\_tb.v
+│   └── shift_register/             # Universal shift register with multiple modes
+│       ├── universal_shift_register.v
+│       ├── universal_shift_register_tb.v
 │       ├── Makefile
 │       └── README.md
 ├── verilator2ttmetal/              # Converter tool for TT-Metal integration
 │   ├── verilator2ttmetal.py       # Main converter script
 │   └── README.md
 └── CMakeLists.txt                  # TT-Metal build integration
-
-````
+```
 
 Each example includes a standalone **README.md** with usage instructions and design details.
 
@@ -93,7 +97,7 @@ Each example includes a standalone **README.md** with usage instructions and des
 
 ```sh
 docker build -t verilator-dev .
-````
+```
 
 ### 2. **Run the Container**
 
