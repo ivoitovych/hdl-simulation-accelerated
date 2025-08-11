@@ -155,7 +155,7 @@ This section analyzes various approaches to accelerating Hardware Description La
 ### 5. AI Accelerator-Based Simulation (Project's Approach)
    - **Description**: Repurposes AI-oriented hardware (e.g., tensor processors like Tenstorrent's TT-Metal) for RTL simulation by converting Verilog models (via Verilator) into parallel compute kernels. This leverages dataflow architectures optimized for massive parallelism in tensor operations, adapting them to gate-level logic simulation.
  (Note: While not widely documented for RTL yet, parallels exist with GPU methods and emerging AI-agentic tools.)
-   - **Pros**: Scalable for AI-like workloads; open-source friendly (e.g., TT-Metal's ecosystem); lower power than GPUs; high customizability via software conversion tools; potential for 50-200x speedups in parallel designs.
+   - **Pros**: Scalable for AI-like workloads; open-source friendly (e.g., TT-Metal's ecosystem); lower power than GPUs; high customizability via software conversion tools; potential for 10-100x speedups in parallel designs.
    - **Cons**: Requires paradigm shift (mapping HDL to tensors); early-stage maturity for RTL use; hardware availability limited; debugging challenges in non-native environments.
    - **Examples**: The project's `verilator2ttmetal.py` tool exemplifies this, with successful proofs on simple designs like ripple dividers. Agentic AI approaches (2025) extend LLM-driven acceleration to RTL workflows, hinting at hybrid AI-HDL potential.
 
@@ -175,7 +175,7 @@ This section analyzes various approaches to accelerating Hardware Description La
 | FPGA-Based               | 10-100x          | Medium-High | Medium     | High            | Medium (requires FPGA tools)       |
 | GPU-Accelerated          | 10-100x          | Medium | Medium     | Low             | High (e.g., CUDA integration)      |
 | Custom Co-Design         | 100-1000x        | High | Low        | High            | Low (proprietary development)      |
-| AI Accelerator-Based     | 50-200x          | Medium | High       | Medium-High     | High (open ecosystems like TT-Metal)|
+| AI Accelerator-Based     | 10-100x          | Medium | High       | Medium-High     | High (open ecosystems like TT-Metal)|
 | Hybrid/Emerging          | Variable (10-500x)| Variable | High       | Variable        | Medium-High                        |
 
 Adapted from comparative studies on accelerators for HPC/AI tasks, applied to RTL contexts.
