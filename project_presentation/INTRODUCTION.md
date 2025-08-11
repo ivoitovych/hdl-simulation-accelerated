@@ -40,3 +40,4 @@ The HDL/RTL simulation landscape is evolving rapidly amid chip shortages, AI boo
 
 This foundation sets the stage for our project, which builds on these concepts to accelerate simulations using innovative hardware-software integration.
 
+

@@ -9,6 +9,28 @@
 **An open-source research initiative exploring the acceleration of hardware description language (HDL) simulation using Tenstorrent’s TT-Metal platform. This project bridges the world of traditional digital logic design and modern AI accelerators, providing reproducible tools, working examples, and a clear roadmap for scaling HDL verification into the era of high-performance parallel computing.**
 **Covering market context, foundational concepts, project goals, development journey, achievements, evaluations, challenges, and future directions, it serves as a blueprint for innovation in Electronic Design Automation (EDA) at the intersection of AI hardware and digital verification.**
 
+
+## Table of Contents
+
+- [HDL Simulation Accelerated](#hdl-simulation-accelerated)
+  - [Leveraging AI Hardware for Next-Generation Verilog Simulation](#leveraging-ai-hardware-for-next-generation-verilog-simulation)
+  - [Introduction to HDL and RTL Simulation](#introduction-to-hdl-and-rtl-simulation)
+  - [Competitors in Hardware-Accelerated HDL/RTL Simulation and Emulation](#competitors-in-hardware-accelerated-hdlrtl-simulation-and-emulation)
+  - [Potential Clients](#potential-clients)
+  - [Market Volume and Sales Potential](#market-volume-and-sales-potential)
+  - [Possible Approach Analysis](#possible-approach-analysis)
+  - [The Big Picture: Path to a Production-Ready Accelerated HDL Simulation System](#the-big-picture-path-to-a-production-ready-accelerated-hdl-simulation-system)
+  - [Open-Source HDL/RTL Simulators Comparison](#open-source-hdlrtl-simulators-comparison)
+  - [Project Goals](#project-goals)
+  - [Reasoning Behind the Goals](#reasoning-behind-the-goals)
+  - [Proof-of-Concept Development Path](#proof-of-concept-development-path)
+  - [Achievements to Date](#achievements-to-date)
+  - [Examples and Evaluation](#examples-and-evaluation)
+  - [Limitations and Challenges](#limitations-and-challenges)
+  - [Next Stages and Future Work](#next-stages-and-future-work)
+- [Presentation Conclusion](#presentation-conclusion)
+
+
 ## Introduction to HDL and RTL Simulation
 
 In the world of digital hardware design, creating complex integrated circuits (ICs) like those powering smartphones, AI processors, or automotive systems is a meticulous process. At its core lies **Hardware Description Language (HDL)**, a specialized programming language used to model and describe the behavior and structure of electronic circuits. Think of HDL as the "code" for hardware, similar to how software developers use languages like Python or C++ to build applications. Popular HDLs include Verilog and VHDL, which allow engineers to define everything from simple logic gates to intricate systems-on-chip (SoCs).
@@ -50,6 +72,7 @@ The choice depends on project scale: startups might stick to software for cost r
 The HDL/RTL simulation landscape is evolving rapidly amid chip shortages, AI booms, and open-source trends. Designs now routinely exceed 100 billion transistors, pushing for faster tools—e.g., cloud-based simulation for distributed processing. Open-source initiatives like Verilator and RISC-V are democratizing access, enabling students and small teams to innovate without proprietary lock-in. Meanwhile, integration with AI hardware is a hot area, repurposing tensor processors for simulation acceleration to handle data-intensive verification. Challenges include rising power consumption in simulations and the need for better automation, but advancements promise shorter design cycles and more reliable hardware.
 
 This foundation sets the stage for our project, which builds on these concepts to accelerate simulations using innovative hardware-software integration.
+
 
 ## Competitors in Hardware-Accelerated HDL/RTL Simulation and Emulation
 
@@ -115,6 +138,7 @@ Overall, a TT-based solution could carve a niche in cost-sensitive, open ecosyst
 
 
 Summarizing the analysis—the market remains dominated by EDA giants like Cadence/Synopsys (proprietary, high-cost), with growing niches in open-source/GPU acceleration. TT's open-stack positions it well as a disruptor for cost-sensitive clients (academia/startups), especially amid the AI chip boom. Updated 2025 EDA size (~USD 15-17B) aligns with projections; the emulation sub-market (~USD 1-2B) holds. Sales potential is realistic (niche 5-10% adoption), but scaling depends on proving 10-100x speedups versus incumbents.
+
 
 ## Possible Approach Analysis
 
@@ -185,6 +209,7 @@ Adapted from comparative studies on accelerators for HPC/AI tasks, applied to RT
 ### Justification for the Project's Approach
 The "hdl-simulation-accelerated" project's use of Verilator with TT-Metal AI accelerators is justified by its balance of accessibility, cost, and innovation. Unlike expensive custom co-designs or power-hungry GPUs, TT-Metal leverages open-source software for conversion, enabling reproducible, scalable acceleration on hardware optimized for parallel dataflows—ideal for RTL's combinatorial logic. This approach aligns with emerging trends in repurposing AI hardware for EDA tasks, offering a disruptive alternative to proprietary FPGA/emulation systems while fostering community contributions. Future extensions could incorporate hybrid elements (e.g., GPU co-acceleration) for even greater versatility.
 
+
 ## The Big Picture: Path to a Production-Ready Accelerated HDL Simulation System
 
 In an era where chip designs are exploding in complexity—driven by AI, edge computing, and custom silicon—traditional HDL/RTL simulation tools are straining under the load, often extending verification timelines from weeks to months. This creates a ripe opportunity for innovation: repurposing massively parallel AI accelerators, like Tenstorrent's hardware, to deliver open-source, cost-effective acceleration. The vision is a scalable ecosystem that democratizes high-speed simulation, reducing vendor lock-in and empowering diverse users from startups to hyperscalers. Starting from a proof-of-concept (POC) like the "hdl-simulation-accelerated" project, the journey to production readiness involves iterative development, rigorous testing, and strategic expansions. Below, we outline the phased approach, emphasizing clear milestones to build from foundational experiments to a robust, market-ready solution.
@@ -224,6 +249,7 @@ Once established, evolve the system into a comprehensive platform through iterat
 
 This roadmap not only transforms a POC into a production-grade system but also fosters an open, collaborative future for HDL simulation, ultimately shortening design cycles and lowering barriers in the multi-billion-dollar EDA market.
 
+
 ## Open-Source HDL/RTL Simulators Comparison
 
 Here is an extended comparison table of open-source HDL/RTL simulators. The primary focus remains on those with multi-core simulation support, which are crucial for accelerated simulations on massively parallel hardware like Tenstorrent's TT-Metal AI accelerator. For completeness, other open-source simulators are included with minimal details, as they lack multi-core support and are less relevant to the POC project.
@@ -245,6 +271,7 @@ Here is an extended comparison table of open-source HDL/RTL simulators. The prim
 | Verilog Behavioral Simulator (VBS) | Verilog | GPL | <span style="color:red">No</span> | None | Basic behavioral; for students. | No |
 | VeriWell | Verilog | GPL-2.0 | <span style="color:red">No</span> | None | Partial compliance; outdated. | No |
 | FreeHDL | VHDL | GPL-2.0 | <span style="color:red">No</span> | None | Basic VHDL; incomplete. | No |
+
 
 ## Project Goals
 
@@ -298,6 +325,7 @@ The goals are rooted in addressing key challenges in HDL simulation and hardware
 - **Community and Future-Proofing**: Encouraging contributions ensures sustainability, while the non-production status manages expectations. The reasoning here is to spark interest in accelerated verification, paving the way for future benchmarks, optimizations, and integrations that could impact fields like embedded systems and custom silicon development.
 
 In summary, the goals are designed to solve real-world pain points in HDL simulation through innovative hardware-software integration, with reasoning grounded in efficiency gains, technological fit, and open collaboration. This positions the project as a forward-looking initiative in the evolving landscape of hardware design tools.
+
 
 ## Proof-of-Concept Development Path
 
@@ -417,6 +445,7 @@ The process unfolded across logical phases, each building on the last to achieve
 ### Summary
 
 The proof-of-concept path for the "hdl-simulation-accelerated" project was defined by targeted research, incremental builds, and breakthrough validations. Each phase advanced clear objectives through practical experimentation, culminating in a foundational platform ready for optimization and community expansion in the evolving field of hardware-accelerated simulation.
+
 
 ## Achievements to Date
 
@@ -682,6 +711,7 @@ Examples are classified as **single-file** (basic modules) or **multi-file** (co
 
 The examples and their evaluation highlight not only the technical achievements of the project to date, but also the robust foundation established for future scaling and community-driven innovation. The recent success of shift\_register/sim\_comm, achieving 100% test accuracy with full host-device communication, represents a major milestone in making hardware-accelerated HDL simulation practical for verification workflows. This curated suite of HDL simulation cases proves both the depth and the adaptability of the “hdl-simulation-accelerated” approach, demonstrating readiness for ongoing research, real-world adoption, and educational outreach.
 
+
 ## Limitations and Challenges
 
 ### Overview
@@ -774,6 +804,7 @@ As with any pioneering research project operating at the intersection of hardwar
 ### Conclusion
 
 These limitations and challenges reflect both the complexity and the innovative nature of the “hdl-simulation-accelerated” project. Rather than signifying shortcomings, they represent valuable lessons learned and areas for targeted improvement in subsequent development phases. Acknowledging these constraints transparently enables better planning, realistic expectations, and invites focused community collaboration to overcome them.
+
 
 ## Next Stages and Future Work
 
@@ -930,7 +961,8 @@ Based on current achievements, the following should be prioritized:
 
 By executing on these next stages, “hdl-simulation-accelerated” will mature from a proof-of-concept initiative into a robust, extensible platform for accelerated HDL simulation. The success of shift\_register/sim\_comm has validated the core approach and provided a clear path forward. With continued technical innovation and community involvement, the project is poised to drive significant progress at the intersection of hardware design, verification, and high-performance computing, ultimately transforming how the industry approaches HDL simulation and verification.
 
-# Conclusion
+
+# Presentation Conclusion
 
 The “hdl-simulation-accelerated” project marks a significant step forward in bridging the gap between traditional hardware description language (HDL) simulation and the rapidly advancing world of AI accelerators. Through a research-driven, open-source approach, the project has demonstrated not just the feasibility, but also the practical path to enabling Verilog-based simulations on massively parallel hardware like Tenstorrent’s TT-Metal platform.
 
@@ -941,4 +973,5 @@ At the same time, the honest assessment of current limitations and challenges ha
 Critically, the project’s open-source orientation and comprehensive documentation make it accessible to researchers, students, and practitioners alike. By lowering barriers to entry and inviting collaboration, “hdl-simulation-accelerated” positions itself as a catalyst for innovation in the emerging field of high-performance, hardware-accelerated simulation.
 
 In summary, while much work remains to fully realize the vision of scalable, production-grade accelerated HDL simulation, the foundation is strong and momentum is building. The project stands ready for community engagement, industrial adoption, and ongoing research, paving the way for a new era in digital verification powered by AI hardware.
+
 

@@ -67,3 +67,4 @@ Adapted from comparative studies on accelerators for HPC/AI tasks, applied to RT
 ### Justification for the Project's Approach
 The "hdl-simulation-accelerated" project's use of Verilator with TT-Metal AI accelerators is justified by its balance of accessibility, cost, and innovation. Unlike expensive custom co-designs or power-hungry GPUs, TT-Metal leverages open-source software for conversion, enabling reproducible, scalable acceleration on hardware optimized for parallel dataflows—ideal for RTL's combinatorial logic. This approach aligns with emerging trends in repurposing AI hardware for EDA tasks, offering a disruptive alternative to proprietary FPGA/emulation systems while fostering community contributions. Future extensions could incorporate hybrid elements (e.g., GPU co-acceleration) for even greater versatility.
 
+

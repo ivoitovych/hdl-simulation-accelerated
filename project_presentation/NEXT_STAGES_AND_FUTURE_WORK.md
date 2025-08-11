@@ -153,3 +153,4 @@ Based on current achievements, the following should be prioritized:
 
 By executing on these next stages, “hdl-simulation-accelerated” will mature from a proof-of-concept initiative into a robust, extensible platform for accelerated HDL simulation. The success of shift\_register/sim\_comm has validated the core approach and provided a clear path forward. With continued technical innovation and community involvement, the project is poised to drive significant progress at the intersection of hardware design, verification, and high-performance computing, ultimately transforming how the industry approaches HDL simulation and verification.
 
+

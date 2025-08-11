@@ -51,3 +51,4 @@ The goals are rooted in addressing key challenges in HDL simulation and hardware
 
 In summary, the goals are designed to solve real-world pain points in HDL simulation through innovative hardware-software integration, with reasoning grounded in efficiency gains, technological fit, and open collaboration. This positions the project as a forward-looking initiative in the evolving landscape of hardware design tools.
 
+

@@ -91,3 +91,4 @@ As with any pioneering research project operating at the intersection of hardwar
 
 These limitations and challenges reflect both the complexity and the innovative nature of the “hdl-simulation-accelerated” project. Rather than signifying shortcomings, they represent valuable lessons learned and areas for targeted improvement in subsequent development phases. Acknowledging these constraints transparently enables better planning, realistic expectations, and invites focused community collaboration to overcome them.
 
+

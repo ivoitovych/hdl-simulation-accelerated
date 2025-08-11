@@ -117,3 +117,4 @@ The process unfolded across logical phases, each building on the last to achieve
 
 The proof-of-concept path for the "hdl-simulation-accelerated" project was defined by targeted research, incremental builds, and breakthrough validations. Each phase advanced clear objectives through practical experimentation, culminating in a foundational platform ready for optimization and community expansion in the evolving field of hardware-accelerated simulation.
 
+

@@ -136,3 +136,4 @@ Examples are classified as **single-file** (basic modules) or **multi-file** (co
 
 The examples and their evaluation highlight not only the technical achievements of the project to date, but also the robust foundation established for future scaling and community-driven innovation. The recent success of shift\_register/sim\_comm, achieving 100% test accuracy with full host-device communication, represents a major milestone in making hardware-accelerated HDL simulation practical for verification workflows. This curated suite of HDL simulation cases proves both the depth and the adaptability of the “hdl-simulation-accelerated” approach, demonstrating readiness for ongoing research, real-world adoption, and educational outreach.
 
+

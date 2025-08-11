@@ -20,3 +20,4 @@ Here is an extended comparison table of open-source HDL/RTL simulators. The prim
 | VeriWell | Verilog | GPL-2.0 | <span style="color:red">No</span> | None | Partial compliance; outdated. | No |
 | FreeHDL | VHDL | GPL-2.0 | <span style="color:red">No</span> | None | Basic VHDL; incomplete. | No |
 
+
