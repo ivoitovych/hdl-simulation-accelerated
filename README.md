@@ -21,7 +21,7 @@ See [`TTMRTL_PLAN.md`](./TTMRTL_PLAN.md) for the current stepwise Jira ticket pl
 
 ## 🔗 TT-Metal Integration
 
-This project is integrated as a submodule in the official Tenstorrent TT-Metal repository, enabling HDL simulations to run directly on TT-Metal hardware. The integration includes:
+This project can be integrated as a submodule in the official Tenstorrent TT-Metal repository, enabling HDL simulations to run directly on TT-Metal hardware. The integration includes:
 
 - **Verilator-to-TT-Metal converter**: Automatically translates Verilog designs to TT-Metal compute kernels
 - **Working hardware example**: The `minimal_divider` example runs on real TT-Metal devices
