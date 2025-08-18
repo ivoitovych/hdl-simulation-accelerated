@@ -442,9 +442,27 @@ The process unfolded across logical phases, each building on the last to achieve
 
   * Reduced entry barriers while providing a structured path for future enhancements, fostering open-source growth.
 
+### Key Learnings and Breakthroughs
+
+1. **Memory Constraints**: Direct Verilator ports exceed kernel memory; minimal implementations work best.
+2. **Communication Architecture**: 16-byte aligned structures enable efficient host-device data transfer.
+3. **Runtime Independence**: Verilator can operate without standard runtime, enabling diverse deployments.
+4. **Verification Pipeline**: Host-controlled test generation with device execution proves practical.
+
+### Development Timeline and Milestones
+
+| Phase | Achievement | Example/Proof | Impact |
+|-------|-------------|---------------|--------|
+| Phase 1 | Basic TT-Metal execution | minimal_divider | First HDL on AI hardware |
+| Phase 2 | Runtime-free Verilator | adaptation_basis | Embedded deployment possible |
+| Phase 3 | Custom data structures | arbitrary_struct_dataflow | Complex pipeline validation |
+| Phase 4 | Full RTL simulation | shift_register/sim_comm | Production-ready with 100% accuracy |
+
 ### Summary
 
-The proof-of-concept path for the "hdl-simulation-accelerated" project was defined by targeted research, incremental builds, and breakthrough validations. Each phase advanced clear objectives through practical experimentation, culminating in a foundational platform ready for optimization and community expansion in the evolving field of hardware-accelerated simulation.
+The proof-of-concept path for the "hdl-simulation-accelerated" project was defined by targeted research, incremental builds, and breakthrough validations. Each phase advanced clear objectives through practical experimentation, culminating in a foundational platform ready for optimization and community expansion. The journey from minimal_divider's first successful execution to shift_register/sim_comm's complete verification pipeline demonstrates both the challenges overcome and the potential realized in accelerating HDL simulation on AI hardware.
+
+The shift_register example's evolution—from traditional Verilator simulation through runtime-free adaptation to full TT-Metal acceleration with host communication—encapsulates the project journey and provides a clear template for future development in the evolving field of hardware-accelerated simulation.
 
 
 ## Achievements to Date
